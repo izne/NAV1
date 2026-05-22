@@ -1,0 +1,56 @@
+# Project: NAV1
+# Makefile created by Embarcadero Dev-C++ 6.3
+
+CPP      = g++.exe
+CC       = gcc.exe
+WINDRES  = windres.exe
+RES      = NAV1_private.res
+OBJ      = src/dllmain.o src/conv.o src/nav.o src/aviation.o src/gps.o src/flight_mgmt.o src/control.o src/nmea.o $(RES)
+LINKOBJ  = src/dllmain.o src/conv.o src/nav.o src/aviation.o src/gps.o src/flight_mgmt.o src/control.o src/nmea.o $(RES)
+LIBS     = -L"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib" -L"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/lib" -static-libgcc
+INCS     = -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include"
+CXXINCS  = -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include/c++"
+BIN      = NAV1.dll
+CXXFLAGS = $(CXXINCS) -DBUILDING_DLL=1 -D_USE_MATH_DEFINES
+CFLAGS   = $(INCS) -DBUILDING_DLL=1 -D_USE_MATH_DEFINES
+DEL      = C:\Program Files (x86)\Embarcadero\Dev-Cpp\DevCpp.exe INTERNAL_DEL
+DEF      = libNAV1.def
+STATIC   = libNAV1.a
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	${DEL} $(OBJ) $(BIN) $(DEF) $(STATIC)
+
+$(BIN): $(LINKOBJ)
+	$(CC) -shared $(LINKOBJ) -o $(BIN) $(LIBS) -Wl,--output-def,$(DEF),--out-implib,$(STATIC),--add-stdcall-alias
+
+src/dllmain.o: src/dllmain.c
+	$(CC) -c src/dllmain.c -o src/dllmain.o $(CFLAGS)
+
+src/conv.o: src/conv.c
+	$(CC) -c src/conv.c -o src/conv.o $(CFLAGS)
+
+src/nav.o: src/nav.c
+	$(CC) -c src/nav.c -o src/nav.o $(CFLAGS)
+
+src/aviation.o: src/aviation.c
+	$(CC) -c src/aviation.c -o src/aviation.o $(CFLAGS)
+
+src/gps.o: src/gps.c
+	$(CC) -c src/gps.c -o src/gps.o $(CFLAGS)
+
+src/flight_mgmt.o: src/flight_mgmt.c
+	$(CC) -c src/flight_mgmt.c -o src/flight_mgmt.o $(CFLAGS)
+
+src/control.o: src/control.c
+	$(CC) -c src/control.c -o src/control.o $(CFLAGS)
+
+src/nmea.o: src/nmea.c
+	$(CC) -c src/nmea.c -o src/nmea.o $(CFLAGS)
+
+NAV1_private.res: NAV1_private.rc 
+	$(WINDRES) -i NAV1_private.rc --input-format=rc -o NAV1_private.res -O coff 
+
