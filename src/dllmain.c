@@ -31,8 +31,7 @@ NAV_EXPORT void Version()
 
 NAV_EXPORT void AboutNav()
 {
-    MessageBox(NULL, TEXT("Angelov NAV System v1.0\nNavigation Library for Windows"),
-               TEXT("About NAV1"), MB_OK | MB_ICONINFORMATION);
+    MessageBox(NULL, TEXT("Angelov NAV System v1.0\nNavigation Library"), TEXT("About NAV1"), MB_OK | MB_ICONINFORMATION);
 }
 
 NAV_EXPORT void Testcase(int test)

@@ -1,6 +1,6 @@
-# NAV1 — Navigation Math Library
+# NAV1 — a collection of navigation-related helper functions in C
 
-Windows DLL (C, 64-bit) providing geodesy, unit conversion, aviation, GPS/NMEA, flight management, and control-system math for autopilot and navigation applications.
+A static and shared library providing geodesy, unit conversion, aviation, GPS/NMEA, flight management, and control-system math for autopilot and navigation applications.
 
 ## Quick Start
 
@@ -64,7 +64,7 @@ if (NAV_SUP_nmeaParse("$GPGGA,...*47", &nd)) {
 | Borland C++ DLL build  | `__export`                   |
 | Static library / DOS   | *(empty — no decoration)*    |
 
-The math itself is pure C89 (sin, cos, atan2, sqrt, log, pow, exp, fmod) and compiles unchanged with Turbo C++ for DOS targets.
+The math itself is pure C89 (sin, cos, atan2, sqrt, log, pow, exp, fmod).
 
 ## Naming Conventions
 
