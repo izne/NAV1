@@ -17,8 +17,8 @@ typedef struct {
     double magVarDeg;
     char   timeUTC[10];
     char   dateUTC[7];
-} NAV_Sup_NMEAData;
+} NAV1_NMEAData;
 
-NAV_EXPORT int NAV_SUP_nmeaParse(const char *sentence, NAV_Sup_NMEAData *out);
+NAV_EXPORT int NAV1_NMEA_nmeaParse(const char *sentence, NAV1_NMEAData *out);
 
 #endif

@@ -8,7 +8,7 @@ static double toRad(double deg) { return deg * 3.14159265358979323846 / 180.0; }
 static double toDeg(double rad) { return rad * 180.0 / 3.14159265358979323846; }
 static double R = 3440.06479;
 
-void NAV_SUP_routeInit(NAV_Sup_Route *route, NAV_Sup_Waypoint *buffer, int capacity)
+void NAV1_RTE_routeInit(NAV1_Route *route, NAV1_Waypoint *buffer, int capacity)
 {
     route->waypoints = buffer;
     route->capacity = capacity;
@@ -16,26 +16,26 @@ void NAV_SUP_routeInit(NAV_Sup_Route *route, NAV_Sup_Waypoint *buffer, int capac
     route->currentIndex = -1;
 }
 
-int NAV_SUP_routeAdd(NAV_Sup_Route *route, double lat, double lon, double altFt, const char *ident, const char *name, int type)
+int NAV1_RTE_routeAdd(NAV1_Route *route, double lat, double lon, double altFt, const char *ident, const char *name, int type)
 {
     if (route->count >= route->capacity)
         return 0;
-    NAV_Sup_Waypoint *wp = &route->waypoints[route->count];
+    NAV1_Waypoint *wp = &route->waypoints[route->count];
     wp->latitude = lat;
     wp->longitude = lon;
     wp->altitudeFt = altFt;
     wp->type = type;
-    strncpy(wp->ident, ident, NAV_ROUTE_MAX_IDENT - 1);
-    wp->ident[NAV_ROUTE_MAX_IDENT - 1] = '\0';
-    strncpy(wp->name, name, NAV_ROUTE_MAX_NAME - 1);
-    wp->name[NAV_ROUTE_MAX_NAME - 1] = '\0';
+    strncpy(wp->ident, ident, NAV1_ROUTE_MAX_IDENT - 1);
+    wp->ident[NAV1_ROUTE_MAX_IDENT - 1] = '\0';
+    strncpy(wp->name, name, NAV1_ROUTE_MAX_NAME - 1);
+    wp->name[NAV1_ROUTE_MAX_NAME - 1] = '\0';
     route->count++;
     if (route->currentIndex < 0)
         route->currentIndex = 0;
     return 1;
 }
 
-int NAV_SUP_routeInsert(NAV_Sup_Route *route, int index, double lat, double lon, double altFt, const char *ident, const char *name, int type)
+int NAV1_RTE_routeInsert(NAV1_Route *route, int index, double lat, double lon, double altFt, const char *ident, const char *name, int type)
 {
     int i;
     if (route->count >= route->capacity)
@@ -48,17 +48,17 @@ int NAV_SUP_routeInsert(NAV_Sup_Route *route, int index, double lat, double lon,
     route->waypoints[index].longitude = lon;
     route->waypoints[index].altitudeFt = altFt;
     route->waypoints[index].type = type;
-    strncpy(route->waypoints[index].ident, ident, NAV_ROUTE_MAX_IDENT - 1);
-    route->waypoints[index].ident[NAV_ROUTE_MAX_IDENT - 1] = '\0';
-    strncpy(route->waypoints[index].name, name, NAV_ROUTE_MAX_NAME - 1);
-    route->waypoints[index].name[NAV_ROUTE_MAX_NAME - 1] = '\0';
+    strncpy(route->waypoints[index].ident, ident, NAV1_ROUTE_MAX_IDENT - 1);
+    route->waypoints[index].ident[NAV1_ROUTE_MAX_IDENT - 1] = '\0';
+    strncpy(route->waypoints[index].name, name, NAV1_ROUTE_MAX_NAME - 1);
+    route->waypoints[index].name[NAV1_ROUTE_MAX_NAME - 1] = '\0';
     route->count++;
     if (route->currentIndex < 0)
         route->currentIndex = 0;
     return 1;
 }
 
-int NAV_SUP_routeRemove(NAV_Sup_Route *route, int index)
+int NAV1_RTE_routeRemove(NAV1_Route *route, int index)
 {
     int i;
     if (index < 0 || index >= route->count)
@@ -71,13 +71,13 @@ int NAV_SUP_routeRemove(NAV_Sup_Route *route, int index)
     return 1;
 }
 
-void NAV_SUP_routeClear(NAV_Sup_Route *route)
+void NAV1_RTE_routeClear(NAV1_Route *route)
 {
     route->count = 0;
     route->currentIndex = -1;
 }
 
-int NAV_SUP_routeSequence(NAV_Sup_Route *route)
+int NAV1_RTE_routeSequence(NAV1_Route *route)
 {
     if (route->count == 0)
         return 0;
@@ -90,7 +90,7 @@ int NAV_SUP_routeSequence(NAV_Sup_Route *route)
     return 1;
 }
 
-int NAV_SUP_routeDirectTo(NAV_Sup_Route *route, int index)
+int NAV1_RTE_routeDirectTo(NAV1_Route *route, int index)
 {
     if (index < 0 || index >= route->count)
         return 0;
@@ -98,7 +98,7 @@ int NAV_SUP_routeDirectTo(NAV_Sup_Route *route, int index)
     return 1;
 }
 
-int NAV_SUP_routeLegInfo(const NAV_Sup_Route *route, int index, double *outBearingDeg, double *outDistNm)
+int NAV1_RTE_routeLegInfo(const NAV1_Route *route, int index, double *outBearingDeg, double *outDistNm)
 {
     int fromIdx = route->currentIndex;
     double lat1, lon1, lat2, lon2, d, dlon, lat1r, lat2r, dlonr, x, y, brg;
@@ -131,7 +131,7 @@ int NAV_SUP_routeLegInfo(const NAV_Sup_Route *route, int index, double *outBeari
     return 1;
 }
 
-int NAV_SUP_routeTurnAnticipation(const NAV_Sup_Route *route, double groundSpeedKts, double turnRateDegS, double *outLat, double *outLon)
+int NAV1_RTE_routeTurnAnticipation(const NAV1_Route *route, double groundSpeedKts, double turnRateDegS, double *outLat, double *outLon)
 {
     int idx;
     double brg1, brg2, d1, d2, turnAngle, turnRadius, dist;
@@ -141,9 +141,9 @@ int NAV_SUP_routeTurnAnticipation(const NAV_Sup_Route *route, double groundSpeed
     if (turnRateDegS <= 0.0)
         return 0;
     idx = route->currentIndex;
-    if (!NAV_SUP_routeLegInfo(route, idx + 1, &brg1, &d1))
+    if (!NAV1_RTE_routeLegInfo(route, idx + 1, &brg1, &d1))
         return 0;
-    if (!NAV_SUP_routeLegInfo(route, idx + 2, &brg2, &d2))
+    if (!NAV1_RTE_routeLegInfo(route, idx + 2, &brg2, &d2))
         return 0;
     turnAngle = fabs(brg2 - brg1);
     if (turnAngle > 180.0)
@@ -165,7 +165,7 @@ int NAV_SUP_routeTurnAnticipation(const NAV_Sup_Route *route, double groundSpeed
     return 1;
 }
 
-int NAV_SUP_routeSaveCSV(const char *filename, const NAV_Sup_Route *route)
+int NAV1_RTE_routeSaveCSV(const char *filename, const NAV1_Route *route)
 {
     FILE *f;
     int i;
@@ -187,17 +187,17 @@ int NAV_SUP_routeSaveCSV(const char *filename, const NAV_Sup_Route *route)
     return 1;
 }
 
-int NAV_SUP_routeLoadCSV(const char *filename, NAV_Sup_Waypoint *buffer, int capacity, NAV_Sup_Route *route)
+int NAV1_RTE_routeLoadCSV(const char *filename, NAV1_Waypoint *buffer, int capacity, NAV1_Route *route)
 {
     FILE *f;
     char line[256];
     double lat, lon, alt;
-    char ident[NAV_ROUTE_MAX_IDENT], name[NAV_ROUTE_MAX_NAME];
+    char ident[NAV1_ROUTE_MAX_IDENT], name[NAV1_ROUTE_MAX_NAME];
     int type, parsed;
     f = fopen(filename, "r");
     if (!f)
         return 0;
-    NAV_SUP_routeInit(route, buffer, capacity);
+    NAV1_RTE_routeInit(route, buffer, capacity);
     while (fgets(line, sizeof(line), f))
     {
         if (line[0] == '#' || line[0] == '\n' || line[0] == '\r')
@@ -206,7 +206,7 @@ int NAV_SUP_routeLoadCSV(const char *filename, NAV_Sup_Waypoint *buffer, int cap
                         &lat, &lon, &alt, ident, name, &type);
         if (parsed >= 6)
         {
-            if (!NAV_SUP_routeAdd(route, lat, lon, alt, ident, name, type))
+            if (!NAV1_RTE_routeAdd(route, lat, lon, alt, ident, name, type))
                 break;
         }
     }

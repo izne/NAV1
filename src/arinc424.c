@@ -97,7 +97,7 @@ static void fieldStr(const char *line, int beg1, int len, char *out, int outMax)
     trimTrail(out);
 }
 
-static int parseAirport(const char *line, NAV_Sup_A424Airport *ap)
+static int parseAirport(const char *line, NAV1_A424Airport *ap)
 {
     char latStr[16], lonStr[16], magStr[8], elevStr[8];
     double lat, lon;
@@ -126,7 +126,7 @@ static int parseAirport(const char *line, NAV_Sup_A424Airport *ap)
     return 1;
 }
 
-static int parseWaypoint(const char *line, NAV_Sup_A424Waypoint *wp)
+static int parseWaypoint(const char *line, NAV1_A424Waypoint *wp)
 {
     char latStr[16], lonStr[16], typStr[4], useStr[4];
     double lat, lon;
@@ -147,7 +147,7 @@ static int parseWaypoint(const char *line, NAV_Sup_A424Waypoint *wp)
     return 1;
 }
 
-static int parseRunway(const char *line, NAV_Sup_A424Runway *rw)
+static int parseRunway(const char *line, NAV1_A424Runway *rw)
 {
     char latStr[16], lonStr[16], lenStr[8], widStr[8], brgStr[8], elevStr[8];
     double lat, lon;
@@ -169,7 +169,7 @@ static int parseRunway(const char *line, NAV_Sup_A424Runway *rw)
     return 1;
 }
 
-static int parseILS(const char *line, NAV_Sup_A424ILS *ils)
+static int parseILS(const char *line, NAV1_A424ILS *ils)
 {
     char latStr[16], lonStr[16], freqStr[8], catStr[4], brgStr[8];
     double lat, lon;
@@ -212,7 +212,7 @@ static int dbGrow(void **arr, int *capacity, size_t elemSize)
             return (db)->n##field > 0; \
     } while(0)
 
-int NAV_SUP_a424ParseFile(const char *filename, NAV_Sup_A424Database *db)
+int NAV1_A424_a424ParseFile(const char *filename, NAV1_A424Database *db)
 {
     FILE *f;
     char line[A424_LINE_LEN + 4];
@@ -240,32 +240,32 @@ int NAV_SUP_a424ParseFile(const char *filename, NAV_Sup_A424Database *db)
             }
             if (dispatchIdx == 0)
             {
-                DB_ADD(db, navaids, NAV_Sup_A424Navaid);
-                memset(&db->navaids[db->nnavaids], 0, sizeof(NAV_Sup_A424Navaid));
+                DB_ADD(db, navaids, NAV1_A424Navaid);
+                memset(&db->navaids[db->nnavaids], 0, sizeof(NAV1_A424Navaid));
                 db->nnavaids++;
             }
             else if (dispatchIdx == 1)
             {
-                DB_ADD(db, waypoints, NAV_Sup_A424Waypoint);
-                memset(&db->waypoints[db->nwaypoints], 0, sizeof(NAV_Sup_A424Waypoint));
+                DB_ADD(db, waypoints, NAV1_A424Waypoint);
+                memset(&db->waypoints[db->nwaypoints], 0, sizeof(NAV1_A424Waypoint));
                 db->nwaypoints++;
             }
             else if (dispatchIdx == 2)
             {
-                DB_ADD(db, airports, NAV_Sup_A424Airport);
-                memset(&db->airports[db->nairports], 0, sizeof(NAV_Sup_A424Airport));
+                DB_ADD(db, airports, NAV1_A424Airport);
+                memset(&db->airports[db->nairports], 0, sizeof(NAV1_A424Airport));
                 db->nairports++;
             }
             else if (dispatchIdx == 3)
             {
-                DB_ADD(db, runways, NAV_Sup_A424Runway);
-                memset(&db->runways[db->nrunways], 0, sizeof(NAV_Sup_A424Runway));
+                DB_ADD(db, runways, NAV1_A424Runway);
+                memset(&db->runways[db->nrunways], 0, sizeof(NAV1_A424Runway));
                 db->nrunways++;
             }
             else if (dispatchIdx == 4)
             {
-                DB_ADD(db, ils, NAV_Sup_A424ILS);
-                memset(&db->ils[db->nils], 0, sizeof(NAV_Sup_A424ILS));
+                DB_ADD(db, ils, NAV1_A424ILS);
+                memset(&db->ils[db->nils], 0, sizeof(NAV1_A424ILS));
                 db->nils++;
             }
         }
@@ -305,7 +305,7 @@ int NAV_SUP_a424ParseFile(const char *filename, NAV_Sup_A424Database *db)
     return (db->nairports > 0 || db->nwaypoints > 0 || db->nrunways > 0 || db->nils > 0) ? 1 : 0;
 }
 
-void NAV_SUP_a424Free(NAV_Sup_A424Database *db)
+void NAV1_A424_a424Free(NAV1_A424Database *db)
 {
     if (db)
     {

@@ -4,22 +4,22 @@
 #include "nav1.h"
 
 typedef struct {
-    NAV_Sup_Waypoint *waypoints;
+    NAV1_Waypoint *waypoints;
     int count;
     int capacity;
     int currentIndex;
-} NAV_Sup_Route;
+} NAV1_Route;
 
-NAV_EXPORT void NAV_SUP_routeInit(NAV_Sup_Route *route, NAV_Sup_Waypoint *buffer, int capacity);
-NAV_EXPORT int  NAV_SUP_routeAdd(NAV_Sup_Route *route, double lat, double lon, double altFt, const char *ident, const char *name, int type);
-NAV_EXPORT int  NAV_SUP_routeInsert(NAV_Sup_Route *route, int index, double lat, double lon, double altFt, const char *ident, const char *name, int type);
-NAV_EXPORT int  NAV_SUP_routeRemove(NAV_Sup_Route *route, int index);
-NAV_EXPORT void NAV_SUP_routeClear(NAV_Sup_Route *route);
-NAV_EXPORT int  NAV_SUP_routeSequence(NAV_Sup_Route *route);
-NAV_EXPORT int  NAV_SUP_routeDirectTo(NAV_Sup_Route *route, int index);
-NAV_EXPORT int  NAV_SUP_routeLegInfo(const NAV_Sup_Route *route, int index, double *outBearingDeg, double *outDistNm);
-NAV_EXPORT int  NAV_SUP_routeTurnAnticipation(const NAV_Sup_Route *route, double groundSpeedKts, double turnRateDegS, double *outLat, double *outLon);
-NAV_EXPORT int  NAV_SUP_routeSaveCSV(const char *filename, const NAV_Sup_Route *route);
-NAV_EXPORT int  NAV_SUP_routeLoadCSV(const char *filename, NAV_Sup_Waypoint *buffer, int capacity, NAV_Sup_Route *route);
+NAV_EXPORT void NAV1_RTE_routeInit(NAV1_Route *route, NAV1_Waypoint *buffer, int capacity);
+NAV_EXPORT int  NAV1_RTE_routeAdd(NAV1_Route *route, double lat, double lon, double altFt, const char *ident, const char *name, int type);
+NAV_EXPORT int  NAV1_RTE_routeInsert(NAV1_Route *route, int index, double lat, double lon, double altFt, const char *ident, const char *name, int type);
+NAV_EXPORT int  NAV1_RTE_routeRemove(NAV1_Route *route, int index);
+NAV_EXPORT void NAV1_RTE_routeClear(NAV1_Route *route);
+NAV_EXPORT int  NAV1_RTE_routeSequence(NAV1_Route *route);
+NAV_EXPORT int  NAV1_RTE_routeDirectTo(NAV1_Route *route, int index);
+NAV_EXPORT int  NAV1_RTE_routeLegInfo(const NAV1_Route *route, int index, double *outBearingDeg, double *outDistNm);
+NAV_EXPORT int  NAV1_RTE_routeTurnAnticipation(const NAV1_Route *route, double groundSpeedKts, double turnRateDegS, double *outLat, double *outLon);
+NAV_EXPORT int  NAV1_RTE_routeSaveCSV(const char *filename, const NAV1_Route *route);
+NAV_EXPORT int  NAV1_RTE_routeLoadCSV(const char *filename, NAV1_Waypoint *buffer, int capacity, NAV1_Route *route);
 
 #endif

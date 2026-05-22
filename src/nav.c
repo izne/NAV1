@@ -29,7 +29,7 @@ static double haversineAngular(double lat1, double lon1, double lat2, double lon
     return 2 * atan2(sqrt(a), sqrt(1 - a));
 }
 
-NAV_EXPORT double NAV_SUP_alongTrackDistance(double lat1, double lon1, double lat2, double lon2, double lat3, double lon3)
+NAV_EXPORT double NAV1_NAV_alongTrackDistance(double lat1, double lon1, double lat2, double lon2, double lat3, double lon3)
 {
     const double c13 = haversineAngular(lat1, lon1, lat3, lon3);
     const double brng13 = initialBearing(lat1, lon1, lat3, lon3);
@@ -38,7 +38,7 @@ NAV_EXPORT double NAV_SUP_alongTrackDistance(double lat1, double lon1, double la
     return dat * R / 1852.0;
 }
 
-NAV_EXPORT void NAV_SUP_greatCircleWaypoints(double lat1, double lon1, double lat2, double lon2, int count, double *outLats, double *outLons)
+NAV_EXPORT void NAV1_NAV_greatCircleWaypoints(double lat1, double lon1, double lat2, double lon2, int count, double *outLats, double *outLons)
 {
     if (count < 2) return;
     outLats[0] = lat1;
@@ -72,7 +72,7 @@ NAV_EXPORT void NAV_SUP_greatCircleWaypoints(double lat1, double lon1, double la
     }
 }
 
-NAV_EXPORT double NAV_SUP_rhumbDistance(double lat1, double lon1, double lat2, double lon2)
+NAV_EXPORT double NAV1_NAV_rhumbDistance(double lat1, double lon1, double lat2, double lon2)
 {
     const double lat1_r = toRad(lat1);
     const double lat2_r = toRad(lat2);
@@ -83,7 +83,7 @@ NAV_EXPORT double NAV_SUP_rhumbDistance(double lat1, double lon1, double lat2, d
     return R * sqrt(dlat * dlat + qq * qq * dlon * dlon) / 1852.0;
 }
 
-NAV_EXPORT double NAV_SUP_rhumbBearing(double lat1, double lon1, double lat2, double lon2)
+NAV_EXPORT double NAV1_NAV_rhumbBearing(double lat1, double lon1, double lat2, double lon2)
 {
     const double lat1_r = toRad(lat1);
     const double lat2_r = toRad(lat2);
@@ -96,14 +96,14 @@ NAV_EXPORT double NAV_SUP_rhumbBearing(double lat1, double lon1, double lat2, do
     return fmod(toDeg(t) + 360, 360);
 }
 
-NAV_EXPORT void NAV_SUP_antipodalPoint(double lat, double lon, double *outLat, double *outLon)
+NAV_EXPORT void NAV1_NAV_antipodalPoint(double lat, double lon, double *outLat, double *outLon)
 {
     *outLat = -lat;
     *outLon = lon + 180.0;
     if (*outLon > 180.0) *outLon -= 360.0;
 }
 
-NAV_EXPORT void NAV_SUP_bearingToCompass(double bearing, char *out, int outSize)
+NAV_EXPORT void NAV1_NAV_bearingToCompass(double bearing, char *out, int outSize)
 {
     const char *points[] = {
         "N", "NbE", "NNE", "NEbN", "NE", "NEbE", "ENE", "EbN",

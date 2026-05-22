@@ -46,7 +46,7 @@ static double parseCoord(const char *s, int isLat)
     return degrees + minutes / 60.0;
 }
 
-static int parseGGA(const char *s, NAV_Sup_NMEAData *out)
+static int parseGGA(const char *s, NAV1_NMEAData *out)
 {
     char buf[32];
     int len;
@@ -83,7 +83,7 @@ static int parseGGA(const char *s, NAV_Sup_NMEAData *out)
     return out->fixQuality > 0;
 }
 
-static int parseRMC(const char *s, NAV_Sup_NMEAData *out)
+static int parseRMC(const char *s, NAV1_NMEAData *out)
 {
     char buf[32];
     int len;
@@ -119,7 +119,7 @@ static int parseRMC(const char *s, NAV_Sup_NMEAData *out)
     return 1;
 }
 
-int NAV_SUP_nmeaParse(const char *sentence, NAV_Sup_NMEAData *out)
+int NAV1_NMEA_nmeaParse(const char *sentence, NAV1_NMEAData *out)
 {
     memset(out, 0, sizeof(*out));
     out->altitudeM = -1.0;
@@ -133,7 +133,7 @@ int NAV_SUP_nmeaParse(const char *sentence, NAV_Sup_NMEAData *out)
     if (!sentence || sentence[0] != '$')
         return 0;
 
-    if (!NAV_SUP_nmeaChecksum(sentence))
+    if (!NAV1_GPS_nmeaChecksum(sentence))
         return 0;
 
     char type[8];

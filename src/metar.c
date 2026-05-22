@@ -104,7 +104,7 @@ static void classifyWeather(const char *tok, char *intensity,
         strcat(phen, buf3);
     }
     if (!phen[0] && !descr[0] && intensity[0]) {
-        /* maybe intensity + unknown — attach it as phenomena */
+        /* maybe intensity + unknown ??? attach it as phenomena */
         strcpy(phen, tok + 1);
     }
 }
@@ -307,7 +307,7 @@ static int parseCloudToken(const char *tok, int *code, int *alt, char *type)
 
 /* ---------- token classification & main parse -------------------- */
 
-NAV_EXPORT int NAV_SUP_metarParse(const char *raw, NAV_Sup_MetarData *m)
+NAV_EXPORT int NAV1_METAR_metarParse(const char *raw, NAV1_MetarData *m)
 {
     char tok[TK], pToken[TK];
     const char *cp;
@@ -438,11 +438,11 @@ NAV_EXPORT int NAV_SUP_metarParse(const char *raw, NAV_Sup_MetarData *m)
                     else ++len;
                 if (allDigit) {
                     if (len <= 2) {
-                        /* short — candidate for mixed SM */
+                        /* short ??? candidate for mixed SM */
                         strcpy(pToken, tok); prevWasInt = 1;
                         continue;
                     }
-                    /* 3+ digits — meters visibility */
+                    /* 3+ digits ??? meters visibility */
                     sscanf(tok, "%d", &vm);
                     m->visibilityM = vm;
                     state = 5; prevWasInt = 0;
@@ -469,8 +469,8 @@ NAV_EXPORT int NAV_SUP_metarParse(const char *raw, NAV_Sup_MetarData *m)
             char intensity[4], descr[16], phen[24];
             classifyWeather(tok, intensity, descr, phen);
             if (intensity[0] || descr[0] || phen[0]) {
-                if (m->skyCount < NAV_METAR_MAX_WEATHER) {
-                    NAV_Sup_MetarWeather *w = &m->sky[m->skyCount++];
+                if (m->skyCount < NAV1_METAR_MAX_WEATHER) {
+                    NAV1_MetarWeather *w = &m->sky[m->skyCount++];
                     w->intensity   = intensity[0] ? intensity[0] : ' ';
                     strcpy(w->descriptor, descr);
                     strcpy(w->phenomena, phen);
@@ -492,8 +492,8 @@ NAV_EXPORT int NAV_SUP_metarParse(const char *raw, NAV_Sup_MetarData *m)
                 strncmp(tok, "BKN", 3) == 0 || strncmp(tok, "OVC", 3) == 0 ||
                 strncmp(tok, "VV",  2) == 0) {
                 if (parseCloudToken(tok, &cc, &ca, ctype)) {
-                    if (m->cloudCount < NAV_METAR_MAX_CLOUDS) {
-                        NAV_Sup_MetarCloud *c = &m->clouds[m->cloudCount++];
+                    if (m->cloudCount < NAV1_METAR_MAX_CLOUDS) {
+                        NAV1_MetarCloud *c = &m->clouds[m->cloudCount++];
                         c->code        = cc;
                         c->altitudeFt  = ca;
                         strcpy(c->type, ctype);
@@ -559,16 +559,16 @@ NAV_EXPORT int NAV_SUP_metarParse(const char *raw, NAV_Sup_MetarData *m)
     return 1;
 }
 
-NAV_EXPORT double NAV_SUP_metarWindAvg(const NAV_Sup_MetarData *m)
+NAV_EXPORT double NAV1_METAR_metarWindAvg(const NAV1_MetarData *m)
 {
     if (!m) return 0.0;
     return (double)m->windSpeedKt;
 }
 
-/* reuse heading+wind math — declared internally */
+/* reuse heading+wind math ??? declared internally */
 static double deg2rad(double d) { return d * 3.14159265358979323846 / 180.0; }
 
-NAV_EXPORT double NAV_SUP_metarCrosswind(const NAV_Sup_MetarData *m,
+NAV_EXPORT double NAV1_METAR_metarCrosswind(const NAV1_MetarData *m,
                                           double rwyHdg)
 {
     double d, ws;
@@ -578,7 +578,7 @@ NAV_EXPORT double NAV_SUP_metarCrosswind(const NAV_Sup_MetarData *m,
     return ws * sin(d);
 }
 
-NAV_EXPORT double NAV_SUP_metarHeadwind(const NAV_Sup_MetarData *m,
+NAV_EXPORT double NAV1_METAR_metarHeadwind(const NAV1_MetarData *m,
                                          double rwyHdg)
 {
     double d, ws;

@@ -13,48 +13,48 @@ typedef struct {
 } LabelEntry;
 
 static const LabelEntry labelTable[] = {
-    {0010, "Baro Altitude",        "ft",     NAV_A429_ENCODING_BNR,  1.0,                1, 0},
-    {0011, "Radio Altitude",       "ft",     NAV_A429_ENCODING_BNR,  1.0,                0, 0},
-    {0016, "Indicated Airspeed",   "kt",     NAV_A429_ENCODING_BNR,  0.125,              0, 0},
-    {0017, "Mach",                 "Mach",   NAV_A429_ENCODING_BNR,  0.001,               0, 0},
-    {0022, "True Heading",         "deg",    NAV_A429_ENCODING_BNR,  360.0 / 262144.0,    0, 0},
-    {0023, "Mag Heading",          "deg",    NAV_A429_ENCODING_BNR,  360.0 / 262144.0,    0, 0},
-    {0026, "True Track",           "deg",    NAV_A429_ENCODING_BNR,  360.0 / 262144.0,    0, 0},
-    {0027, "Mag Track",            "deg",    NAV_A429_ENCODING_BNR,  360.0 / 262144.0,    0, 0},
-    {0030, "Ground Speed",         "kt",     NAV_A429_ENCODING_BNR,  0.125,               0, 0},
-    {0031, "True Airspeed",        "kt",     NAV_A429_ENCODING_BNR,  0.125,               0, 0},
-    {0032, "Vertical Speed",       "ft/min", NAV_A429_ENCODING_BNR,  0.5,                 1, 0},
-    {0033, "Wind Speed",           "kt",     NAV_A429_ENCODING_BNR,  0.125,               0, 0},
-    {0034, "Wind Direction",       "deg",    NAV_A429_ENCODING_BNR,  360.0 / 262144.0,    0, 0},
-    {0035, "Static Air Temp",      "degC",   NAV_A429_ENCODING_BNR,  0.0078125,           0, 0},
-    {0036, "Total Air Temp",       "degC",   NAV_A429_ENCODING_BNR,  0.0078125,           0, 0},
-    {0040, "Latitude",             "deg",    NAV_A429_ENCODING_BNR,  180.0 / 262144.0,    1, 0},
-    {0041, "Longitude",            "deg",    NAV_A429_ENCODING_BNR,  180.0 / 262144.0,    1, 0},
-    {0042, "UTC Time",             "sec",    NAV_A429_ENCODING_BCD,  0.0,                 0, 6},
-    {0050, "DME Distance",         "NM",     NAV_A429_ENCODING_BNR,  0.03125,             0, 0},
-    {0051, "Bearing to WPT",       "deg",    NAV_A429_ENCODING_BNR,  360.0 / 262144.0,    0, 0},
-    {0060, "Loc Deviation",        "DDM",    NAV_A429_ENCODING_BNR,  0.000061,            1, 0},
-    {0061, "GS Deviation",         "DDM",    NAV_A429_ENCODING_BNR,  0.000061,            1, 0},
-    {0100, "Selected Altitude",    "ft",     NAV_A429_ENCODING_BNR,  1.0,                 0, 0},
-    {0101, "Selected Heading",     "deg",    NAV_A429_ENCODING_BNR,  360.0 / 262144.0,    0, 0},
-    {0102, "Selected Airspeed",    "kt",     NAV_A429_ENCODING_BNR,  0.125,               0, 0},
-    {0110, "ILS Frequency",        "MHz",    NAV_A429_ENCODING_BCD,  0.0,                 0, 5},
-    {0111, "VOR Frequency",        "MHz",    NAV_A429_ENCODING_BCD,  0.0,                 0, 5},
-    {0112, "ADF Frequency",        "kHz",    NAV_A429_ENCODING_BCD,  0.0,                 0, 5},
-    {0113, "DME Frequency",        "MHz",    NAV_A429_ENCODING_BCD,  0.0,                 0, 5},
-    {0120, "DME Distance",         "NM",     NAV_A429_ENCODING_BNR,  0.03125,             0, 0},
-    {0200, "FMS ID",               "",       NAV_A429_ENCODING_BCD,  0.0,                 0, 8},
-    {0210, "Time to Go",           "min",    NAV_A429_ENCODING_BNR,  0.0078125,           0, 0},
-    {0211, "Distance to Go",       "NM",     NAV_A429_ENCODING_BNR,  0.03125,             0, 0},
-    {0212, "Fuel Flow",            "lb/hr",  NAV_A429_ENCODING_BNR,  0.125,               0, 0},
-    {0220, "Roll Command",         "deg",    NAV_A429_ENCODING_BNR,  360.0 / 262144.0,    0, 0},
-    {0221, "Pitch Command",        "deg",    NAV_A429_ENCODING_BNR,  180.0 / 262144.0,    1, 0},
-    {0270, "Data Loader Status",   "",       NAV_A429_ENCODING_BCD,  0.0,                 0, 4},
-    {0340, "FMS Waypoint Lat",     "deg",    NAV_A429_ENCODING_BNR,  180.0 / 524288.0,    1, 0},
-    {0341, "FMS Waypoint Lon",     "deg",    NAV_A429_ENCODING_BNR,  180.0 / 524288.0,    1, 0},
-    {0350, "FMS Leg Distance",     "NM",     NAV_A429_ENCODING_BNR,  0.03125,             0, 0},
-    {0351, "FMS Leg Bearing",      "deg",    NAV_A429_ENCODING_BNR,  360.0 / 262144.0,    0, 0},
-    {0360, "FMS Cross Track",      "NM",     NAV_A429_ENCODING_BNR,  0.00390625,          0, 0},
+    {0010, "Baro Altitude",        "ft",     NAV1_A429_ENCODING_BNR,  1.0,                1, 0},
+    {0011, "Radio Altitude",       "ft",     NAV1_A429_ENCODING_BNR,  1.0,                0, 0},
+    {0016, "Indicated Airspeed",   "kt",     NAV1_A429_ENCODING_BNR,  0.125,              0, 0},
+    {0017, "Mach",                 "Mach",   NAV1_A429_ENCODING_BNR,  0.001,               0, 0},
+    {0022, "True Heading",         "deg",    NAV1_A429_ENCODING_BNR,  360.0 / 262144.0,    0, 0},
+    {0023, "Mag Heading",          "deg",    NAV1_A429_ENCODING_BNR,  360.0 / 262144.0,    0, 0},
+    {0026, "True Track",           "deg",    NAV1_A429_ENCODING_BNR,  360.0 / 262144.0,    0, 0},
+    {0027, "Mag Track",            "deg",    NAV1_A429_ENCODING_BNR,  360.0 / 262144.0,    0, 0},
+    {0030, "Ground Speed",         "kt",     NAV1_A429_ENCODING_BNR,  0.125,               0, 0},
+    {0031, "True Airspeed",        "kt",     NAV1_A429_ENCODING_BNR,  0.125,               0, 0},
+    {0032, "Vertical Speed",       "ft/min", NAV1_A429_ENCODING_BNR,  0.5,                 1, 0},
+    {0033, "Wind Speed",           "kt",     NAV1_A429_ENCODING_BNR,  0.125,               0, 0},
+    {0034, "Wind Direction",       "deg",    NAV1_A429_ENCODING_BNR,  360.0 / 262144.0,    0, 0},
+    {0035, "Static Air Temp",      "degC",   NAV1_A429_ENCODING_BNR,  0.0078125,           0, 0},
+    {0036, "Total Air Temp",       "degC",   NAV1_A429_ENCODING_BNR,  0.0078125,           0, 0},
+    {0040, "Latitude",             "deg",    NAV1_A429_ENCODING_BNR,  180.0 / 262144.0,    1, 0},
+    {0041, "Longitude",            "deg",    NAV1_A429_ENCODING_BNR,  180.0 / 262144.0,    1, 0},
+    {0042, "UTC Time",             "sec",    NAV1_A429_ENCODING_BCD,  0.0,                 0, 6},
+    {0050, "DME Distance",         "NM",     NAV1_A429_ENCODING_BNR,  0.03125,             0, 0},
+    {0051, "Bearing to WPT",       "deg",    NAV1_A429_ENCODING_BNR,  360.0 / 262144.0,    0, 0},
+    {0060, "Loc Deviation",        "DDM",    NAV1_A429_ENCODING_BNR,  0.000061,            1, 0},
+    {0061, "GS Deviation",         "DDM",    NAV1_A429_ENCODING_BNR,  0.000061,            1, 0},
+    {0100, "Selected Altitude",    "ft",     NAV1_A429_ENCODING_BNR,  1.0,                 0, 0},
+    {0101, "Selected Heading",     "deg",    NAV1_A429_ENCODING_BNR,  360.0 / 262144.0,    0, 0},
+    {0102, "Selected Airspeed",    "kt",     NAV1_A429_ENCODING_BNR,  0.125,               0, 0},
+    {0110, "ILS Frequency",        "MHz",    NAV1_A429_ENCODING_BCD,  0.0,                 0, 5},
+    {0111, "VOR Frequency",        "MHz",    NAV1_A429_ENCODING_BCD,  0.0,                 0, 5},
+    {0112, "ADF Frequency",        "kHz",    NAV1_A429_ENCODING_BCD,  0.0,                 0, 5},
+    {0113, "DME Frequency",        "MHz",    NAV1_A429_ENCODING_BCD,  0.0,                 0, 5},
+    {0120, "DME Distance",         "NM",     NAV1_A429_ENCODING_BNR,  0.03125,             0, 0},
+    {0200, "FMS ID",               "",       NAV1_A429_ENCODING_BCD,  0.0,                 0, 8},
+    {0210, "Time to Go",           "min",    NAV1_A429_ENCODING_BNR,  0.0078125,           0, 0},
+    {0211, "Distance to Go",       "NM",     NAV1_A429_ENCODING_BNR,  0.03125,             0, 0},
+    {0212, "Fuel Flow",            "lb/hr",  NAV1_A429_ENCODING_BNR,  0.125,               0, 0},
+    {0220, "Roll Command",         "deg",    NAV1_A429_ENCODING_BNR,  360.0 / 262144.0,    0, 0},
+    {0221, "Pitch Command",        "deg",    NAV1_A429_ENCODING_BNR,  180.0 / 262144.0,    1, 0},
+    {0270, "Data Loader Status",   "",       NAV1_A429_ENCODING_BCD,  0.0,                 0, 4},
+    {0340, "FMS Waypoint Lat",     "deg",    NAV1_A429_ENCODING_BNR,  180.0 / 524288.0,    1, 0},
+    {0341, "FMS Waypoint Lon",     "deg",    NAV1_A429_ENCODING_BNR,  180.0 / 524288.0,    1, 0},
+    {0350, "FMS Leg Distance",     "NM",     NAV1_A429_ENCODING_BNR,  0.03125,             0, 0},
+    {0351, "FMS Leg Bearing",      "deg",    NAV1_A429_ENCODING_BNR,  360.0 / 262144.0,    0, 0},
+    {0360, "FMS Cross Track",      "NM",     NAV1_A429_ENCODING_BNR,  0.00390625,          0, 0},
 };
 static const int labelCount = sizeof(labelTable) / sizeof(labelTable[0]);
 
@@ -76,12 +76,12 @@ static int octToUint(const char *s)
     return (int)v;
 }
 
-void NAV_SUP_a429Decode(unsigned int word, NAV_Sup_ARINC429Word *out)
+void NAV1_A429_a429Decode(unsigned int word, NAV1_ARINC429Word *out)
 {
     unsigned int lab;
     int i;
     double val = 0.0;
-    int encoding = NAV_A429_ENCODING_UNKN;
+    int encoding = NAV1_A429_ENCODING_UNKN;
     const char *name = NULL;
     const char *unit = "";
     if (!out)
@@ -91,7 +91,7 @@ void NAV_SUP_a429Decode(unsigned int word, NAV_Sup_ARINC429Word *out)
     out->sdi = (word >> 8) & 0x3;
     out->dataField = (word >> 10) & 0x7FFFF;
     out->ssm = (word >> 29) & 0x3;
-    out->parityOK = NAV_SUP_a429ParityCheck(word);
+    out->parityOK = NAV1_A429_a429ParityCheck(word);
     for (i = 0; i < labelCount; i++)
     {
         if (labelTable[i].label == lab)
@@ -99,7 +99,7 @@ void NAV_SUP_a429Decode(unsigned int word, NAV_Sup_ARINC429Word *out)
             name = labelTable[i].name;
             unit = labelTable[i].unit;
             encoding = labelTable[i].encoding;
-            if (encoding == NAV_A429_ENCODING_BNR)
+            if (encoding == NAV1_A429_ENCODING_BNR)
             {
                 int signExt = 0;
                 unsigned int d = out->dataField;
@@ -109,11 +109,11 @@ void NAV_SUP_a429Decode(unsigned int word, NAV_Sup_ARINC429Word *out)
                     signExt = (int)(d & 0x7FFFF);
                 val = (double)signExt * labelTable[i].lsbWeight;
             }
-            else if (encoding == NAV_A429_ENCODING_BCD)
+            else if (encoding == NAV1_A429_ENCODING_BCD)
             {
                 val = (double)bcdValue(out->dataField, labelTable[i].bcdDigits);
             }
-            else if (encoding == NAV_A429_ENCODING_DISC)
+            else if (encoding == NAV1_A429_ENCODING_DISC)
             {
                 val = (double)out->dataField;
             }
@@ -131,27 +131,27 @@ void NAV_SUP_a429Decode(unsigned int word, NAV_Sup_ARINC429Word *out)
     out->unit[sizeof(out->unit) - 1] = '\0';
 }
 
-unsigned int NAV_SUP_a429Label(unsigned int word)
+unsigned int NAV1_A429_a429Label(unsigned int word)
 {
     return word & 0xFF;
 }
 
-unsigned int NAV_SUP_a429SDI(unsigned int word)
+unsigned int NAV1_A429_a429SDI(unsigned int word)
 {
     return (word >> 8) & 0x3;
 }
 
-unsigned int NAV_SUP_a429Data(unsigned int word)
+unsigned int NAV1_A429_a429Data(unsigned int word)
 {
     return (word >> 10) & 0x7FFFF;
 }
 
-unsigned int NAV_SUP_a429SSM(unsigned int word)
+unsigned int NAV1_A429_a429SSM(unsigned int word)
 {
     return (word >> 29) & 0x3;
 }
 
-int NAV_SUP_a429ParityCheck(unsigned int word)
+int NAV1_A429_a429ParityCheck(unsigned int word)
 {
     unsigned int v = word;
     int bits = 0;
@@ -163,17 +163,17 @@ int NAV_SUP_a429ParityCheck(unsigned int word)
     return (bits & 1) ? 1 : 0;
 }
 
-double NAV_SUP_a429DataBNR(unsigned int dataField, double lsbWeight)
+double NAV1_A429_a429DataBNR(unsigned int dataField, double lsbWeight)
 {
     return (double)dataField * lsbWeight;
 }
 
-double NAV_SUP_a429DataBCD(unsigned int dataField, int digitCount)
+double NAV1_A429_a429DataBCD(unsigned int dataField, int digitCount)
 {
     return (double)bcdValue(dataField, digitCount);
 }
 
-int NAV_SUP_a429LabelInfo(unsigned int label, char *outName, char *outUnit, int *outEncoding, double *outLsbWeight, int *outIsSigned)
+int NAV1_A429_a429LabelInfo(unsigned int label, char *outName, char *outUnit, int *outEncoding, double *outLsbWeight, int *outIsSigned)
 {
     int i;
     for (i = 0; i < labelCount; i++)

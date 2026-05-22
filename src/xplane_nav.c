@@ -11,10 +11,10 @@ static double toRad(double deg) { return deg * 3.14159265358979323846 / 180.0; }
 static double toDeg(double rad) { return rad * 180.0 / 3.14159265358979323846; }
 static double R = 3440.06479;
 
-static int dbGrow(NAV_Sup_NavDatabase *db)
+static int dbGrow(NAV1_NavDatabase *db)
 {
     int newCap = db->capacity ? db->capacity * XPN_GROW_FACTOR : XPN_INIT_CAPACITY;
-    NAV_Sup_NavRecord *p = (NAV_Sup_NavRecord *)realloc(db->records, (size_t)newCap * sizeof(NAV_Sup_NavRecord));
+    NAV1_NavRecord *p = (NAV1_NavRecord *)realloc(db->records, (size_t)newCap * sizeof(NAV1_NavRecord));
     if (!p)
         return 0;
     db->records = p;
@@ -22,9 +22,9 @@ static int dbGrow(NAV_Sup_NavDatabase *db)
     return 1;
 }
 
-static int dbAdd(NAV_Sup_NavDatabase *db, int type, const char *ident, const char *name, double lat, double lon, double freq, double elev)
+static int dbAdd(NAV1_NavDatabase *db, int type, const char *ident, const char *name, double lat, double lon, double freq, double elev)
 {
-    NAV_Sup_NavRecord *r;
+    NAV1_NavRecord *r;
     if (db->count >= db->capacity)
         if (!dbGrow(db))
             return 0;
@@ -41,7 +41,7 @@ static int dbAdd(NAV_Sup_NavDatabase *db, int type, const char *ident, const cha
     return 1;
 }
 
-int NAV_SUP_xpNavLoad(const char *filename, NAV_Sup_NavDatabase *db)
+int NAV1_XPL_xpNavLoad(const char *filename, NAV1_NavDatabase *db)
 {
     FILE *f;
     char line[256];
@@ -74,7 +74,7 @@ int NAV_SUP_xpNavLoad(const char *filename, NAV_Sup_NavDatabase *db)
     return db->count > 0 ? 1 : 0;
 }
 
-int NAV_SUP_xpFixLoad(const char *filename, NAV_Sup_NavDatabase *db)
+int NAV1_XPL_xpFixLoad(const char *filename, NAV1_NavDatabase *db)
 {
     FILE *f;
     char line[128];
@@ -97,13 +97,13 @@ int NAV_SUP_xpFixLoad(const char *filename, NAV_Sup_NavDatabase *db)
             continue;
         if (id[0] == '\0')
             continue;
-        dbAdd(db, NAV_NAV_FIX, id, "", lat, lon, 0.0, 0.0);
+        dbAdd(db, NAV1_NAV_FIX, id, "", lat, lon, 0.0, 0.0);
     }
     fclose(f);
     return db->count > 0 ? 1 : 0;
 }
 
-int NAV_SUP_xpNavFindByID(const NAV_Sup_NavDatabase *db, const char *ident, int startIndex, NAV_Sup_NavRecord *out)
+int NAV1_XPL_xpNavFindByID(const NAV1_NavDatabase *db, const char *ident, int startIndex, NAV1_NavRecord *out)
 {
     int i;
     if (!db || !db->records || startIndex < 0)
@@ -120,7 +120,7 @@ int NAV_SUP_xpNavFindByID(const NAV_Sup_NavDatabase *db, const char *ident, int 
     return 0;
 }
 
-int NAV_SUP_xpNavFindNearest(const NAV_Sup_NavDatabase *db, double lat, double lon, int typeFilter, NAV_Sup_NavRecord *out)
+int NAV1_XPL_xpNavFindNearest(const NAV1_NavDatabase *db, double lat, double lon, int typeFilter, NAV1_NavRecord *out)
 {
     int i, bestIdx = -1;
     double bestDist = 1e100, d, dlat, dlon, lat1r, lat2r;
@@ -299,13 +299,13 @@ static void trimNewline(char *s)
         s[--len] = '\0';
 }
 
-int NAV_SUP_fplParseRoute(const char *str, const NAV_Sup_NavDatabase *navdb, const NAV_Sup_NavDatabase *fixdb, NAV_Sup_Waypoint *waypoints, int maxCount)
+int NAV1_XPL_fplParseRoute(const char *str, const NAV1_NavDatabase *navdb, const NAV1_NavDatabase *fixdb, NAV1_Waypoint *waypoints, int maxCount)
 {
     char buf[1024];
     char *tokens[128];
     char *p;
     int ntok = 0, i, wpCount = 0;
-    NAV_Sup_NavRecord rec;
+    NAV1_NavRecord rec;
     if (!str || !waypoints || maxCount < 1)
         return 0;
     strncpy(buf, str, sizeof(buf) - 1);
@@ -340,8 +340,8 @@ int NAV_SUP_fplParseRoute(const char *str, const NAV_Sup_NavDatabase *navdb, con
                 waypoints[wpCount].longitude = lon;
                 waypoints[wpCount].altitudeFt = 0.0;
                 waypoints[wpCount].type = 0;
-                strncpy(waypoints[wpCount].ident, tok, NAV_ROUTE_MAX_IDENT - 1);
-                waypoints[wpCount].ident[NAV_ROUTE_MAX_IDENT - 1] = '\0';
+                strncpy(waypoints[wpCount].ident, tok, NAV1_ROUTE_MAX_IDENT - 1);
+                waypoints[wpCount].ident[NAV1_ROUTE_MAX_IDENT - 1] = '\0';
                 waypoints[wpCount].name[0] = '\0';
                 wpCount++;
             }
@@ -349,26 +349,26 @@ int NAV_SUP_fplParseRoute(const char *str, const NAV_Sup_NavDatabase *navdb, con
         }
         if (isAllAlpha(tok))
         {
-            if (navdb && NAV_SUP_xpNavFindByID(navdb, tok, 0, &rec))
+            if (navdb && NAV1_XPL_xpNavFindByID(navdb, tok, 0, &rec))
             {
                 waypoints[wpCount].latitude = rec.latitude;
                 waypoints[wpCount].longitude = rec.longitude;
                 waypoints[wpCount].altitudeFt = rec.elevationFt;
                 waypoints[wpCount].type = rec.type;
-                strncpy(waypoints[wpCount].ident, rec.ident, NAV_ROUTE_MAX_IDENT - 1);
-                waypoints[wpCount].ident[NAV_ROUTE_MAX_IDENT - 1] = '\0';
-                strncpy(waypoints[wpCount].name, rec.name, NAV_ROUTE_MAX_NAME - 1);
-                waypoints[wpCount].name[NAV_ROUTE_MAX_NAME - 1] = '\0';
+                strncpy(waypoints[wpCount].ident, rec.ident, NAV1_ROUTE_MAX_IDENT - 1);
+                waypoints[wpCount].ident[NAV1_ROUTE_MAX_IDENT - 1] = '\0';
+                strncpy(waypoints[wpCount].name, rec.name, NAV1_ROUTE_MAX_NAME - 1);
+                waypoints[wpCount].name[NAV1_ROUTE_MAX_NAME - 1] = '\0';
                 wpCount++;
             }
-            else if (fixdb && NAV_SUP_xpNavFindByID(fixdb, tok, 0, &rec))
+            else if (fixdb && NAV1_XPL_xpNavFindByID(fixdb, tok, 0, &rec))
             {
                 waypoints[wpCount].latitude = rec.latitude;
                 waypoints[wpCount].longitude = rec.longitude;
                 waypoints[wpCount].altitudeFt = 0.0;
                 waypoints[wpCount].type = rec.type;
-                strncpy(waypoints[wpCount].ident, rec.ident, NAV_ROUTE_MAX_IDENT - 1);
-                waypoints[wpCount].ident[NAV_ROUTE_MAX_IDENT - 1] = '\0';
+                strncpy(waypoints[wpCount].ident, rec.ident, NAV1_ROUTE_MAX_IDENT - 1);
+                waypoints[wpCount].ident[NAV1_ROUTE_MAX_IDENT - 1] = '\0';
                 waypoints[wpCount].name[0] = '\0';
                 wpCount++;
             }
@@ -378,8 +378,8 @@ int NAV_SUP_fplParseRoute(const char *str, const NAV_Sup_NavDatabase *navdb, con
                 waypoints[wpCount].longitude = 0.0;
                 waypoints[wpCount].altitudeFt = 0.0;
                 waypoints[wpCount].type = 4;
-                strncpy(waypoints[wpCount].ident, tok, NAV_ROUTE_MAX_IDENT - 1);
-                waypoints[wpCount].ident[NAV_ROUTE_MAX_IDENT - 1] = '\0';
+                strncpy(waypoints[wpCount].ident, tok, NAV1_ROUTE_MAX_IDENT - 1);
+                waypoints[wpCount].ident[NAV1_ROUTE_MAX_IDENT - 1] = '\0';
                 waypoints[wpCount].name[0] = '\0';
                 wpCount++;
             }
@@ -387,26 +387,26 @@ int NAV_SUP_fplParseRoute(const char *str, const NAV_Sup_NavDatabase *navdb, con
         }
         if (isAlphaDigits(tok))
         {
-            if (navdb && NAV_SUP_xpNavFindByID(navdb, tok, 0, &rec))
+            if (navdb && NAV1_XPL_xpNavFindByID(navdb, tok, 0, &rec))
             {
                 waypoints[wpCount].latitude = rec.latitude;
                 waypoints[wpCount].longitude = rec.longitude;
                 waypoints[wpCount].altitudeFt = rec.elevationFt;
                 waypoints[wpCount].type = rec.type;
-                strncpy(waypoints[wpCount].ident, rec.ident, NAV_ROUTE_MAX_IDENT - 1);
-                waypoints[wpCount].ident[NAV_ROUTE_MAX_IDENT - 1] = '\0';
-                strncpy(waypoints[wpCount].name, rec.name, NAV_ROUTE_MAX_NAME - 1);
-                waypoints[wpCount].name[NAV_ROUTE_MAX_NAME - 1] = '\0';
+                strncpy(waypoints[wpCount].ident, rec.ident, NAV1_ROUTE_MAX_IDENT - 1);
+                waypoints[wpCount].ident[NAV1_ROUTE_MAX_IDENT - 1] = '\0';
+                strncpy(waypoints[wpCount].name, rec.name, NAV1_ROUTE_MAX_NAME - 1);
+                waypoints[wpCount].name[NAV1_ROUTE_MAX_NAME - 1] = '\0';
                 wpCount++;
             }
-            else if (fixdb && NAV_SUP_xpNavFindByID(fixdb, tok, 0, &rec))
+            else if (fixdb && NAV1_XPL_xpNavFindByID(fixdb, tok, 0, &rec))
             {
                 waypoints[wpCount].latitude = rec.latitude;
                 waypoints[wpCount].longitude = rec.longitude;
                 waypoints[wpCount].altitudeFt = 0.0;
                 waypoints[wpCount].type = rec.type;
-                strncpy(waypoints[wpCount].ident, rec.ident, NAV_ROUTE_MAX_IDENT - 1);
-                waypoints[wpCount].ident[NAV_ROUTE_MAX_IDENT - 1] = '\0';
+                strncpy(waypoints[wpCount].ident, rec.ident, NAV1_ROUTE_MAX_IDENT - 1);
+                waypoints[wpCount].ident[NAV1_ROUTE_MAX_IDENT - 1] = '\0';
                 waypoints[wpCount].name[0] = '\0';
                 wpCount++;
             }
@@ -420,8 +420,8 @@ int NAV_SUP_fplParseRoute(const char *str, const NAV_Sup_NavDatabase *navdb, con
                 waypoints[wpCount].longitude = 0.0;
                 waypoints[wpCount].altitudeFt = 0.0;
                 waypoints[wpCount].type = 6;
-                strncpy(waypoints[wpCount].ident, tok, NAV_ROUTE_MAX_IDENT - 1);
-                waypoints[wpCount].ident[NAV_ROUTE_MAX_IDENT - 1] = '\0';
+                strncpy(waypoints[wpCount].ident, tok, NAV1_ROUTE_MAX_IDENT - 1);
+                waypoints[wpCount].ident[NAV1_ROUTE_MAX_IDENT - 1] = '\0';
                 waypoints[wpCount].name[0] = '\0';
                 wpCount++;
             }
@@ -431,7 +431,7 @@ int NAV_SUP_fplParseRoute(const char *str, const NAV_Sup_NavDatabase *navdb, con
     return wpCount;
 }
 
-void NAV_SUP_xpNavFree(NAV_Sup_NavDatabase *db)
+void NAV1_XPL_xpNavFree(NAV1_NavDatabase *db)
 {
     if (db)
     {

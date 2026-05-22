@@ -5,8 +5,8 @@ CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
 RES      = NAV1_private.res
-OBJ      = src/nav1.o src/conv.o src/nav.o src/aviation.o src/gps.o src/flight_mgmt.o src/control.o src/nmea.o src/route.o src/xplane_nav.o src/arinc429.o src/arinc424.o src/metar.o $(RES)
-LINKOBJ  = src/nav1.o src/conv.o src/nav.o src/aviation.o src/gps.o src/flight_mgmt.o src/control.o src/nmea.o src/route.o src/xplane_nav.o src/arinc429.o src/arinc424.o src/metar.o $(RES)
+OBJ      = src/nav1.o src/conv.o src/nav.o src/aero.o src/gps.o src/flight_mgmt.o src/control.o src/nmea.o src/route.o src/xplane_nav.o src/arinc429.o src/arinc424.o src/metar.o src/geo.o $(RES)
+LINKOBJ  = src/nav1.o src/conv.o src/nav.o src/aero.o src/gps.o src/flight_mgmt.o src/control.o src/nmea.o src/route.o src/xplane_nav.o src/arinc429.o src/arinc424.o src/metar.o src/geo.o $(RES)
 LIBS     = -L"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib" -L"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/lib" -static-libgcc
 INCS     = -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include"
 CXXINCS  = -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include/c++"
@@ -36,8 +36,8 @@ src/conv.o: src/conv.c
 src/nav.o: src/nav.c
 	$(CC) -c src/nav.c -o src/nav.o $(CFLAGS)
 
-src/aviation.o: src/aviation.c
-	$(CC) -c src/aviation.c -o src/aviation.o $(CFLAGS)
+src/aero.o: src/aero.c
+	$(CC) -c src/aero.c -o src/aero.o $(CFLAGS)
 
 src/gps.o: src/gps.c
 	$(CC) -c src/gps.c -o src/gps.o $(CFLAGS)
@@ -65,6 +65,9 @@ src/arinc424.o: src/arinc424.c
 
 src/metar.o: src/metar.c
 	$(CC) -c src/metar.c -o src/metar.o $(CFLAGS)
+
+src/geo.o: src/geo.c
+	$(CC) -c src/geo.c -o src/geo.o $(CFLAGS)
 
 NAV1_private.res: NAV1_private.rc 
 	$(WINDRES) -i NAV1_private.rc --input-format=rc -o NAV1_private.res -O coff 
