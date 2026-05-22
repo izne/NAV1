@@ -43,5 +43,6 @@ NAV_EXPORT void    NAV_SUP_decimalToDMS(double decimal, int *degrees, int *minut
 #include "xplane_nav.h"
 #include "arinc429.h"
 #include "arinc424.h"
+#include "metar.h"
 
 #endif

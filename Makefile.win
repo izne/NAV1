@@ -5,8 +5,8 @@ CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
 RES      = NAV1_private.res
-OBJ      = src/nav1.o src/conv.o src/nav.o src/aviation.o src/gps.o src/flight_mgmt.o src/control.o src/nmea.o src/route.o src/xplane_nav.o src/arinc429.o src/arinc424.o $(RES)
-LINKOBJ  = src/nav1.o src/conv.o src/nav.o src/aviation.o src/gps.o src/flight_mgmt.o src/control.o src/nmea.o src/route.o src/xplane_nav.o src/arinc429.o src/arinc424.o $(RES)
+OBJ      = src/nav1.o src/conv.o src/nav.o src/aviation.o src/gps.o src/flight_mgmt.o src/control.o src/nmea.o src/route.o src/xplane_nav.o src/arinc429.o src/arinc424.o src/metar.o $(RES)
+LINKOBJ  = src/nav1.o src/conv.o src/nav.o src/aviation.o src/gps.o src/flight_mgmt.o src/control.o src/nmea.o src/route.o src/xplane_nav.o src/arinc429.o src/arinc424.o src/metar.o $(RES)
 LIBS     = -L"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib" -L"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/lib" -static-libgcc
 INCS     = -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include"
 CXXINCS  = -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include/c++"
@@ -62,6 +62,9 @@ src/arinc429.o: src/arinc429.c
 
 src/arinc424.o: src/arinc424.c
 	$(CC) -c src/arinc424.c -o src/arinc424.o $(CFLAGS)
+
+src/metar.o: src/metar.c
+	$(CC) -c src/metar.c -o src/metar.o $(CFLAGS)
 
 NAV1_private.res: NAV1_private.rc 
 	$(WINDRES) -i NAV1_private.rc --input-format=rc -o NAV1_private.res -O coff 

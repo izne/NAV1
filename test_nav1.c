@@ -545,6 +545,106 @@ int main()
         TEST_NEAR("fplParse lon 13.5", wps[0].longitude, 13.5, 0.1);
     }
 
+    printf("--- METAR Module ---\n");
+    {
+        /* KSEA basic METAR */
+        NAV_Sup_MetarData m;
+        int ok = NAV_SUP_metarParse(
+            "KSEA 221653Z 21012G20KT 180V250 10SM -RA BKN025 OVC050 12/09 A2993", &m);
+        TEST_TRUE("metar parse ok", ok);
+        TEST_STR("metar icao", m.icao, "KSEA");
+        TEST_TRUE("metar day", m.day == 22);
+        TEST_TRUE("metar hour", m.hour == 16);
+        TEST_TRUE("metar minute", m.minute == 53);
+        TEST_TRUE("metar windDir", m.windDir == 210);
+        TEST_TRUE("metar windSpeed", m.windSpeedKt == 12);
+        TEST_TRUE("metar windGust", m.windGustKt == 20);
+        TEST_TRUE("metar windVarLow", m.windVarLow == 180);
+        TEST_TRUE("metar windVarHigh", m.windVarHigh == 250);
+        TEST_TRUE("metar vis M", m.visibilityM == 16093);
+        TEST_TRUE("metar vis SM_num", m.visibilitySM_num == 10);
+        TEST_TRUE("metar vis SM_den", m.visibilitySM_den == 1);
+        TEST_TRUE("metar skyCount", m.skyCount == 1);
+        TEST_TRUE("metar cloudCount", m.cloudCount == 2);
+        TEST_STR("metar weather phen", m.sky[0].phenomena, "RA");
+        TEST_TRUE("metar weather int", m.sky[0].intensity == '-');
+        TEST_TRUE("metar cloud0 code BKN", m.clouds[0].code == 3);
+        TEST_TRUE("metar cloud0 alt", m.clouds[0].altitudeFt == 2500);
+        TEST_TRUE("metar cloud1 code OVC", m.clouds[1].code == 4);
+        TEST_TRUE("metar cloud1 alt", m.clouds[1].altitudeFt == 5000);
+        TEST_NEAR("metar temp", m.tempC, 12.0, 0.01);
+        TEST_NEAR("metar dewpoint", m.dewpointC, 9.0, 0.01);
+        TEST_TRUE("metar QNH hPa", m.qnhHPa == 1014);
+    }
+    {
+        /* VRB wind + metric visibility */
+        NAV_Sup_MetarData m;
+        NAV_SUP_metarParse("KJFK 221653Z VRB05KT 9999 FEW030 18/12 Q1015", &m);
+        TEST_TRUE("metar VRB windDir", m.windDir == -1);
+        TEST_TRUE("metar VRB windSpeed", m.windSpeedKt == 5);
+        TEST_TRUE("metar VRB vis M", m.visibilityM == 9999);
+        TEST_TRUE("metar VRB qnh", m.qnhHPa == 1015);
+    }
+    {
+        /* Calm wind + negative temp + SM fraction */
+        NAV_Sup_MetarData m;
+        NAV_SUP_metarParse("PAFA 221653Z 00000KT 1/4SM FZFG BKN001 M25/M29 A3002", &m);
+        TEST_TRUE("metar calm windDir", m.windDir == 0);
+        TEST_TRUE("metar calm windSpeed", m.windSpeedKt == 0);
+        TEST_TRUE("metar calm vis M", m.visibilityM == 402);
+        TEST_TRUE("metar calm vis SM_num", m.visibilitySM_num == 1);
+        TEST_TRUE("metar calm vis SM_den", m.visibilitySM_den == 4);
+        TEST_STR("metar calm weather descr", m.sky[0].descriptor, "FZ");
+        TEST_STR("metar calm weather phen", m.sky[0].phenomena, "FG");
+        TEST_NEAR("metar neg temp", m.tempC, -25.0, 0.01);
+        TEST_NEAR("metar neg dew", m.dewpointC, -29.0, 0.01);
+        TEST_TRUE("metar calm qnh", m.qnhHPa == 1017);
+    }
+    {
+        /* CAVOK + CB + NOSIG */
+        NAV_Sup_MetarData m;
+        NAV_SUP_metarParse("KLAX 221653Z 25008KT CAVOK 22/16 Q1013 NOSIG", &m);
+        TEST_TRUE("metar CAVOK vis", m.visibilityM == -1);
+        TEST_TRUE("metar CAVOK qnh", m.qnhHPa == 1013);
+        TEST_STR("metar CAVOK trend", m.trend, "NOSIG");
+    }
+    {
+        /* CB cloud type */
+        NAV_Sup_MetarData m;
+        NAV_SUP_metarParse("KOKC 221653Z 36015G25KT 10SM TSRA BKN050CB 28/20 Q1014", &m);
+        TEST_TRUE("metar CB cloudCount", m.cloudCount >= 1);
+        TEST_TRUE("metar CB code", m.clouds[0].code == 3);
+        TEST_TRUE("metar CB alt", m.clouds[0].altitudeFt == 5000);
+        TEST_STR("metar CB type", m.clouds[0].type, "CB");
+        TEST_STR("metar CB descr", m.sky[0].descriptor, "TS");
+        TEST_STR("metar CB phen", m.sky[0].phenomena, "RA");
+    }
+    {
+        /* Mixed SM visibility: 1 1/2SM */
+        NAV_Sup_MetarData m;
+        NAV_SUP_metarParse("KXYZ 221653Z 00000KT 1 1/2SM BR OVC010 10/09 Q1019", &m);
+        TEST_TRUE("metar mixed vis M", m.visibilityM == 2414);
+        TEST_TRUE("metar mixed SM_num", m.visibilitySM_num == 3);
+        TEST_TRUE("metar mixed SM_den", m.visibilitySM_den == 2);
+        TEST_STR("metar mixed phen", m.sky[0].phenomena, "BR");
+    }
+    {
+        /* Crosswind / headwind */
+        NAV_Sup_MetarData m;
+        NAV_SUP_metarParse("KSEA 221653Z 27015KT 10SM SCT010 12/09 Q1019", &m);
+        double xw = NAV_SUP_metarCrosswind(&m, 180.0);
+        double hw = NAV_SUP_metarHeadwind(&m, 180.0);
+        TEST_NEAR("metar xwind", xw, -15.0, 0.01);
+        TEST_NEAR("metar hwind", hw, 0.0, 0.01);
+        double avg = NAV_SUP_metarWindAvg(&m);
+        TEST_NEAR("metar windAvg", avg, 15.0, 0.01);
+    }
+    {
+        /* null/empty */
+        int ok = NAV_SUP_metarParse((const char *)0, (NAV_Sup_MetarData *)0);
+        TEST_TRUE("metar null parse", !ok);
+    }
+
     printf("\n--- ARINC 429 Module ---\n");
     {
         unsigned int w = (8) | (2 << 8) | (0x88B8 << 10) | (3 << 29);
@@ -633,8 +733,6 @@ int main()
         TEST_NEAR("a429 dec UTC", out.value, 12345.0, 0.5);
         TEST_STR("a429 dec UTC name", out.name, "UTC Time");
     }
-
-
 
     printf("\n=== Results: %d/%d passed ===\n", tests_passed, tests_run);
     return tests_passed == tests_run ? 0 : 1;

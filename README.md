@@ -8,7 +8,7 @@ A static and shared library providing geodesy, unit conversion, aviation, GPS/NM
 test.bat          — compile test harness + run all tests
 ```
 
-Output: `=== Results: 201/201 passed ===`
+Output: `=== Results: 259/259 passed ===`
 
 ## Build
 
@@ -36,6 +36,8 @@ Output: `=== Results: 201/201 passed ===`
 | Route          | `NAV_SUP_`   | `route.c` / `route.h` | 11 (+ 2 structs) | Waypoint list, sequencing, CSV I/O |
 | X-Plane Nav    | `NAV_SUP_`   | `xplane_nav.c` / `xplane_nav.h` | 7 (+ 2 structs) | Nav database loader, ICAO FPL parser |
 | ARINC 429      | `NAV_SUP_`   | `arinc429.c` / `arinc429.h` | 9 (+ 1 struct, 41 labels) | Word decoder, BNR/BCD, parity, label lookup |
+| ARINC 424      | `NAV_SUP_`   | `arinc424.c` / `arinc424.h` | 2 (+ 6 structs)            | Nav database parser (airports, waypoints, runways, ILS) |
+| METAR          | `NAV_SUP_`   | `metar.c` / `metar.h` | 4 (+ 3 structs) | METAR parser: parse, wind avg, crosswind, headwind |
 
 ## NMEA Parser
 
@@ -80,24 +82,27 @@ The math itself is pure C89 (sin, cos, atan2, sqrt, log, pow, exp, fmod).
 
 ```
 NAV1/
-├── export.h           Portability macro
-├── nav1.h             Master header (includes all modules)
-├── nav1.c             DllMain + core geodesy (8 functions)
-├── conv.h / conv.c    Unit conversions (20 functions)
-├── nav.h / nav.c      Advanced navigation (6 functions)
-├── aviation.h / .c    Aviation math (5 functions)
-├── gps.h / gps.c      GPS helpers (6 functions)
-├── flight_mgmt.h / .c Flight planning (6 functions)
-├── control.h / .c     Signal processing (5 structs, 10 functions)
-├── nmea.h / nmea.c    NMEA parser (1 struct, 1 function)
-├── route.h / route.c  Route management + CSV I/O (11 functions)
-├── xplane_nav.h / .c  X-Plane nav database + ICAO FPL (7 functions)
-├── arinc429.h / .c    ARINC 429 word decoder (9 functions, 41 labels)
-├── test_nav1.c        201-test harness
-├── test.bat            One-command compile + run
-├── NAV1.dev            Dev-C++ project file
-├── Makefile.win        Build rules
-├── NAV1.ico            Application icon
+├── src/
+│   ├── export.h           Portability macro (NAV_EXPORT)
+│   ├── nav1.h             Master header (includes all sub-headers)
+│   ├── nav1.c             DllMain + core geodesy (8 functions)
+│   ├── conv.h / conv.c    Unit conversions (20 functions)
+│   ├── nav.h / nav.c      Advanced navigation (6 functions)
+│   ├── aviation.h / .c    Aviation math (5 functions)
+│   ├── gps.h / gps.c      GPS helpers (6 functions)
+│   ├── flight_mgmt.h / .c Flight planning (6 functions)
+│   ├── control.h / .c     Signal processing (5 structs, 10 functions)
+│   ├── nmea.h / nmea.c    NMEA parser (1 struct, 1 function)
+│   ├── route.h / route.c  Route management + CSV I/O (11 functions)
+│   ├── xplane_nav.h / .c  X-Plane nav database + ICAO FPL (7 functions)
+│   ├── arinc429.h / .c    ARINC 429 word decoder (9 functions, 41 labels)
+│   └── arinc424.h / .c    ARINC 424 nav database parser (2 functions, 6 structs)
+├── test_nav1.c            204-test harness
+├── test.bat               One-command compile + run
+├── NAV1.dev               Dev-C++ project file
+├── Makefile.win            Build rules
+├── NAV1.ico                Application icon
 ├── NAV1_private.rc / .res  Windows resources
-└── nav.bat             rundll32 launcher
+├── AGENTS.md               Agent/IDE guidance
+└── nav.bat                 rundll32 launcher
 ```
