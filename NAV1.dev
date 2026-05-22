@@ -29,7 +29,7 @@ IncludeVersionInfo=1
 SupportXPThemes=0
 CompilerSet=0
 CompilerSettings=0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;12;0;0;0
-UnitCount=22
+UnitCount=24
 
 [VersionInfo]
 Major=1
@@ -262,6 +262,26 @@ BuildCmd=
 
 [Unit22]
 FileName=src/arinc429.c
+CompileCpp=0
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit23]
+FileName=src/arinc424.h
+CompileCpp=0
+Folder=
+Compile=0
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit24]
+FileName=src/arinc424.c
 CompileCpp=0
 Folder=
 Compile=1

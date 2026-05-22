@@ -51,6 +51,49 @@ int main()
 {
     printf("=== NAV1 Test Suite ===\n\n");
 
+    printf("--- ARINC 424 Module (early) ---\n");
+    {
+        NAV_Sup_A424Database db;
+        int ok = NAV_SUP_a424ParseFile("_noexist.a424", &db);
+        TEST_TRUE("a424 missing", !ok);
+    }
+    {
+        char buf[200];
+        FILE *f = fopen("_ta424.dat", "w");
+        memset(buf, 32, 199); buf[199] = 0;
+        memcpy(buf, "SUSAPA", 6);
+        memcpy(buf+6,  "KSEA", 4);
+        memcpy(buf+10, "K1", 2);
+        memcpy(buf+13, "SEA", 3);
+        buf[21] = '1';
+        memcpy(buf+22, "10000", 5);
+        memcpy(buf+27, "119", 3);
+        buf[30] = 'Y';
+        memcpy(buf+32, "N47265700", 9);
+        memcpy(buf+41, "W122182910", 10);
+        memcpy(buf+51, "E0199", 5);
+        memcpy(buf+56, "00429", 5);
+        memcpy(buf+61, "250", 3);
+        memcpy(buf+64, "SEA ", 4);
+        memcpy(buf+68, "K1", 2);
+        memcpy(buf+70, "18000", 5);
+        memcpy(buf+75, "18000", 5);
+        buf[80] = 'C';
+        memcpy(buf+86, "NAS", 3);
+        memcpy(buf+93, "SEATTLE-TACOMA INTL           ", 30);
+        memcpy(buf+123, "04569", 5);
+        memcpy(buf+128, "8808", 4);
+        buf[132] = '\n'; buf[133] = 0;
+        fputs(buf, f);
+        fclose(f);
+        NAV_Sup_A424Database db;
+        int ok = NAV_SUP_a424ParseFile("_ta424.dat", &db);
+        TEST_TRUE("a424 early ok", ok);
+        TEST_TRUE("a424 early nairports", db.nairports == 1);
+        NAV_SUP_a424Free(&db);
+        remove("_ta424.dat");
+    }
+
     printf("--- Distance & Bearing ---\n");
     TEST_NEAR("distanceToTarget(53,10,43,27) NM", NAV_SUP_distanceToTarget(53.0, 10.0, 43.0, 27.0), 905.0, 5.0);
     double hdg = NAV_SUP_headingToTarget(53.0, 10.0, 43.0, 27.0);
@@ -590,6 +633,8 @@ int main()
         TEST_NEAR("a429 dec UTC", out.value, 12345.0, 0.5);
         TEST_STR("a429 dec UTC name", out.name, "UTC Time");
     }
+
+
 
     printf("\n=== Results: %d/%d passed ===\n", tests_passed, tests_run);
     return tests_passed == tests_run ? 0 : 1;

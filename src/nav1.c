@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define VER "1.0"
+#define VER "1.1"
 #define VERSION "Angelov NAV System\nVersion " VER
 
 static const double R = 6371e3; // Earth radius in metres
