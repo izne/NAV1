@@ -17,11 +17,8 @@ typedef struct {
     int type;  /* 0=user, 1=airport, 2=VOR, 3=NDB, 4=fix, 5=intersection, 6=procedure */
 } NAV_Sup_Waypoint;
 
-NAV_EXPORT void AboutNav();
 NAV_EXPORT void Version();
-NAV_EXPORT void Testcase(int test);
-NAV_EXPORT void WINAPI Rundll32Version(HWND, HINSTANCE, LPSTR, int);
-NAV_EXPORT void WINAPI RunTest(HWND, HINSTANCE, LPSTR, int);
+NAV_EXPORT void WINAPI WinVer(HWND, HINSTANCE, LPSTR, int);
 
 NAV_EXPORT double NAV_SUP_distanceToTarget(double lat1, double lon1, double lat2, double lon2);
 NAV_EXPORT double NAV_SUP_headingToTarget(double lat1, double lon1, double lat2, double lon2);

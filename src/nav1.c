@@ -1,13 +1,11 @@
 #include "nav1.h"
 #include "conv.h"
 #include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 #define VER "1.1"
 #define VERSION "Angelov NAV System\nVersion " VER
 
-static const double R = 6371e3; // Earth radius in metres
+static const double R = 6371e3;
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 {
@@ -29,93 +27,7 @@ NAV_EXPORT void Version()
     MessageBox(NULL, TEXT(VERSION), TEXT("NAV1.dll"), MB_OK | MB_ICONINFORMATION);
 }
 
-NAV_EXPORT void AboutNav()
-{
-    MessageBox(NULL, TEXT("Angelov NAV System v1.0\nNavigation Library"), TEXT("About NAV1"), MB_OK | MB_ICONINFORMATION);
-}
-
-NAV_EXPORT void Testcase(int test)
-{
-    char buffer[512];
-    char result[384];
-
-    switch (test)
-    {
-        case 1:
-        {
-            double dist = NAV_SUP_distanceToTarget(53.0, 10.0, 43.0, 27.0);
-            snprintf(result, sizeof(result), "Distance: %.2f NM", dist);
-            snprintf(buffer, sizeof(buffer), "Test %d: Haversine Distance\n%s", test, result);
-            break;
-        }
-        case 2:
-        {
-            double hdg = NAV_SUP_headingToTarget(53.0, 10.0, 43.0, 27.0);
-            snprintf(result, sizeof(result), "Heading: %.2f deg", hdg);
-            snprintf(buffer, sizeof(buffer), "Test %d: Initial Bearing\n%s", test, result);
-            break;
-        }
-        case 3:
-        {
-            double lat, lon;
-            NAV_SUP_destinationPoint(0.0, 0.0, 0.0, 60.0, &lat, &lon);
-            snprintf(result, sizeof(result), "Lat: %.4f, Lon: %.4f", lat, lon);
-            snprintf(buffer, sizeof(buffer), "Test %d: Destination (0,0 → N 60NM)\n%s", test, result);
-            break;
-        }
-        case 4:
-        {
-            double lat, lon;
-            NAV_SUP_midpoint(52.0, 0.0, 53.0, 1.0, &lat, &lon);
-            snprintf(result, sizeof(result), "Lat: %.4f, Lon: %.4f", lat, lon);
-            snprintf(buffer, sizeof(buffer), "Test %d: Midpoint (52,0 → 53,1)\n%s", test, result);
-            break;
-        }
-        case 5:
-        {
-            double brg = NAV_SUP_finalBearing(53.0, 10.0, 43.0, 27.0);
-            snprintf(result, sizeof(result), "Final bearing: %.2f deg", brg);
-            snprintf(buffer, sizeof(buffer), "Test %d: Final Bearing\n%s", test, result);
-            break;
-        }
-        case 6:
-        {
-            double xtd = NAV_SUP_crossTrackDistance(0.0, 0.0, 10.0, 0.0, 5.0, 0.5);
-            snprintf(result, sizeof(result), "XTD: %.2f NM", xtd);
-            snprintf(buffer, sizeof(buffer), "Test %d: Cross-Track Distance\n%s", test, result);
-            break;
-        }
-        case 7:
-        {
-            int d, m;
-            double s;
-            double dec = NAV_SUP_dmsToDecimal(53, 30, 0.0, 'N');
-            NAV_SUP_decimalToDMS(dec, &d, &m, &s);
-            snprintf(buffer, sizeof(buffer), "Test %d: DMS Round-Trip\n53°30'N → %.4f → %d°%d'%.1f\"",
-                     test, dec, d, m, s);
-            break;
-        }
-        case 8:
-        {
-            snprintf(result, sizeof(result), "100 NM = %.2f m", NAV_CONV_nmToM(100));
-            snprintf(result + strlen(result), sizeof(result) - strlen(result),
-                     "\n100 kts = %.2f m/s", NAV_CONV_knotsToMs(100));
-            snprintf(result + strlen(result), sizeof(result) - strlen(result),
-                     "\n1000 ft = %.2f m", NAV_CONV_ftToM(1000));
-            snprintf(result + strlen(result), sizeof(result) - strlen(result),
-                     "\n100 km = %.2f NM", NAV_CONV_kmToNm(100));
-            snprintf(buffer, sizeof(buffer), "Test %d: Conversion Smoke Test\n%s", test, result);
-            break;
-        }
-        default:
-            snprintf(buffer, sizeof(buffer), "Unknown test ID: %d", test);
-            break;
-    }
-
-    MessageBox(NULL, buffer, TEXT("Testcase"), MB_OK | MB_ICONINFORMATION);
-}
-
-NAV_EXPORT void CALLBACK Rundll32Version(HWND hwnd, HINSTANCE hinst, LPSTR lpszCmdLine, int nCmdShow)
+NAV_EXPORT void CALLBACK WinVer(HWND hwnd, HINSTANCE hinst, LPSTR lpszCmdLine, int nCmdShow)
 {
     (void)hwnd;
     (void)hinst;
@@ -124,24 +36,15 @@ NAV_EXPORT void CALLBACK Rundll32Version(HWND hwnd, HINSTANCE hinst, LPSTR lpszC
     Version();
 }
 
-NAV_EXPORT void CALLBACK RunTest(HWND hwnd, HINSTANCE hinst, LPSTR lpszCmdLine, int nCmdShow)
-{
-    (void)hwnd;
-    (void)hinst;
-    (void)nCmdShow;
-    int testId = atoi(lpszCmdLine);
-    Testcase(testId);
-}
-
 NAV_EXPORT double NAV_SUP_distanceToTarget(double lat1, double lon1, double lat2, double lon2)
 {
-    const double _f1 = lat1 * M_PI / 180;
-    const double _f2 = lat2 * M_PI / 180;
+    const double f1 = lat1 * M_PI / 180;
+    const double f2 = lat2 * M_PI / 180;
     const double df = (lat2 - lat1) * M_PI / 180;
     const double dl = (lon2 - lon1) * M_PI / 180;
-    const double a = sin(df / 2) * sin(df / 2) + cos(_f1) * cos(_f2) * sin(dl / 2) * sin(dl / 2);
+    const double a = sin(df / 2) * sin(df / 2) + cos(f1) * cos(f2) * sin(dl / 2) * sin(dl / 2);
     const double c = 2 * atan2(sqrt(a), sqrt(1 - a));
-    return R * c / 1852.0; // NM
+    return R * c / 1852.0;
 }
 
 NAV_EXPORT double NAV_SUP_headingToTarget(double lat1, double lon1, double lat2, double lon2)
@@ -233,7 +136,7 @@ NAV_EXPORT double NAV_SUP_crossTrackDistance(double lat1, double lon1, double la
     if (arg < -1.0) arg = -1.0;
     const double xtd = asin(arg) * R;
 
-    return xtd / 1852.0; // NM
+    return xtd / 1852.0;
 }
 
 NAV_EXPORT double NAV_SUP_dmsToDecimal(int degrees, int minutes, double seconds, char dir)
