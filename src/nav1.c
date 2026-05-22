@@ -22,7 +22,9 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 
 NAV1_EXPORT void Version(void)
 {
-    MessageBoxA(NULL, FILE_DESCRIPTION, ORIGINAL_FILENAME, MB_OK | MB_ICONINFORMATION);
+    char buf[128];
+    sprintf(buf, "%s\nVersion %s", FILE_DESCRIPTION, VER_STRING);
+    MessageBoxA(NULL, TEXT(buf), TEXT(ORIGINAL_FILENAME), MB_OK | MB_ICONINFORMATION);
 }
 
 NAV1_EXPORT void CALLBACK WinVer(HWND hwnd, HINSTANCE hinst, LPSTR lpszCmdLine, int nCmdShow)
