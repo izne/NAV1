@@ -1,8 +1,6 @@
+#include <stdio.h>
 #include "nav1.h"
-
-#define VER "1.2"
-#define VERDATE "May 2026"
-#define VERSION "Angelov NAV1 System\nVersion " VER ", " VERDATE
+#include "../NAV1_private.h"
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 {
@@ -21,7 +19,9 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 
 NAV_EXPORT void Version()
 {
-    MessageBox(NULL, TEXT(VERSION), TEXT("NAV1.dll"), MB_OK | MB_ICONINFORMATION);
+    char buf[128];
+    sprintf(buf, "%s\nVersion %s", FILE_DESCRIPTION, VER_STRING);
+    MessageBoxA(NULL, TEXT(buf), TEXT(ORIGINAL_FILENAME), MB_OK | MB_ICONINFORMATION);
 }
 
 NAV_EXPORT void CALLBACK WinVer(HWND hwnd, HINSTANCE hinst, LPSTR lpszCmdLine, int nCmdShow)
