@@ -1,7 +1,7 @@
 #ifndef NAV1_NMEA_H
 #define NAV1_NMEA_H
 
-#include "dll.h"
+#include "nav1.h"
 
 typedef struct {
     int    hasFix;

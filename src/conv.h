@@ -1,7 +1,7 @@
 #ifndef NAV1_CONV_H
 #define NAV1_CONV_H
 
-#include "dll.h"
+#include "nav1.h"
 
 /* Length */
 NAV_EXPORT double NAV_CONV_mToFt(double meters);

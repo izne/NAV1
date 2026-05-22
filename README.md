@@ -8,7 +8,7 @@ A static and shared library providing geodesy, unit conversion, aviation, GPS/NM
 test.bat          — compile test harness + run all tests
 ```
 
-Output: `=== Results: 117/117 passed ===`
+Output: `=== Results: 201/201 passed ===`
 
 ## Build
 
@@ -25,7 +25,7 @@ Output: `=== Results: 117/117 passed ===`
 
 | Module         | Prefix       | File(s)               | # Functions | Description                        |
 |----------------|--------------|-----------------------|:-----------:|------------------------------------|
-| Core / Geodesy | `NAV_SUP_`   | `dllmain.c` / `dll.h` | 8           | Distance, bearing, destination, midpoint, cross-track, DMS |
+| Core / Geodesy | `NAV_SUP_`   | `nav1.c` / `nav1.h`   | 8           | Distance, bearing, destination, midpoint, cross-track, DMS |
 | Conversions    | `NAV_CONV_`  | `conv.c` / `conv.h`   | 20          | Length, speed, temperature, pressure |
 | Navigation     | `NAV_SUP_`   | `nav.c` / `nav.h`     | 6           | Along-track, waypoints, rhumb line, antipode, compass |
 | Aviation       | `NAV_SUP_`   | `aviation.c` / `aviation.h` | 5      | Wind correction, ISA atmosphere, pressure/density altitude |
@@ -33,6 +33,9 @@ Output: `=== Results: 117/117 passed ===`
 | Flight Mgmt    | `NAV_SUP_`   | `flight_mgmt.c` / `flight_mgmt.h` | 6 | Time to altitude, VS, TOD, waypoint, fuel |
 | Control        | `NAV_SUP_`   | `control.c` / `control.h` | 10 (+ 5 structs) | LPF, slew limiter, moving avg, PID, complementary filter |
 | NMEA           | `NAV_SUP_`   | `nmea.c` / `nmea.h`   | 1 (+ 1 struct) | Parse $--GGA / $--RMC sentences |
+| Route          | `NAV_SUP_`   | `route.c` / `route.h` | 11 (+ 2 structs) | Waypoint list, sequencing, CSV I/O |
+| X-Plane Nav    | `NAV_SUP_`   | `xplane_nav.c` / `xplane_nav.h` | 7 (+ 2 structs) | Nav database loader, ICAO FPL parser |
+| ARINC 429      | `NAV_SUP_`   | `arinc429.c` / `arinc429.h` | 9 (+ 1 struct, 41 labels) | Word decoder, BNR/BCD, parity, label lookup |
 
 ## NMEA Parser
 
@@ -77,9 +80,9 @@ The math itself is pure C89 (sin, cos, atan2, sqrt, log, pow, exp, fmod).
 
 ```
 NAV1/
-├── dll.h              Master header (includes all modules)
 ├── export.h           Portability macro
-├── dllmain.c          DllMain + core geodesy (8 functions)
+├── nav1.h             Master header (includes all modules)
+├── nav1.c             DllMain + core geodesy (8 functions)
 ├── conv.h / conv.c    Unit conversions (20 functions)
 ├── nav.h / nav.c      Advanced navigation (6 functions)
 ├── aviation.h / .c    Aviation math (5 functions)
@@ -87,7 +90,10 @@ NAV1/
 ├── flight_mgmt.h / .c Flight planning (6 functions)
 ├── control.h / .c     Signal processing (5 structs, 10 functions)
 ├── nmea.h / nmea.c    NMEA parser (1 struct, 1 function)
-├── test_nav1.c        117-test harness
+├── route.h / route.c  Route management + CSV I/O (11 functions)
+├── xplane_nav.h / .c  X-Plane nav database + ICAO FPL (7 functions)
+├── arinc429.h / .c    ARINC 429 word decoder (9 functions, 41 labels)
+├── test_nav1.c        201-test harness
 ├── test.bat            One-command compile + run
 ├── NAV1.dev            Dev-C++ project file
 ├── Makefile.win        Build rules

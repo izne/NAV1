@@ -1,7 +1,7 @@
 #ifndef NAV1_FLIGHT_MGMT_H
 #define NAV1_FLIGHT_MGMT_H
 
-#include "dll.h"
+#include "nav1.h"
 
 NAV_EXPORT double NAV_SUP_timeToAltitude(double currentAltFt, double targetAltFt, double vsFpm);
 NAV_EXPORT double NAV_SUP_requiredVerticalSpeed(double currentAltFt, double targetAltFt, double distNm, double gsKts);

@@ -1,7 +1,7 @@
 #ifndef NAV1_AVIATION_H
 #define NAV1_AVIATION_H
 
-#include "dll.h"
+#include "nav1.h"
 
 NAV_EXPORT void NAV_SUP_windCorrection(double trackDeg, double tasKts, double windDirDeg, double windSpeedKts, double *headingDeg, double *groundSpeedKts, double *wcaDeg);
 NAV_EXPORT void NAV_SUP_windComponents(double windDirDeg, double windSpeedKts, double runwayHeadingDeg, double *crosswindKts, double *headwindKts);

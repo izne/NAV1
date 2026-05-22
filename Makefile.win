@@ -5,8 +5,8 @@ CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
 RES      = NAV1_private.res
-OBJ      = src/dllmain.o src/conv.o src/nav.o src/aviation.o src/gps.o src/flight_mgmt.o src/control.o src/nmea.o $(RES)
-LINKOBJ  = src/dllmain.o src/conv.o src/nav.o src/aviation.o src/gps.o src/flight_mgmt.o src/control.o src/nmea.o $(RES)
+OBJ      = src/nav1.o src/conv.o src/nav.o src/aviation.o src/gps.o src/flight_mgmt.o src/control.o src/nmea.o src/route.o src/xplane_nav.o src/arinc429.o $(RES)
+LINKOBJ  = src/nav1.o src/conv.o src/nav.o src/aviation.o src/gps.o src/flight_mgmt.o src/control.o src/nmea.o src/route.o src/xplane_nav.o src/arinc429.o $(RES)
 LIBS     = -L"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib" -L"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/lib" -static-libgcc
 INCS     = -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include"
 CXXINCS  = -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include/c++"
@@ -27,8 +27,8 @@ clean: clean-custom
 $(BIN): $(LINKOBJ)
 	$(CC) -shared $(LINKOBJ) -o $(BIN) $(LIBS) -Wl,--output-def,$(DEF),--out-implib,$(STATIC),--add-stdcall-alias
 
-src/dllmain.o: src/dllmain.c
-	$(CC) -c src/dllmain.c -o src/dllmain.o $(CFLAGS)
+src/nav1.o: src/nav1.c
+	$(CC) -c src/nav1.c -o src/nav1.o $(CFLAGS)
 
 src/conv.o: src/conv.c
 	$(CC) -c src/conv.c -o src/conv.o $(CFLAGS)
@@ -50,6 +50,15 @@ src/control.o: src/control.c
 
 src/nmea.o: src/nmea.c
 	$(CC) -c src/nmea.c -o src/nmea.o $(CFLAGS)
+
+src/route.o: src/route.c
+	$(CC) -c src/route.c -o src/route.o $(CFLAGS)
+
+src/xplane_nav.o: src/xplane_nav.c
+	$(CC) -c src/xplane_nav.c -o src/xplane_nav.o $(CFLAGS)
+
+src/arinc429.o: src/arinc429.c
+	$(CC) -c src/arinc429.c -o src/arinc429.o $(CFLAGS)
 
 NAV1_private.res: NAV1_private.rc 
 	$(WINDRES) -i NAV1_private.rc --input-format=rc -o NAV1_private.res -O coff 

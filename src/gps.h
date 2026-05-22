@@ -1,7 +1,7 @@
 #ifndef NAV1_GPS_H
 #define NAV1_GPS_H
 
-#include "dll.h"
+#include "nav1.h"
 
 NAV_EXPORT double NAV_SUP_dmmToDecimal(int degrees, double minutes, char dir);
 NAV_EXPORT void NAV_SUP_decimalToDMM(double decimal, double *minutes, char *dir);

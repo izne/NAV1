@@ -1,5 +1,5 @@
 #include "gps.h"
-#include "dll.h"
+#include "nav1.h"
 #include <math.h>
 #include <string.h>
 #include <stdio.h>

@@ -1,7 +1,7 @@
 #ifndef NAV1_CONTROL_H
 #define NAV1_CONTROL_H
 
-#include "dll.h"
+#include "nav1.h"
 
 typedef struct {
     double y;

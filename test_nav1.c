@@ -1,4 +1,4 @@
-#include "dll.h"
+#include "nav1.h"
 #include "conv.h"
 #include "nav.h"
 #include "aviation.h"
@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
+#include <stdlib.h>
 
 static int tests_run = 0;
 static int tests_passed = 0;
@@ -328,6 +329,266 @@ int main()
         int r = NAV_SUP_nmeaParse("$GNGGA,123519,4807.038,N,01131.000,E,1,08,0.9,545.4,M,46.9,M,,*59", &nd);
         TEST_TRUE("nmeaParse GNGGA (any talker)", r);
         TEST_NEAR("nmeaParse GNGGA lat", nd.latitude, 48.1173, 0.001);
+    }
+
+    printf("\n--- Route Module ---\n");
+    {
+        NAV_Sup_Waypoint wpBuf[8];
+        NAV_Sup_Route r;
+        NAV_SUP_routeInit(&r, wpBuf, 8);
+        TEST_TRUE("rInit count 0", r.count == 0);
+        TEST_TRUE("rInit index -1", r.currentIndex == -1);
+
+        int ok = NAV_SUP_routeAdd(&r, 48.1173, 11.5167, 545.4, "MMT", "MOOSMOOS", 2);
+        TEST_TRUE("rAdd return", ok);
+        TEST_TRUE("rAdd count 1", r.count == 1);
+        TEST_STR("rAdd ident", r.waypoints[0].ident, "MMT");
+        TEST_NEAR("rAdd lat", r.waypoints[0].latitude, 48.1173, 0.0001);
+
+        NAV_SUP_routeAdd(&r, 33.94, -118.41, 125.0, "LAX", "LOS ANGELES", 1);
+        TEST_TRUE("rAdd count 2", r.count == 2);
+    }
+    {
+        NAV_Sup_Waypoint wpBuf[8];
+        NAV_Sup_Route r;
+        NAV_SUP_routeInit(&r, wpBuf, 8);
+        NAV_SUP_routeAdd(&r, 1, 2, 100, "A", "", 0);
+        NAV_SUP_routeAdd(&r, 3, 4, 200, "C", "", 0);
+        int ok = NAV_SUP_routeInsert(&r, 1, 2, 3, 150, "B", "", 0);
+        TEST_TRUE("rIns return", ok);
+        TEST_TRUE("rIns count 3", r.count == 3);
+        TEST_STR("rIns [1]", r.waypoints[1].ident, "B");
+        NAV_SUP_routeRemove(&r, 1);
+        TEST_TRUE("rRem count 2", r.count == 2);
+        TEST_STR("rRem [1]", r.waypoints[1].ident, "C");
+    }
+    {
+        NAV_Sup_Waypoint wpBuf[8];
+        NAV_Sup_Route r;
+        NAV_SUP_routeInit(&r, wpBuf, 8);
+        NAV_SUP_routeAdd(&r, 1, 2, 100, "A", "", 0);
+        NAV_SUP_routeClear(&r);
+        TEST_TRUE("rClear count 0", r.count == 0);
+        TEST_TRUE("rClear index -1", r.currentIndex == -1);
+    }
+    {
+        NAV_Sup_Waypoint wpBuf[8];
+        NAV_Sup_Route r;
+        NAV_SUP_routeInit(&r, wpBuf, 8);
+        NAV_SUP_routeAdd(&r, 1, 2, 100, "A", "", 0);
+        NAV_SUP_routeAdd(&r, 3, 4, 200, "B", "", 0);
+        NAV_SUP_routeAdd(&r, 5, 6, 300, "C", "", 0);
+        TEST_TRUE("rSeq idx0 after add", r.currentIndex == 0);
+        TEST_TRUE("rSeq advance", NAV_SUP_routeSequence(&r));
+        TEST_TRUE("rSeq idx1", r.currentIndex == 1);
+        NAV_SUP_routeSequence(&r);
+        TEST_TRUE("rSeq end", !NAV_SUP_routeSequence(&r));
+        TEST_TRUE("rDT invalid", !NAV_SUP_routeDirectTo(&r, 99));
+        TEST_TRUE("rDT valid", NAV_SUP_routeDirectTo(&r, 0));
+        TEST_TRUE("rDT idx0", r.currentIndex == 0);
+    }
+    {
+        NAV_Sup_Waypoint wpBuf[8];
+        NAV_Sup_Route r;
+        double brg, dist;
+        NAV_SUP_routeInit(&r, wpBuf, 8);
+        NAV_SUP_routeAdd(&r, 48.0, 11.0, 100, "A", "", 0);
+        NAV_SUP_routeAdd(&r, 49.0, 12.0, 200, "B", "", 0);
+        int ok = NAV_SUP_routeLegInfo(&r, 1, &brg, &dist);
+        TEST_TRUE("rLeg return", ok);
+        TEST_NEAR("rLeg dist", dist, 72, 5);
+        TEST_NEAR("rLeg brg", brg, 34, 3);
+    }
+    {
+        NAV_Sup_Waypoint wpBuf[8];
+        NAV_Sup_Route r;
+        double lat, lon;
+        NAV_SUP_routeInit(&r, wpBuf, 8);
+        NAV_SUP_routeAdd(&r, 48.0, 11.0, 100, "A", "", 0);
+        NAV_SUP_routeAdd(&r, 49.5, 11.0, 200, "B", "", 0);
+        NAV_SUP_routeAdd(&r, 49.5, 12.5, 300, "C", "", 0);
+        int ok = NAV_SUP_routeTurnAnticipation(&r, 300, 3, &lat, &lon);
+        TEST_TRUE("rTurn return", ok);
+        TEST_TRUE("rTurn lat between A and B", lat > 48.0 && lat < 49.5);
+        TEST_NEAR("rTurn lon ~11", lon, 11.0, 0.3);
+    }
+    {
+        NAV_Sup_Waypoint wpBuf[8], lbuf[8];
+        NAV_Sup_Route r, lr;
+        NAV_SUP_routeInit(&r, wpBuf, 8);
+        NAV_SUP_routeAdd(&r, 48.1173, 11.5167, 545.4, "MMT", "MOOSMOOS", 2);
+        NAV_SUP_routeAdd(&r, 33.9425, -118.4081, 125.0, "LAX", "LOS ANGELES", 1);
+        int ok = NAV_SUP_routeSaveCSV("_troute.csv", &r);
+        TEST_TRUE("rSave return", ok);
+        ok = NAV_SUP_routeLoadCSV("_troute.csv", lbuf, 8, &lr);
+        TEST_TRUE("rLoad return", ok);
+        TEST_TRUE("rLoad count 2", lr.count == 2);
+        TEST_STR("rLoad ident0", lr.waypoints[0].ident, "MMT");
+        TEST_STR("rLoad name1", lr.waypoints[1].name, "LOS ANGELES");
+        remove("_troute.csv");
+    }
+
+    printf("\n--- X-Plane Nav Module ---\n");
+    {
+        NAV_Sup_NavDatabase db;
+        int ok = NAV_SUP_xpNavLoad("_noexist.dat", &db);
+        TEST_TRUE("xpLoad missing", !ok);
+    }
+    {
+        FILE *f = fopen("_tnav.dat", "w");
+        fprintf(f, "# test\n");
+        fprintf(f, "2   48.1173   11.516667      545.4  113.300 MMT MOOSMOOS\n");
+        fprintf(f, "2   33.9425  -118.4081       125.0  115.700 LAX  LOS ANGELES INTL\n");
+        fprintf(f, "3   51.5     -0.1            50.0   350.000 LON  LONDON NDB\n");
+        fclose(f);
+        NAV_Sup_NavDatabase db;
+        int ok = NAV_SUP_xpNavLoad("_tnav.dat", &db);
+        TEST_TRUE("xpLoad ok", ok);
+        TEST_TRUE("xpLoad cnt 3", db.count == 3);
+        TEST_STR("xpLoad id0", db.records[0].ident, "MMT");
+        TEST_NEAR("xpLoad freq1", db.records[1].frequency, 115.7, 0.01);
+        NAV_SUP_xpNavFree(&db);
+        remove("_tnav.dat");
+    }
+    {
+        FILE *f = fopen("_tfix.dat", "w");
+        fprintf(f, "# test fixes\n");
+        fprintf(f, "KAILA  -118.4081  33.9425\n");
+        fprintf(f, "SABAT  -119.5     34.0\n");
+        fclose(f);
+        NAV_Sup_NavDatabase db;
+        int ok = NAV_SUP_xpFixLoad("_tfix.dat", &db);
+        TEST_TRUE("xpFix ok", ok);
+        TEST_TRUE("xpFix cnt 2", db.count == 2);
+        TEST_STR("xpFix id0", db.records[0].ident, "KAILA");
+        TEST_NEAR("xpFix lat0", db.records[0].latitude, 33.9425, 0.001);
+        NAV_SUP_xpNavFree(&db);
+        remove("_tfix.dat");
+    }
+    {
+        FILE *f = fopen("_tnav2.dat", "w");
+        fprintf(f, "2   48.1173   11.516667  545.4  113.300 MMT MOOSMOOS\n");
+        fprintf(f, "2   33.9425  -118.4081   125.0  115.700 LAX  LOS ANGELES INTL\n");
+        fclose(f);
+        NAV_Sup_NavDatabase db;
+        NAV_SUP_xpNavLoad("_tnav2.dat", &db);
+        NAV_Sup_NavRecord rec;
+        int idx = NAV_SUP_xpNavFindByID(&db, "LAX", 0, &rec);
+        TEST_TRUE("xpFindByID found", idx != 0);
+        TEST_NEAR("xpFindByID lat", rec.latitude, 33.9425, 0.001);
+        NAV_Sup_NavRecord nearRec;
+        int ok = NAV_SUP_xpNavFindNearest(&db, 48.0, 11.5, -1, &nearRec);
+        TEST_TRUE("xpFindNearest ok", ok);
+        TEST_STR("xpFindNearest id", nearRec.ident, "MMT");
+        ok = NAV_SUP_xpNavFindNearest(&db, 48.0, 11.5, 3, &nearRec);
+        TEST_TRUE("xpFindNearest type filter no match", !ok);
+        NAV_SUP_xpNavFree(&db);
+        remove("_tnav2.dat");
+    }
+    {
+        const char *fpl = "N0477F350 DCT SMO J501 RZS DCT BTY";
+        NAV_Sup_Waypoint wps[16];
+        int n = NAV_SUP_fplParseRoute(fpl, NULL, NULL, wps, 16);
+        TEST_TRUE("fplParse fallback", n > 0);
+        TEST_TRUE("fplParse count", n == 3);
+        TEST_STR("fplParse wp0", wps[0].ident, "SMO");
+    }
+    {
+        const char *fpl = "4530N01330E DCT KAILA";
+        NAV_Sup_Waypoint wps[8];
+        int n = NAV_SUP_fplParseRoute(fpl, NULL, NULL, wps, 8);
+        TEST_TRUE("fplParse coord", n == 2);
+        TEST_NEAR("fplParse lat 45.5", wps[0].latitude, 45.5, 0.1);
+        TEST_NEAR("fplParse lon 13.5", wps[0].longitude, 13.5, 0.1);
+    }
+
+    printf("\n--- ARINC 429 Module ---\n");
+    {
+        unsigned int w = (8) | (2 << 8) | (0x88B8 << 10) | (3 << 29);
+        TEST_TRUE("a429 label", NAV_SUP_a429Label(w) == 8);
+        TEST_TRUE("a429 sdi", NAV_SUP_a429SDI(w) == 2);
+        TEST_TRUE("a429 data", NAV_SUP_a429Data(w) == 0x88B8);
+        TEST_TRUE("a429 ssm", NAV_SUP_a429SSM(w) == 3);
+    }
+    {
+        unsigned int w = 0;
+        TEST_TRUE("a429 zero label", NAV_SUP_a429Label(w) == 0);
+        TEST_TRUE("a429 zero sdi", NAV_SUP_a429SDI(w) == 0);
+        TEST_TRUE("a429 zero data", NAV_SUP_a429Data(w) == 0);
+        TEST_TRUE("a429 zero ssm", NAV_SUP_a429SSM(w) == 0);
+    }
+    {
+        unsigned int w = 0xFFFFFFFF;
+        TEST_TRUE("a429 allones label", NAV_SUP_a429Label(w) == 0xFF);
+        TEST_TRUE("a429 allones sdi", NAV_SUP_a429SDI(w) == 3);
+        TEST_TRUE("a429 allones data", NAV_SUP_a429Data(w) == 0x7FFFF);
+        TEST_TRUE("a429 allones ssm", NAV_SUP_a429SSM(w) == 3);
+    }
+    {
+        unsigned int w = 0x00000001;
+        TEST_TRUE("a429 parity odd", NAV_SUP_a429ParityCheck(w));
+    }
+    {
+        unsigned int w = 0x00000003;
+        TEST_TRUE("a429 parity even", !NAV_SUP_a429ParityCheck(w));
+    }
+    {
+        unsigned int w = 0x00000000;
+        TEST_TRUE("a429 parity zero", !NAV_SUP_a429ParityCheck(w));
+    }
+    {
+        NAV_Sup_ARINC429Word out;
+        unsigned int w = (8) | (0 << 8) | (35000 << 10) | (3 << 29);
+        NAV_SUP_a429Decode(w, &out);
+        TEST_TRUE("a429 dec label", out.label == 8);
+        TEST_NEAR("a429 dec alt", out.value, 35000.0, 0.5);
+        TEST_STR("a429 dec name", out.name, "Baro Altitude");
+        TEST_STR("a429 dec unit", out.unit, "ft");
+        TEST_TRUE("a429 dec ssm 3", out.ssm == 3);
+    }
+    {
+        double v = NAV_SUP_a429DataBNR(960, 0.125);
+        TEST_NEAR("a429 BNR kt", v, 120.0, 0.5);
+    }
+    {
+        double v = NAV_SUP_a429DataBCD(0x12345, 5);
+        TEST_NEAR("a429 BCD time", v, 12345.0, 0.5);
+    }
+    {
+        char name[40], unit[12];
+        int enc;
+        double lsb;
+        int sig;
+        int ok = NAV_SUP_a429LabelInfo(0010, name, unit, &enc, &lsb, &sig);
+        TEST_TRUE("a429 labelInfo found", ok);
+        TEST_STR("a429 labelInfo name", name, "Baro Altitude");
+        TEST_STR("a429 labelInfo unit", unit, "ft");
+        TEST_TRUE("a429 labelInfo enc BNR", enc == NAV_A429_ENCODING_BNR);
+        TEST_TRUE("a429 labelInfo signed", sig);
+    }
+    {
+        char name[40], unit[12];
+        int enc;
+        double lsb;
+        int sig;
+        int ok = NAV_SUP_a429LabelInfo(0200, name, unit, &enc, &lsb, &sig);
+        TEST_TRUE("a429 labelInfo FMS ID", ok);
+        TEST_STR("a429 labelInfo FMS name", name, "FMS ID");
+    }
+    {
+        char name[40], unit[12];
+        int enc;
+        double lsb;
+        int sig;
+        int ok = NAV_SUP_a429LabelInfo(0777, name, unit, &enc, &lsb, &sig);
+        TEST_TRUE("a429 labelInfo unknown", !ok);
+    }
+    {
+        NAV_Sup_ARINC429Word out;
+        unsigned int w = (34) | (0 << 8) | (0x12345 << 10) | (3 << 29);
+        NAV_SUP_a429Decode(w, &out);
+        TEST_NEAR("a429 dec UTC", out.value, 12345.0, 0.5);
+        TEST_STR("a429 dec UTC name", out.name, "UTC Time");
     }
 
     printf("\n=== Results: %d/%d passed ===\n", tests_passed, tests_run);
