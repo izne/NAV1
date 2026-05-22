@@ -5,7 +5,7 @@ set CC="C:\Program Files (x86)\Embarcadero\Dev-Cpp\TDM-GCC-64\bin\gcc.exe"
 set PATH=C:\Program Files (x86)\Embarcadero\Dev-Cpp\TDM-GCC-64\bin;%PATH%
 
 echo Compiling test_nav1.exe ...
-%CC% test_nav1.c -o test_nav1.exe -Isrc -L. -lNAV1
+%CC% test_nav1.c -o test_nav1.exe -Isrc -L. -lNAV1 -std=c89
 if %ERRORLEVEL% neq 0 (
     echo Compilation failed!
     exit /b 1

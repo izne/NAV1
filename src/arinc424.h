@@ -15,7 +15,7 @@ typedef struct {
     double longitude;
     double frequency;
     double elevationFt;
-    int navType;        /* 2=VOR, 3=NDB, 4=DME, 5=TACAN */
+    int navType;
     char classCode[4];
 } NAV1_A424Navaid;
 
@@ -24,7 +24,7 @@ typedef struct {
     char ident[NAV1_A424_IDENT_LEN];
     double latitude;
     double longitude;
-    int waypointType;   /* 0=unknown, 1=ICAO, 2=RNAV */
+    int waypointType;
     char usage[4];
 } NAV1_A424Waypoint;
 
@@ -66,7 +66,7 @@ typedef struct {
     double latitude;
     double longitude;
     double frequency;
-    int category;       /* 0=none, 1=CAT I, 2=CAT II, 3=CAT III */
+    int category;
     double bearingDeg;
 } NAV1_A424ILS;
 

@@ -4,9 +4,9 @@
 #include <math.h>
 #include <ctype.h>
 
-/* ------------------------------------------------------------------ */
-/*  Internal helpers                                                   */
-/* ------------------------------------------------------------------ */
+
+
+
 
 #define TK 120
 
@@ -35,7 +35,7 @@ static int strEnds(const char *s, const char *suf)
     return strcmp(s + ls - lf, suf) == 0;
 }
 
-/* ---------- weather classification helpers ------------------------ */
+
 
 static const char *descriptorTbl[] = {
     "MI","PR","BC","DR","BL","SH","TS","FZ",(const char *)0
@@ -76,7 +76,7 @@ static void classifyWeather(const char *tok, char *intensity,
         intensity[0] = *start++;
         intensity[1] = '\0';
     }
-    /* try to grab up to 3 two-letter chunks */
+
     while (*start) {
         buf1[0] = start[0]; buf1[1] = start[1] ? start[1] : '\0';
         buf1[2] = '\0';
@@ -91,25 +91,25 @@ static void classifyWeather(const char *tok, char *intensity,
             start += 2;
             continue;
         }
-        /* try second phenomena */
+
         if (phen[0] && !buf3[0] && isPhenomena(buf1)) {
             strcpy(buf3, buf1);
             start += 2;
             continue;
         }
-        /* unknown / leftover -> break */
+
         break;
     }
     if (buf3[0]) {
         strcat(phen, buf3);
     }
     if (!phen[0] && !descr[0] && intensity[0]) {
-        /* maybe intensity + unknown ??? attach it as phenomena */
+
         strcpy(phen, tok + 1);
     }
 }
 
-/* ---------- cloud code ------------------------------------------- */
+
 
 static int cloudCode(const char *s)
 {
@@ -121,7 +121,7 @@ static int cloudCode(const char *s)
     return 0;
 }
 
-/* ---------- parse wind group ------------------------------------- */
+
 
 static int parseWindGroup(const char *tok, int *dir, int *speed,
                           int *gust)
@@ -133,16 +133,16 @@ static int parseWindGroup(const char *tok, int *dir, int *speed,
     *gust  = 0;
     *dir   = -1;
 
-    /* calm? */
+
     if (strncmp(tok, "00000", 5) == 0) {
         *dir = 0; *speed = 0; return 1;
     }
-    /* variable? */
+
     if (strncmp(tok, "VRB", 3) == 0) {
         *dir = -1;
         sscanf(tok + 3, "%d", &s);
         *speed = s;
-        /* check for gust */
+
         if (strstr(tok, "G")) {
             const char *gp = strstr(tok, "G");
             sscanf(gp + 1, "%d", &g);
@@ -150,19 +150,19 @@ static int parseWindGroup(const char *tok, int *dir, int *speed,
         }
         return 1;
     }
-    /* standard dddffGfmfMKT */
+
     strcpy(buf, tok);
     n = (int)strlen(buf);
     if (n < 5) return 0;
-    /* remove suffix KT/KMH/MPS if present */
+
     if (strEnds(buf, "KT"))   buf[n - 2] = '\0';
     else if (strEnds(buf, "KMH")) buf[n - 3] = '\0';
     else if (strEnds(buf, "MPS")) buf[n - 3] = '\0';
-    /* now parse dddffGfm */
+
     if (sscanf(buf, "%3d%2d", &d, &s) >= 2) {
         *dir = d;
         *speed = s;
-        /* check for gust */
+
         {
             const char *gp = strchr(buf, 'G');
             if (gp) {
@@ -175,7 +175,7 @@ static int parseWindGroup(const char *tok, int *dir, int *speed,
     return 0;
 }
 
-/* ---------- parse SM visibility ----------------------------------- */
+
 
 static int parseVisSM(const char *tok, int *num, int *den)
 {
@@ -213,7 +213,7 @@ static int parseVisSM(const char *tok, int *num, int *den)
     return 0;
 }
 
-/* ---------- parse temperature/dewpoint --------------------------- */
+
 
 static int parseTempDew(const char *tok, double *tempC, double *dewC)
 {
@@ -229,12 +229,12 @@ static int parseTempDew(const char *tok, double *tempC, double *dewC)
         char *slash = strchr(buf, '/');
         *slash = '\0';
 
-        /* parse temp */
+
         st = 1;
         if (buf[0] == 'M') { st = -1; memmove(buf, buf + 1, strlen(buf)); }
         if (sscanf(buf, "%d", &t) == 1) *tempC = (double)(t * st);
 
-        /* parse dewpoint */
+
         sd = 1;
         if (slash[1] == 'M') { sd = -1; memmove(slash + 1, slash + 2, strlen(slash + 1)); }
         if (sscanf(slash + 1, "%d", &d) == 1) *dewC = (double)(d * sd);
@@ -242,7 +242,7 @@ static int parseTempDew(const char *tok, double *tempC, double *dewC)
     return 1;
 }
 
-/* ---------- parse pressure --------------------------------------- */
+
 
 static int parsePressure(const char *tok, int *hPa)
 {
@@ -255,7 +255,7 @@ static int parsePressure(const char *tok, int *hPa)
         }
     }
     if (*tok == 'A' && strlen(tok) >= 5) {
-        /* A2993 = 29.93 inHg -> hPa */
+
         int ih, il;
         if (sscanf(tok + 1, "%2d%2d", &ih, &il) == 2) {
             double inHg = ih + il / 100.0;
@@ -266,7 +266,7 @@ static int parsePressure(const char *tok, int *hPa)
     return 0;
 }
 
-/* ---------- cloud token, might have altitude+type attached -------- */
+
 
 static int parseCloudToken(const char *tok, int *code, int *alt, char *type)
 {
@@ -276,7 +276,7 @@ static int parseCloudToken(const char *tok, int *code, int *alt, char *type)
 
     *alt = 0; type[0] = '\0';
 
-    /* code is first 3 chars for everything except VV (2) */
+
     if (strncmp(tok, "VV", 2) == 0) {
         *code = 5;
         strcpy(buf, tok + 2);
@@ -288,33 +288,33 @@ static int parseCloudToken(const char *tok, int *code, int *alt, char *type)
         strcpy(buf, tok + 3);
     }
 
-    /* buf now has altitude + optional type */
+
     p = buf;
-    if (!*p) return 1; /* just code, e.g. "SKC" or "CLR" */
-    /* grab altitude digits */
+    if (!*p) return 1;
+
     a = 0;
     while (*p && isdigit((unsigned char)*p)) {
         a = a * 10 + (*p - '0');
         ++p;
     }
-    *alt = a * 100; /* e.g. "025" -> 2500 ft */
+    *alt = a * 100;
 
-    /* remainder is type: CB or TCU */
+
     if (*p) strcpy(type, p);
 
     return 1;
 }
 
-/* ---------- token classification & main parse -------------------- */
+
 
 NAV_EXPORT int NAV1_METAR_metarParse(const char *raw, NAV1_MetarData *m)
 {
     char tok[TK], pToken[TK];
     const char *cp;
-    int state = 0; /* 0=station,1=time,2=wind,3=windvar,4=vis,*/
-                   /* 5=rvr,6=weather,7=clouds,8=tempdew,9=press,*/
-                   /* 10=recent,11=trend,12=done */
-    int prevWasInt = 0;   /* for mixed SM visibility */
+    int state = 0;
+
+
+    int prevWasInt = 0;
 
     if (!raw || !*raw || !m) return 0;
 
@@ -336,12 +336,12 @@ NAV_EXPORT int NAV1_METAR_metarParse(const char *raw, NAV1_MetarData *m)
         cp = nextToken(cp, tok);
         if (!tok[0]) break;
 
-        /* --- always react to these markers --- */
+
         if (strcmp(tok, "RMK") == 0) break;
         if (strcmp(tok, "REM") == 0) break;
         if (strcmp(tok, "//")  == 0) continue;
 
-        /* ---- state 0: station ID (4-letter alpha) ---- */
+
         if (state == 0) {
             if (strlen(tok) >= 3 && isalpha((unsigned char)*tok)) {
                 strncpy(m->icao, tok, sizeof(m->icao) - 1);
@@ -351,7 +351,7 @@ NAV_EXPORT int NAV1_METAR_metarParse(const char *raw, NAV1_MetarData *m)
             }
         }
 
-        /* ---- state 1: date/time ddddddZ ---- */
+
         if (state == 1) {
             int len = (int)strlen(tok);
             if (len == 7 && tok[6] == 'Z') {
@@ -367,7 +367,7 @@ NAV_EXPORT int NAV1_METAR_metarParse(const char *raw, NAV1_MetarData *m)
             }
         }
 
-        /* ---- state 2: wind ---- */
+
         if (state == 2) {
             int d, s, g;
             if (strEnds(tok, "KT") || strEnds(tok, "KMH") || strEnds(tok, "MPS") ||
@@ -382,7 +382,7 @@ NAV_EXPORT int NAV1_METAR_metarParse(const char *raw, NAV1_MetarData *m)
             }
         }
 
-        /* ---- state 3: wind variation dddVddd ---- */
+
         if (state == 3) {
             int len = (int)strlen(tok);
             if (len == 7 && tok[3] == 'V') {
@@ -394,20 +394,20 @@ NAV_EXPORT int NAV1_METAR_metarParse(const char *raw, NAV1_MetarData *m)
                 state = 4;
                 continue;
             }
-            /* no wind var, fall through to state 4 */
+
             state = 4;
         }
 
-        /* ---- state 4: visibility ---- */
+
         if (state == 4) {
             int smn, smd, vm;
-            /* CAVOK */
+
             if (strcmp(tok, "CAVOK") == 0) {
                 m->visibilityM = -1;
                 state = 5; prevWasInt = 0;
                 continue;
             }
-            /* mixed SM: e.g. "1" + "1/2SM" */
+
             if (prevWasInt && strEnds(tok, "SM")) {
                 int whole;
                 sscanf(pToken, "%d", &whole);
@@ -419,7 +419,7 @@ NAV_EXPORT int NAV1_METAR_metarParse(const char *raw, NAV1_MetarData *m)
                 prevWasInt = 0; pToken[0] = '\0'; state = 5;
                 continue;
             }
-            /* plain SM visibility */
+
             if (strEnds(tok, "SM") || strcmp(tok, "M1/4SM") == 0) {
                 if (parseVisSM(tok, &smn, &smd)) {
                     m->visibilitySM_num = smn;
@@ -429,7 +429,7 @@ NAV_EXPORT int NAV1_METAR_metarParse(const char *raw, NAV1_MetarData *m)
                     continue;
                 }
             }
-            /* all-digit token -> short = SM integer part, long = meters */
+
             {
                 const char *p = tok;
                 int allDigit = 1, len = 0;
@@ -438,22 +438,22 @@ NAV_EXPORT int NAV1_METAR_metarParse(const char *raw, NAV1_MetarData *m)
                     else ++len;
                 if (allDigit) {
                     if (len <= 2) {
-                        /* short ??? candidate for mixed SM */
+
                         strcpy(pToken, tok); prevWasInt = 1;
                         continue;
                     }
-                    /* 3+ digits ??? meters visibility */
+
                     sscanf(tok, "%d", &vm);
                     m->visibilityM = vm;
                     state = 5; prevWasInt = 0;
                     continue;
                 }
             }
-            /* no visibility matched */
+
             prevWasInt = 0; state = 5;
         }
 
-        /* ---- state 5: RVR ---- */
+
         if (state == 5) {
             if (tok[0] == 'R' && tok[1] != '\0') {
                 if (m->rvr[0])
@@ -464,7 +464,7 @@ NAV_EXPORT int NAV1_METAR_metarParse(const char *raw, NAV1_MetarData *m)
             state = 6;
         }
 
-        /* ---- state 6: weather ---- */
+
         if (state == 6) {
             char intensity[4], descr[16], phen[24];
             classifyWeather(tok, intensity, descr, phen);
@@ -480,7 +480,7 @@ NAV_EXPORT int NAV1_METAR_metarParse(const char *raw, NAV1_MetarData *m)
             state = 7;
         }
 
-        /* ---- state 7: clouds ---- */
+
         if (state == 7) {
             int cc, ca;
             char ctype[8];
@@ -504,7 +504,7 @@ NAV_EXPORT int NAV1_METAR_metarParse(const char *raw, NAV1_MetarData *m)
             state = 8;
         }
 
-        /* ---- state 8: temperature/dewpoint ---- */
+
         if (state == 8) {
             double t, d;
             if (parseTempDew(tok, &t, &d)) {
@@ -516,7 +516,7 @@ NAV_EXPORT int NAV1_METAR_metarParse(const char *raw, NAV1_MetarData *m)
             state = 9;
         }
 
-        /* ---- state 9: pressure ---- */
+
         if (state == 9) {
             int hp;
             if (parsePressure(tok, &hp)) {
@@ -527,7 +527,7 @@ NAV_EXPORT int NAV1_METAR_metarParse(const char *raw, NAV1_MetarData *m)
             state = 10;
         }
 
-        /* ---- state 10: recent weather / windshear ---- */
+
         if (state == 10) {
             if (strncmp(tok, "RE", 2) == 0 && strlen(tok) > 2) {
                 continue;
@@ -536,10 +536,10 @@ NAV_EXPORT int NAV1_METAR_metarParse(const char *raw, NAV1_MetarData *m)
                 continue;
             }
             state = 11;
-            /* fall through to state 11 in same iteration */
+
         }
 
-        /* ---- state 11: trend ---- */
+
         if (state == 11) {
             if (strcmp(tok, "NOSIG") == 0 ||
                 strcmp(tok, "BECMG") == 0 ||
@@ -549,7 +549,7 @@ NAV_EXPORT int NAV1_METAR_metarParse(const char *raw, NAV1_MetarData *m)
                 continue;
             }
         }
-        /* state >= 12: ignore remaining */
+
         if (state >= 12) break;
 
         prevWasInt = 0;
@@ -565,7 +565,7 @@ NAV_EXPORT double NAV1_METAR_metarWindAvg(const NAV1_MetarData *m)
     return (double)m->windSpeedKt;
 }
 
-/* reuse heading+wind math ??? declared internally */
+
 static double deg2rad(double d) { return d * 3.14159265358979323846 / 180.0; }
 
 NAV_EXPORT double NAV1_METAR_metarCrosswind(const NAV1_MetarData *m,

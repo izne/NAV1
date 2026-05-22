@@ -9,21 +9,21 @@
 #define A424_LINE_LEN 132
 
 typedef struct {
-    int section;   /* first char of section code byte */
-    int sub;       /* sub-section from byte 5 */
+    int section;
+    int sub;
 } A424Key;
 
 typedef struct {
     A424Key key;
-    int typeIdx;   /* 0=navaid, 1=wpt, 2=arpt, 3=rwy, 4=ils */
+    int typeIdx;
 } A424Dispatch;
 
 static A424Dispatch dispatchTable[] = {
-    {{'P', 'A'}, 2},  /* Airport */
-    {{'P', 'C'}, 1},  /* Terminal Waypoint */
-    {{'P', 'G'}, 3},  /* Runway */
-    {{'P', 'I'}, 4},  /* ILS/Localizer/GS */
-    {{'E', 'A'}, 1},  /* Enroute Waypoint */
+    {{'P', 'A'}, 2},
+    {{'P', 'C'}, 1},
+    {{'P', 'G'}, 3},
+    {{'P', 'I'}, 4},
+    {{'E', 'A'}, 1},
 };
 static const int dispatchTableSize = sizeof(dispatchTable) / sizeof(dispatchTable[0]);
 

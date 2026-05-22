@@ -29,12 +29,14 @@ NAV_EXPORT double NAV1_GPS_gpsSpeed(double lat1, double lon1, double lat2, doubl
 
 NAV_EXPORT int NAV1_GPS_nmeaChecksum(const char *sentence)
 {
+    const char *star, *p;
+    unsigned char cs;
     if (!sentence || sentence[0] != '$') return 0;
-    const char *star = strchr(sentence, '*');
+    star = strchr(sentence, '*');
     if (!star || strlen(star) < 3) return 0;
 
-    unsigned char cs = 0;
-    for (const char *p = sentence + 1; p < star; p++)
+    cs = 0;
+    for (p = sentence + 1; p < star; p++)
         cs ^= (unsigned char)*p;
 
     unsigned int expected;

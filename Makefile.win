@@ -11,8 +11,8 @@ LIBS     = -L"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib" -L"C:/P
 INCS     = -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include"
 CXXINCS  = -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include/c++"
 BIN      = NAV1.dll
-CXXFLAGS = $(CXXINCS) -DBUILDING_DLL=1 -D_USE_MATH_DEFINES
-CFLAGS   = $(INCS) -DBUILDING_DLL=1 -D_USE_MATH_DEFINES
+CXXFLAGS = $(CXXINCS) -DBUILDING_DLL=1 -D_USE_MATH_DEFINES -std=c89
+CFLAGS   = $(INCS) -DBUILDING_DLL=1 -D_USE_MATH_DEFINES -std=c89
 DEL      = C:\Program Files (x86)\Embarcadero\Dev-Cpp\DevCpp.exe INTERNAL_DEL
 DEF      = libNAV1.def
 STATIC   = libNAV1.a

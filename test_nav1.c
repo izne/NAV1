@@ -547,7 +547,7 @@ int main()
 
     printf("--- METAR Module ---\n");
     {
-        /* KSEA basic METAR */
+
         NAV1_MetarData m;
         int ok = NAV1_METAR_metarParse(
             "KSEA 221653Z 21012G20KT 180V250 10SM -RA BKN025 OVC050 12/09 A2993", &m);
@@ -577,7 +577,7 @@ int main()
         TEST_TRUE("metar QNH hPa", m.qnhHPa == 1014);
     }
     {
-        /* VRB wind + metric visibility */
+
         NAV1_MetarData m;
         NAV1_METAR_metarParse("KJFK 221653Z VRB05KT 9999 FEW030 18/12 Q1015", &m);
         TEST_TRUE("metar VRB windDir", m.windDir == -1);
@@ -586,7 +586,7 @@ int main()
         TEST_TRUE("metar VRB qnh", m.qnhHPa == 1015);
     }
     {
-        /* Calm wind + negative temp + SM fraction */
+
         NAV1_MetarData m;
         NAV1_METAR_metarParse("PAFA 221653Z 00000KT 1/4SM FZFG BKN001 M25/M29 A3002", &m);
         TEST_TRUE("metar calm windDir", m.windDir == 0);
@@ -601,7 +601,7 @@ int main()
         TEST_TRUE("metar calm qnh", m.qnhHPa == 1017);
     }
     {
-        /* CAVOK + CB + NOSIG */
+
         NAV1_MetarData m;
         NAV1_METAR_metarParse("KLAX 221653Z 25008KT CAVOK 22/16 Q1013 NOSIG", &m);
         TEST_TRUE("metar CAVOK vis", m.visibilityM == -1);
@@ -609,7 +609,7 @@ int main()
         TEST_STR("metar CAVOK trend", m.trend, "NOSIG");
     }
     {
-        /* CB cloud type */
+
         NAV1_MetarData m;
         NAV1_METAR_metarParse("KOKC 221653Z 36015G25KT 10SM TSRA BKN050CB 28/20 Q1014", &m);
         TEST_TRUE("metar CB cloudCount", m.cloudCount >= 1);
@@ -620,7 +620,7 @@ int main()
         TEST_STR("metar CB phen", m.sky[0].phenomena, "RA");
     }
     {
-        /* Mixed SM visibility: 1 1/2SM */
+
         NAV1_MetarData m;
         NAV1_METAR_metarParse("KXYZ 221653Z 00000KT 1 1/2SM BR OVC010 10/09 Q1019", &m);
         TEST_TRUE("metar mixed vis M", m.visibilityM == 2414);
@@ -629,7 +629,7 @@ int main()
         TEST_STR("metar mixed phen", m.sky[0].phenomena, "BR");
     }
     {
-        /* Crosswind / headwind */
+
         NAV1_MetarData m;
         NAV1_METAR_metarParse("KSEA 221653Z 27015KT 10SM SCT010 12/09 Q1019", &m);
         double xw = NAV1_METAR_metarCrosswind(&m, 180.0);
@@ -640,7 +640,7 @@ int main()
         TEST_NEAR("metar windAvg", avg, 15.0, 0.01);
     }
     {
-        /* null/empty */
+
         int ok = NAV1_METAR_metarParse((const char *)0, (NAV1_MetarData *)0);
         TEST_TRUE("metar null parse", !ok);
     }

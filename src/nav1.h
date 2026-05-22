@@ -4,7 +4,7 @@
 #include <windows.h>
 #include "export.h"
 
-/* Core waypoint type for route and FPL modules */
+
 #define NAV1_ROUTE_MAX_IDENT 8
 #define NAV1_ROUTE_MAX_NAME 32
 
@@ -14,7 +14,7 @@ typedef struct {
     double altitudeFt;
     char ident[NAV1_ROUTE_MAX_IDENT];
     char name[NAV1_ROUTE_MAX_NAME];
-    int type;  /* 0=user, 1=airport, 2=VOR, 3=NDB, 4=fix, 5=intersection, 6=procedure */
+    int type;
 } NAV1_Waypoint;
 
 NAV_EXPORT void Version();

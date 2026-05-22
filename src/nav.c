@@ -40,6 +40,14 @@ NAV_EXPORT double NAV1_NAV_alongTrackDistance(double lat1, double lon1, double l
 
 NAV_EXPORT void NAV1_NAV_greatCircleWaypoints(double lat1, double lon1, double lat2, double lon2, int count, double *outLats, double *outLons)
 {
+    int i;
+    const double lat1_r = toRad(lat1);
+    const double lon1_r = toRad(lon1);
+    const double lat2_r = toRad(lat2);
+    const double lon2_r = toRad(lon2);
+    const double c = haversineAngular(lat1, lon1, lat2, lon2);
+    const double sinC = sin(c);
+
     if (count < 2) return;
     outLats[0] = lat1;
     outLons[0] = lon1;
@@ -52,14 +60,7 @@ NAV_EXPORT void NAV1_NAV_greatCircleWaypoints(double lat1, double lon1, double l
     outLats[count - 1] = lat2;
     outLons[count - 1] = lon2;
 
-    const double lat1_r = toRad(lat1);
-    const double lon1_r = toRad(lon1);
-    const double lat2_r = toRad(lat2);
-    const double lon2_r = toRad(lon2);
-    const double c = haversineAngular(lat1, lon1, lat2, lon2);
-    const double sinC = sin(c);
-
-    for (int i = 1; i < count - 1; i++)
+    for (i = 1; i < count - 1; i++)
     {
         const double f = (double)i / (count - 1);
         const double A = sin((1 - f) * c) / sinC;
