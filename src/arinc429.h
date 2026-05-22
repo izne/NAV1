@@ -25,14 +25,14 @@ typedef struct {
     char unit[12];
 } NAV1_ARINC429Word;
 
-NAV_EXPORT void        NAV1_A429_a429Decode(unsigned int word, NAV1_ARINC429Word *out);
-NAV_EXPORT unsigned int NAV1_A429_a429Label(unsigned int word);
-NAV_EXPORT unsigned int NAV1_A429_a429SDI(unsigned int word);
-NAV_EXPORT unsigned int NAV1_A429_a429Data(unsigned int word);
-NAV_EXPORT unsigned int NAV1_A429_a429SSM(unsigned int word);
-NAV_EXPORT int         NAV1_A429_a429ParityCheck(unsigned int word);
-NAV_EXPORT double      NAV1_A429_a429DataBNR(unsigned int dataField, double lsbWeight);
-NAV_EXPORT double      NAV1_A429_a429DataBCD(unsigned int dataField, int digitCount);
-NAV_EXPORT int         NAV1_A429_a429LabelInfo(unsigned int label, char *outName, char *outUnit, int *outEncoding, double *outLsbWeight, int *outIsSigned);
+NAV1_EXPORT void        NAV1_A429_a429Decode(unsigned int word, NAV1_ARINC429Word *out);
+NAV1_EXPORT unsigned int NAV1_A429_a429Label(unsigned int word);
+NAV1_EXPORT unsigned int NAV1_A429_a429SDI(unsigned int word);
+NAV1_EXPORT unsigned int NAV1_A429_a429Data(unsigned int word);
+NAV1_EXPORT unsigned int NAV1_A429_a429SSM(unsigned int word);
+NAV1_EXPORT int         NAV1_A429_a429ParityCheck(unsigned int word);
+NAV1_EXPORT double      NAV1_A429_a429DataBNR(unsigned int dataField, double lsbWeight);
+NAV1_EXPORT double      NAV1_A429_a429DataBCD(unsigned int dataField, int digitCount);
+NAV1_EXPORT int         NAV1_A429_a429LabelInfo(unsigned int label, char *outName, char *outUnit, int *outEncoding, double *outLsbWeight, int *outIsSigned);
 
 #endif

@@ -84,7 +84,7 @@ typedef struct {
     int capacity;
 } NAV1_A424Database;
 
-NAV_EXPORT int  NAV1_A424_a424ParseFile(const char *filename, NAV1_A424Database *db);
-NAV_EXPORT void NAV1_A424_a424Free(NAV1_A424Database *db);
+NAV1_EXPORT int  NAV1_A424_a424ParseFile(const char *filename, NAV1_A424Database *db);
+NAV1_EXPORT void NAV1_A424_a424Free(NAV1_A424Database *db);
 
 #endif

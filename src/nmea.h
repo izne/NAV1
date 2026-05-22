@@ -19,6 +19,6 @@ typedef struct {
     char   dateUTC[7];
 } NAV1_NMEAData;
 
-NAV_EXPORT int NAV1_NMEA_nmeaParse(const char *sentence, NAV1_NMEAData *out);
+NAV1_EXPORT int NAV1_NMEA_nmeaParse(const char *sentence, NAV1_NMEAData *out);
 
 #endif

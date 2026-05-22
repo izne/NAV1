@@ -1,11 +1,4 @@
-#include "nav1.h"
-#include "conv.h"
-#include "nav.h"
-#include "aero.h"
-#include "gps.h"
-#include "flight_mgmt.h"
-#include "control.h"
-#include "nmea.h"
+#include "NAV1.h"
 #include <stdio.h>
 #include <math.h>
 #include <string.h>

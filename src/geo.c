@@ -3,7 +3,7 @@
 
 static const double R = 6371e3;
 
-NAV_EXPORT double NAV1_GEO_distanceToTarget(double lat1, double lon1, double lat2, double lon2)
+NAV1_EXPORT double NAV1_GEO_distanceToTarget(double lat1, double lon1, double lat2, double lon2)
 {
     const double f1 = lat1 * M_PI / 180;
     const double f2 = lat2 * M_PI / 180;
@@ -14,7 +14,7 @@ NAV_EXPORT double NAV1_GEO_distanceToTarget(double lat1, double lon1, double lat
     return R * c / 1852.0;
 }
 
-NAV_EXPORT double NAV1_GEO_headingToTarget(double lat1, double lon1, double lat2, double lon2)
+NAV1_EXPORT double NAV1_GEO_headingToTarget(double lat1, double lon1, double lat2, double lon2)
 {
     const double lat1_r = lat1 * M_PI / 180;
     const double lat2_r = lat2 * M_PI / 180;
@@ -29,7 +29,7 @@ NAV_EXPORT double NAV1_GEO_headingToTarget(double lat1, double lon1, double lat2
     return fmod(bearing + 360.0, 360.0);
 }
 
-NAV_EXPORT void NAV1_GEO_destinationPoint(double lat1, double lon1, double bearing, double distNm, double *outLat, double *outLon)
+NAV1_EXPORT void NAV1_GEO_destinationPoint(double lat1, double lon1, double bearing, double distNm, double *outLat, double *outLon)
 {
     const double lat1_r = lat1 * M_PI / 180;
     const double lon1_r = lon1 * M_PI / 180;
@@ -44,7 +44,7 @@ NAV_EXPORT void NAV1_GEO_destinationPoint(double lat1, double lon1, double beari
     *outLon = fmod(lon2_r * 180 / M_PI + 540, 360) - 180;
 }
 
-NAV_EXPORT void NAV1_GEO_midpoint(double lat1, double lon1, double lat2, double lon2, double *outLat, double *outLon)
+NAV1_EXPORT void NAV1_GEO_midpoint(double lat1, double lon1, double lat2, double lon2, double *outLat, double *outLon)
 {
     const double lat1_r = lat1 * M_PI / 180;
     const double lat2_r = lat2 * M_PI / 180;
@@ -62,7 +62,7 @@ NAV_EXPORT void NAV1_GEO_midpoint(double lat1, double lon1, double lat2, double 
     *outLon = fmod(lon3_r * 180 / M_PI + 540, 360) - 180;
 }
 
-NAV_EXPORT double NAV1_GEO_finalBearing(double lat1, double lon1, double lat2, double lon2)
+NAV1_EXPORT double NAV1_GEO_finalBearing(double lat1, double lon1, double lat2, double lon2)
 {
     const double lat1_r = lat1 * M_PI / 180;
     const double lat2_r = lat2 * M_PI / 180;
@@ -76,7 +76,7 @@ NAV_EXPORT double NAV1_GEO_finalBearing(double lat1, double lon1, double lat2, d
     return fmod(t * 180 / M_PI + 540, 360);
 }
 
-NAV_EXPORT double NAV1_GEO_crossTrackDistance(double lat1, double lon1, double lat2, double lon2, double lat3, double lon3)
+NAV1_EXPORT double NAV1_GEO_crossTrackDistance(double lat1, double lon1, double lat2, double lon2, double lat3, double lon3)
 {
     const double lat1_r = lat1 * M_PI / 180;
     const double lon1_r = lon1 * M_PI / 180;
@@ -106,7 +106,7 @@ NAV_EXPORT double NAV1_GEO_crossTrackDistance(double lat1, double lon1, double l
     return xtd / 1852.0;
 }
 
-NAV_EXPORT double NAV1_GEO_dmsToDecimal(int degrees, int minutes, double seconds, char dir)
+NAV1_EXPORT double NAV1_GEO_dmsToDecimal(int degrees, int minutes, double seconds, char dir)
 {
     double decimal = abs(degrees) + minutes / 60.0 + seconds / 3600.0;
     if (dir == 'S' || dir == 'W' || dir == 's' || dir == 'w')
@@ -114,7 +114,7 @@ NAV_EXPORT double NAV1_GEO_dmsToDecimal(int degrees, int minutes, double seconds
     return decimal;
 }
 
-NAV_EXPORT void NAV1_GEO_decimalToDMS(double decimal, int *degrees, int *minutes, double *seconds)
+NAV1_EXPORT void NAV1_GEO_decimalToDMS(double decimal, int *degrees, int *minutes, double *seconds)
 {
     double absDec = fabs(decimal);
     *degrees = (int)absDec;

@@ -307,7 +307,7 @@ static int parseCloudToken(const char *tok, int *code, int *alt, char *type)
 
 
 
-NAV_EXPORT int NAV1_METAR_metarParse(const char *raw, NAV1_MetarData *m)
+NAV1_EXPORT int NAV1_METAR_metarParse(const char *raw, NAV1_MetarData *m)
 {
     char tok[TK], pToken[TK];
     const char *cp;
@@ -559,7 +559,7 @@ NAV_EXPORT int NAV1_METAR_metarParse(const char *raw, NAV1_MetarData *m)
     return 1;
 }
 
-NAV_EXPORT double NAV1_METAR_metarWindAvg(const NAV1_MetarData *m)
+NAV1_EXPORT double NAV1_METAR_metarWindAvg(const NAV1_MetarData *m)
 {
     if (!m) return 0.0;
     return (double)m->windSpeedKt;
@@ -568,7 +568,7 @@ NAV_EXPORT double NAV1_METAR_metarWindAvg(const NAV1_MetarData *m)
 
 static double deg2rad(double d) { return d * 3.14159265358979323846 / 180.0; }
 
-NAV_EXPORT double NAV1_METAR_metarCrosswind(const NAV1_MetarData *m,
+NAV1_EXPORT double NAV1_METAR_metarCrosswind(const NAV1_MetarData *m,
                                           double rwyHdg)
 {
     double d, ws;
@@ -578,7 +578,7 @@ NAV_EXPORT double NAV1_METAR_metarCrosswind(const NAV1_MetarData *m,
     return ws * sin(d);
 }
 
-NAV_EXPORT double NAV1_METAR_metarHeadwind(const NAV1_MetarData *m,
+NAV1_EXPORT double NAV1_METAR_metarHeadwind(const NAV1_MetarData *m,
                                          double rwyHdg)
 {
     double d, ws;

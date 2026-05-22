@@ -43,9 +43,9 @@ typedef struct {
     int valid;
 } NAV1_MetarData;
 
-NAV_EXPORT int  NAV1_METAR_metarParse(const char *raw, NAV1_MetarData *out);
-NAV_EXPORT double NAV1_METAR_metarWindAvg(const NAV1_MetarData *m);
-NAV_EXPORT double NAV1_METAR_metarCrosswind(const NAV1_MetarData *m, double rwyHdg);
-NAV_EXPORT double NAV1_METAR_metarHeadwind(const NAV1_MetarData *m, double rwyHdg);
+NAV1_EXPORT int  NAV1_METAR_metarParse(const char *raw, NAV1_MetarData *out);
+NAV1_EXPORT double NAV1_METAR_metarWindAvg(const NAV1_MetarData *m);
+NAV1_EXPORT double NAV1_METAR_metarCrosswind(const NAV1_MetarData *m, double rwyHdg);
+NAV1_EXPORT double NAV1_METAR_metarHeadwind(const NAV1_MetarData *m, double rwyHdg);
 
 #endif

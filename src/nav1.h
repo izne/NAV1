@@ -1,9 +1,10 @@
-#ifndef NAV1_H
-#define NAV1_H
+#ifndef NAV1_INTERNAL_H
+#define NAV1_INTERNAL_H
 
-#include <windows.h>
+/* Internal master header — includes export.h + all module headers.
+   Public consumers should use NAV1.h (project root) instead. */
+
 #include "export.h"
-
 
 #define NAV1_ROUTE_MAX_IDENT 8
 #define NAV1_ROUTE_MAX_NAME 32
@@ -16,9 +17,6 @@ typedef struct {
     char name[NAV1_ROUTE_MAX_NAME];
     int type;
 } NAV1_Waypoint;
-
-NAV_EXPORT void Version();
-NAV_EXPORT void WINAPI WinVer(HWND, HINSTANCE, LPSTR, int);
 
 #include "geo.h"
 #include "conv.h"

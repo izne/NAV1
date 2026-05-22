@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdio.h>
 
-NAV_EXPORT double NAV1_GPS_dmmToDecimal(int degrees, double minutes, char dir)
+NAV1_EXPORT double NAV1_GPS_dmmToDecimal(int degrees, double minutes, char dir)
 {
     double decimal = abs(degrees) + minutes / 60.0;
     if (dir == 'S' || dir == 'W' || dir == 's' || dir == 'w')
@@ -12,14 +12,14 @@ NAV_EXPORT double NAV1_GPS_dmmToDecimal(int degrees, double minutes, char dir)
     return decimal;
 }
 
-NAV_EXPORT void NAV1_GPS_decimalToDMM(double decimal, double *minutes, char *dir)
+NAV1_EXPORT void NAV1_GPS_decimalToDMM(double decimal, double *minutes, char *dir)
 {
     double absDec = fabs(decimal);
     *minutes = (absDec - (int)absDec) * 60.0;
     *dir = (decimal >= 0) ? 'N' : 'S';
 }
 
-NAV_EXPORT double NAV1_GPS_gpsSpeed(double lat1, double lon1, double lat2, double lon2, double timeSeconds)
+NAV1_EXPORT double NAV1_GPS_gpsSpeed(double lat1, double lon1, double lat2, double lon2, double timeSeconds)
 {
     if (timeSeconds <= 0) return 0.0;
     double distNm = NAV1_GEO_distanceToTarget(lat1, lon1, lat2, lon2);
@@ -27,7 +27,7 @@ NAV_EXPORT double NAV1_GPS_gpsSpeed(double lat1, double lon1, double lat2, doubl
     return distNm / timeHours;
 }
 
-NAV_EXPORT int NAV1_GPS_nmeaChecksum(const char *sentence)
+NAV1_EXPORT int NAV1_GPS_nmeaChecksum(const char *sentence)
 {
     const char *star, *p;
     unsigned char cs;
@@ -46,12 +46,12 @@ NAV_EXPORT int NAV1_GPS_nmeaChecksum(const char *sentence)
     return cs == expected;
 }
 
-NAV_EXPORT int NAV1_GPS_isValidLatitude(double lat)
+NAV1_EXPORT int NAV1_GPS_isValidLatitude(double lat)
 {
     return lat >= -90.0 && lat <= 90.0;
 }
 
-NAV_EXPORT int NAV1_GPS_isValidLongitude(double lon)
+NAV1_EXPORT int NAV1_GPS_isValidLongitude(double lon)
 {
     return lon >= -180.0 && lon <= 180.0;
 }

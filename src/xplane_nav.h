@@ -28,11 +28,11 @@ typedef struct {
     int capacity;
 } NAV1_NavDatabase;
 
-NAV_EXPORT int  NAV1_XPL_xpNavLoad(const char *filename, NAV1_NavDatabase *db);
-NAV_EXPORT int  NAV1_XPL_xpFixLoad(const char *filename, NAV1_NavDatabase *db);
-NAV_EXPORT int  NAV1_XPL_xpNavFindByID(const NAV1_NavDatabase *db, const char *ident, int startIndex, NAV1_NavRecord *out);
-NAV_EXPORT int  NAV1_XPL_xpNavFindNearest(const NAV1_NavDatabase *db, double lat, double lon, int typeFilter, NAV1_NavRecord *out);
-NAV_EXPORT int  NAV1_XPL_fplParseRoute(const char *str, const NAV1_NavDatabase *navdb, const NAV1_NavDatabase *fixdb, NAV1_Waypoint *waypoints, int maxCount);
-NAV_EXPORT void NAV1_XPL_xpNavFree(NAV1_NavDatabase *db);
+NAV1_EXPORT int  NAV1_XPL_xpNavLoad(const char *filename, NAV1_NavDatabase *db);
+NAV1_EXPORT int  NAV1_XPL_xpFixLoad(const char *filename, NAV1_NavDatabase *db);
+NAV1_EXPORT int  NAV1_XPL_xpNavFindByID(const NAV1_NavDatabase *db, const char *ident, int startIndex, NAV1_NavRecord *out);
+NAV1_EXPORT int  NAV1_XPL_xpNavFindNearest(const NAV1_NavDatabase *db, double lat, double lon, int typeFilter, NAV1_NavRecord *out);
+NAV1_EXPORT int  NAV1_XPL_fplParseRoute(const char *str, const NAV1_NavDatabase *navdb, const NAV1_NavDatabase *fixdb, NAV1_Waypoint *waypoints, int maxCount);
+NAV1_EXPORT void NAV1_XPL_xpNavFree(NAV1_NavDatabase *db);
 
 #endif

@@ -1,22 +1,22 @@
 #include "control.h"
 
-NAV_EXPORT void NAV1_CTL_lpfInit(NAV1_LowPassFilter *f, double initial)
+NAV1_EXPORT void NAV1_CTL_lpfInit(NAV1_LowPassFilter *f, double initial)
 {
     f->y = initial;
 }
 
-NAV_EXPORT double NAV1_CTL_lpfUpdate(NAV1_LowPassFilter *f, double x, double alpha)
+NAV1_EXPORT double NAV1_CTL_lpfUpdate(NAV1_LowPassFilter *f, double x, double alpha)
 {
     f->y += alpha * (x - f->y);
     return f->y;
 }
 
-NAV_EXPORT void NAV1_CTL_slewInit(NAV1_SlewLimiter *s, double initial)
+NAV1_EXPORT void NAV1_CTL_slewInit(NAV1_SlewLimiter *s, double initial)
 {
     s->last = initial;
 }
 
-NAV_EXPORT double NAV1_CTL_slewUpdate(NAV1_SlewLimiter *s, double x, double maxRate, double dt)
+NAV1_EXPORT double NAV1_CTL_slewUpdate(NAV1_SlewLimiter *s, double x, double maxRate, double dt)
 {
     double maxStep = maxRate * dt;
     double diff = x - s->last;
@@ -26,7 +26,7 @@ NAV_EXPORT double NAV1_CTL_slewUpdate(NAV1_SlewLimiter *s, double x, double maxR
     return s->last;
 }
 
-NAV_EXPORT void NAV1_CTL_maInit(NAV1_MovingAverage *ma, double *buffer, int size)
+NAV1_EXPORT void NAV1_CTL_maInit(NAV1_MovingAverage *ma, double *buffer, int size)
 {
     ma->buffer = buffer;
     ma->size = size;
@@ -35,7 +35,7 @@ NAV_EXPORT void NAV1_CTL_maInit(NAV1_MovingAverage *ma, double *buffer, int size
     ma->sum = 0.0;
 }
 
-NAV_EXPORT double NAV1_CTL_maUpdate(NAV1_MovingAverage *ma, double x)
+NAV1_EXPORT double NAV1_CTL_maUpdate(NAV1_MovingAverage *ma, double x)
 {
     if (ma->count < ma->size) {
         ma->sum += x;
@@ -52,7 +52,7 @@ NAV_EXPORT double NAV1_CTL_maUpdate(NAV1_MovingAverage *ma, double x)
     return ma->sum / ma->count;
 }
 
-NAV_EXPORT void NAV1_CTL_pidInit(NAV1_PIDController *pid, double Kp, double Ki, double Kd, double outMin, double outMax)
+NAV1_EXPORT void NAV1_CTL_pidInit(NAV1_PIDController *pid, double Kp, double Ki, double Kd, double outMin, double outMax)
 {
     pid->Kp = Kp;
     pid->Ki = Ki;
@@ -63,7 +63,7 @@ NAV_EXPORT void NAV1_CTL_pidInit(NAV1_PIDController *pid, double Kp, double Ki, 
     pid->outMax = outMax;
 }
 
-NAV_EXPORT double NAV1_CTL_pidUpdate(NAV1_PIDController *pid, double setpoint, double input, double dt)
+NAV1_EXPORT double NAV1_CTL_pidUpdate(NAV1_PIDController *pid, double setpoint, double input, double dt)
 {
     double error = setpoint - input;
     double pTerm = pid->Kp * error;
@@ -79,12 +79,12 @@ NAV_EXPORT double NAV1_CTL_pidUpdate(NAV1_PIDController *pid, double setpoint, d
     return output;
 }
 
-NAV_EXPORT void NAV1_CTL_cfInit(NAV1_ComplementaryFilter *f, double initial)
+NAV1_EXPORT void NAV1_CTL_cfInit(NAV1_ComplementaryFilter *f, double initial)
 {
     f->angle = initial;
 }
 
-NAV_EXPORT double NAV1_CTL_cfUpdate(NAV1_ComplementaryFilter *f, double accelAngle, double gyroRate, double dt, double alpha)
+NAV1_EXPORT double NAV1_CTL_cfUpdate(NAV1_ComplementaryFilter *f, double accelAngle, double gyroRate, double dt, double alpha)
 {
     f->angle = alpha * accelAngle + (1.0 - alpha) * (f->angle + gyroRate * dt);
     return f->angle;

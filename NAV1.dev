@@ -33,25 +33,25 @@ UnitCount=28
 
 [VersionInfo]
 Major=1
-Minor=0
-Release=0
-Build=0
+Minor=2
+Release=1
+Build=3
 LanguageID=1033
 CharsetID=1252
-CompanyName=greenDev Ltd.
-FileVersion=1.0.0.0
-FileDescription=Angelov NAV System, v1.0-alpha
+CompanyName=github.com/izne
+FileVersion=1.2.1.3
+FileDescription=Angelov NAV1 System
 InternalName=NAV1
 LegalCopyright=
-LegalTrademarks=(c) 2022 - 2024 greenDev Ltd.
-OriginalFilename=nav1.dll
-ProductName=Angelov NAV System, V1
-ProductVersion=1.0.0.0
+LegalTrademarks=(c) 2022 - 2026 Dimitar Angelov
+OriginalFilename=NAV1.dll
+ProductName=Angelov NAV1 System
+ProductVersion=1.2.1.3
 AutoIncBuildNr=0
 SyncProduct=1
 
 [Unit2]
-FileName=src/nav1.h
+FileName=src\nav1.h
 CompileCpp=0
 Folder=
 Compile=1
@@ -61,7 +61,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit3]
-FileName=src/conv.c
+FileName=src\conv.c
 CompileCpp=0
 Folder=
 Compile=1
@@ -71,7 +71,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit4]
-FileName=src/conv.h
+FileName=src\conv.h
 CompileCpp=0
 Folder=
 Compile=0
@@ -81,7 +81,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit5]
-FileName=src/nav.h
+FileName=src\nav.h
 CompileCpp=0
 Folder=
 Compile=0
@@ -91,7 +91,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit6]
-FileName=src/nav.c
+FileName=src\nav.c
 CompileCpp=0
 Folder=
 Compile=1
@@ -101,7 +101,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit7]
-FileName=src/aero.h
+FileName=src\aero.h
 CompileCpp=0
 Folder=
 Compile=0
@@ -111,7 +111,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit8]
-FileName=src/aero.c
+FileName=src\aero.c
 CompileCpp=0
 Folder=
 Compile=1
@@ -121,7 +121,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit9]
-FileName=src/gps.h
+FileName=src\gps.h
 CompileCpp=0
 Folder=
 Compile=0
@@ -131,7 +131,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit10]
-FileName=src/gps.c
+FileName=src\gps.c
 CompileCpp=0
 Folder=
 Compile=1
@@ -141,7 +141,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit11]
-FileName=src/flight_mgmt.h
+FileName=src\flight_mgmt.h
 CompileCpp=0
 Folder=
 Compile=0
@@ -151,7 +151,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit12]
-FileName=src/flight_mgmt.c
+FileName=src\flight_mgmt.c
 CompileCpp=0
 Folder=
 Compile=1
@@ -161,7 +161,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit13]
-FileName=src/control.h
+FileName=src\control.h
 CompileCpp=0
 Folder=
 Compile=0
@@ -171,7 +171,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit14]
-FileName=src/control.c
+FileName=src\control.c
 CompileCpp=0
 Folder=
 Compile=1
@@ -181,7 +181,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit15]
-FileName=src/nmea.h
+FileName=src\nmea.h
 CompileCpp=0
 Folder=
 Compile=0
@@ -191,7 +191,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit16]
-FileName=src/nmea.c
+FileName=src\nmea.c
 CompileCpp=0
 Folder=
 Compile=1
@@ -201,7 +201,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit1]
-FileName=src/nav1.c
+FileName=src\nav1.c
 CompileCpp=0
 Folder=
 Compile=1
@@ -211,7 +211,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit17]
-FileName=src/route.h
+FileName=src\route.h
 CompileCpp=0
 Folder=
 Compile=0
@@ -221,7 +221,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit18]
-FileName=src/route.c
+FileName=src\route.c
 CompileCpp=0
 Folder=
 Compile=1
@@ -231,7 +231,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit19]
-FileName=src/xplane_nav.h
+FileName=src\xplane_nav.h
 CompileCpp=0
 Folder=
 Compile=0
@@ -241,7 +241,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit20]
-FileName=src/xplane_nav.c
+FileName=src\xplane_nav.c
 CompileCpp=0
 Folder=
 Compile=1
@@ -251,7 +251,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit21]
-FileName=src/arinc429.h
+FileName=src\arinc429.h
 CompileCpp=0
 Folder=
 Compile=0
@@ -261,7 +261,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit22]
-FileName=src/arinc429.c
+FileName=src\arinc429.c
 CompileCpp=0
 Folder=
 Compile=1
@@ -271,7 +271,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit23]
-FileName=src/arinc424.h
+FileName=src\arinc424.h
 CompileCpp=0
 Folder=
 Compile=0
@@ -281,7 +281,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit24]
-FileName=src/arinc424.c
+FileName=src\arinc424.c
 CompileCpp=0
 Folder=
 Compile=1
@@ -291,7 +291,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit25]
-FileName=src/metar.h
+FileName=src\metar.h
 CompileCpp=0
 Folder=
 Compile=0
@@ -301,7 +301,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit26]
-FileName=src/metar.c
+FileName=src\metar.c
 CompileCpp=0
 Folder=
 Compile=1
@@ -311,7 +311,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit27]
-FileName=src/geo.h
+FileName=src\geo.h
 CompileCpp=0
 Folder=
 Compile=0
@@ -321,7 +321,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit28]
-FileName=src/geo.c
+FileName=src\geo.c
 CompileCpp=0
 Folder=
 Compile=1
