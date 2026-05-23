@@ -12,4 +12,7 @@ NAV1_EXPORT double  NAV1_GEO_crossTrackDistance(double lat1, double lon1, double
 NAV1_EXPORT double  NAV1_GEO_dmsToDecimal(int degrees, int minutes, double seconds, char dir);
 NAV1_EXPORT void    NAV1_GEO_decimalToDMS(double decimal, int *degrees, int *minutes, double *seconds);
 
+NAV1_EXPORT void    NAV1_GEO_geodeticToEcef(double lat, double lon, double altM, double *x, double *y, double *z);
+NAV1_EXPORT int     NAV1_GEO_ecefToGeodetic(double x, double y, double z, double *lat, double *lon, double *altM);
+
 #endif

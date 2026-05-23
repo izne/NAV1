@@ -122,3 +122,44 @@ NAV1_EXPORT void NAV1_GEO_decimalToDMS(double decimal, int *degrees, int *minute
     *minutes = (int)rem;
     *seconds = (rem - *minutes) * 60;
 }
+
+#define WGS84_A      6378137.0
+#define WGS84_F      (1.0 / 298.257223563)
+#define WGS84_E2     (2.0 * WGS84_F - WGS84_F * WGS84_F)
+
+NAV1_EXPORT void NAV1_GEO_geodeticToEcef(double lat, double lon, double altM, double *x, double *y, double *z)
+{
+    const double lat_r = lat * M_PI / 180.0;
+    const double lon_r = lon * M_PI / 180.0;
+    const double slat = sin(lat_r);
+    const double clat = cos(lat_r);
+    const double N = WGS84_A / sqrt(1.0 - WGS84_E2 * slat * slat);
+    *x = (N + altM) * clat * cos(lon_r);
+    *y = (N + altM) * clat * sin(lon_r);
+    *z = (N * (1.0 - WGS84_E2) + altM) * slat;
+}
+
+NAV1_EXPORT int NAV1_GEO_ecefToGeodetic(double x, double y, double z, double *lat, double *lon, double *altM)
+{
+    const double p = sqrt(x * x + y * y);
+    if (p < 1e-12)
+    {
+        *lon = 0.0;
+        *lat = (z >= 0) ? 90.0 : -90.0;
+        *altM = fabs(z) - WGS84_A * (1.0 - WGS84_E2);
+        return 1;
+    }
+    {
+        double theta = atan2(z * WGS84_A, p * WGS84_A * sqrt(1.0 - WGS84_E2));
+        double st = sin(theta);
+        double ct = cos(theta);
+        double lat_r = atan2(z + (WGS84_E2 * WGS84_A / sqrt(1.0 - WGS84_E2)) * st * st * st,
+                             p - WGS84_E2 * WGS84_A * ct * ct * ct);
+        double slat = sin(lat_r);
+        double N = WGS84_A / sqrt(1.0 - WGS84_E2 * slat * slat);
+        *lat = lat_r * 180.0 / M_PI;
+        *lon = atan2(y, x) * 180.0 / M_PI;
+        *altM = p / cos(lat_r) - N;
+    }
+    return 1;
+}

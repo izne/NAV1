@@ -45,6 +45,8 @@ NAV1_EXPORT double NAV1_GEO_finalBearing(double lat1, double lon1, double lat2, 
 NAV1_EXPORT double NAV1_GEO_crossTrackDistance(double lat1, double lon1, double lat2, double lon2, double lat3, double lon3);
 NAV1_EXPORT double NAV1_GEO_dmsToDecimal(int degrees, int minutes, double seconds, char dir);
 NAV1_EXPORT void   NAV1_GEO_decimalToDMS(double decimal, int *degrees, int *minutes, double *seconds);
+NAV1_EXPORT void   NAV1_GEO_geodeticToEcef(double lat, double lon, double altM, double *x, double *y, double *z);
+NAV1_EXPORT int    NAV1_GEO_ecefToGeodetic(double x, double y, double z, double *lat, double *lon, double *altM);
 
 /* ------------------------------------------------------------------ */
 /*  Unit conversions — NAV1_CONV_*                                    */
@@ -81,6 +83,7 @@ NAV1_EXPORT double NAV1_NAV_rhumbDistance(double lat1, double lon1, double lat2,
 NAV1_EXPORT double NAV1_NAV_rhumbBearing(double lat1, double lon1, double lat2, double lon2);
 NAV1_EXPORT void   NAV1_NAV_antipodalPoint(double lat, double lon, double *outLat, double *outLon);
 NAV1_EXPORT void   NAV1_NAV_bearingToCompass(double bearing, char *out, int outSize);
+NAV1_EXPORT int    NAV1_NAV_closestPointOnCourse(double lat1, double lon1, double lat2, double lon2, double lat3, double lon3, double *outLat, double *outLon);
 
 /* ------------------------------------------------------------------ */
 /*  Aviation math — NAV1_AERO_*                                       */
@@ -91,6 +94,9 @@ NAV1_EXPORT void   NAV1_AERO_windComponents(double windDirDeg, double windSpeedK
 NAV1_EXPORT void   NAV1_AERO_isaAtmosphere(double altitudeFt, double *temperatureC, double *pressureHPa, double *densityKgM3);
 NAV1_EXPORT double NAV1_AERO_pressureAltitude(double altitudeFt, double altimeterSettingInHg);
 NAV1_EXPORT double NAV1_AERO_densityAltitude(double altitudeFt, double oatC, double altimeterSettingInHg);
+NAV1_EXPORT double NAV1_AERO_speedOfSound(double oatC);
+NAV1_EXPORT double NAV1_AERO_machNumber(double tasKts, double oatC);
+NAV1_EXPORT double NAV1_AERO_casToTas(double casKts, double pressureAltFt, double oatC);
 
 /* ------------------------------------------------------------------ */
 /*  GPS helpers — NAV1_GPS_*                                          */
@@ -276,6 +282,10 @@ NAV1_EXPORT int          NAV1_A429_a429ParityCheck(unsigned int word);
 NAV1_EXPORT double       NAV1_A429_a429DataBNR(unsigned int dataField, double lsbWeight);
 NAV1_EXPORT double       NAV1_A429_a429DataBCD(unsigned int dataField, int digitCount);
 NAV1_EXPORT int          NAV1_A429_a429LabelInfo(unsigned int label, char *outName, char *outUnit, int *outEncoding, double *outLsbWeight, int *outIsSigned);
+NAV1_EXPORT unsigned int NAV1_A429_a429Encode(unsigned int label, unsigned int sdi, unsigned int dataField, unsigned int ssm);
+NAV1_EXPORT unsigned int NAV1_A429_a429SetParity(unsigned int word);
+NAV1_EXPORT unsigned int NAV1_A429_a429EncodeBNR(unsigned int label, unsigned int sdi, double value, double lsbWeight, int isSigned, unsigned int ssm);
+NAV1_EXPORT unsigned int NAV1_A429_a429EncodeBCD(unsigned int label, unsigned int sdi, double value, int digitCount, unsigned int ssm);
 
 /* ------------------------------------------------------------------ */
 /*  ARINC 424 nav database parser — NAV1_A424_*                       */

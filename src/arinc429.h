@@ -35,4 +35,9 @@ NAV1_EXPORT double      NAV1_A429_a429DataBNR(unsigned int dataField, double lsb
 NAV1_EXPORT double      NAV1_A429_a429DataBCD(unsigned int dataField, int digitCount);
 NAV1_EXPORT int         NAV1_A429_a429LabelInfo(unsigned int label, char *outName, char *outUnit, int *outEncoding, double *outLsbWeight, int *outIsSigned);
 
+NAV1_EXPORT unsigned int NAV1_A429_a429Encode(unsigned int label, unsigned int sdi, unsigned int dataField, unsigned int ssm);
+NAV1_EXPORT unsigned int NAV1_A429_a429SetParity(unsigned int word);
+NAV1_EXPORT unsigned int NAV1_A429_a429EncodeBNR(unsigned int label, unsigned int sdi, double value, double lsbWeight, int isSigned, unsigned int ssm);
+NAV1_EXPORT unsigned int NAV1_A429_a429EncodeBCD(unsigned int label, unsigned int sdi, double value, int digitCount, unsigned int ssm);
+
 #endif

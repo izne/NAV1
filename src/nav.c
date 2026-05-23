@@ -117,3 +117,36 @@ NAV1_EXPORT void NAV1_NAV_bearingToCompass(double bearing, char *out, int outSiz
     int i = (int)idx % 32;
     snprintf(out, outSize, "%s", points[i]);
 }
+
+NAV1_EXPORT int NAV1_NAV_closestPointOnCourse(double lat1, double lon1, double lat2, double lon2, double lat3, double lon3, double *outLat, double *outLon)
+{
+    const double c13 = haversineAngular(lat1, lon1, lat3, lon3);
+    if (c13 < 1e-12)
+    {
+        *outLat = lat1;
+        *outLon = lon1;
+        return 1;
+    }
+    {
+        const double brng13 = initialBearing(lat1, lon1, lat3, lon3);
+        const double brng12 = initialBearing(lat1, lon1, lat2, lon2);
+        const double atd = atan2(sin(c13) * cos(brng13 - brng12), cos(c13));
+        const double c12 = haversineAngular(lat1, lon1, lat2, lon2);
+        if (atd < 0)
+        {
+            *outLat = lat1;
+            *outLon = lon1;
+        }
+        else if (atd > c12)
+        {
+            *outLat = lat2;
+            *outLon = lon2;
+        }
+        else
+        {
+            const double dNm = atd * R / 1852.0;
+            NAV1_GEO_destinationPoint(lat1, lon1, toDeg(brng12), dNm, outLat, outLon);
+        }
+    }
+    return 1;
+}

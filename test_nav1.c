@@ -128,6 +128,26 @@ int main()
         TEST_NEAR("waypoints[4] lon", lons[4], 1.0, 0.01);
     }
 
+    printf("\n--- Closest Point on Course ---\n");
+    {
+        double lat, lon;
+        NAV1_NAV_closestPointOnCourse(0.0, 0.0, 10.0, 0.0, 5.0, 0.0, &lat, &lon);
+        TEST_NEAR("closest on-line lat", lat, 5.0, 0.1);
+        TEST_NEAR("closest on-line lon", lon, 0.0, 0.01);
+    }
+    {
+        double lat, lon;
+        NAV1_NAV_closestPointOnCourse(0.0, 0.0, 10.0, 0.0, 5.0, 0.5, &lat, &lon);
+        TEST_NEAR("closest off-line lat", lat, 5.0, 0.01);
+        TEST_NEAR("closest off-line lon", lon, 0.0, 0.1);
+    }
+    {
+        double lat, lon;
+        NAV1_NAV_closestPointOnCourse(0.0, 0.0, 10.0, 0.0, -1.0, 0.0, &lat, &lon);
+        TEST_NEAR("closest before A lat", lat, 0.0, 0.01);
+        TEST_NEAR("closest before A lon", lon, 0.0, 0.01);
+    }
+
     printf("\n--- Rhumb Line ---\n");
     TEST_NEAR("rhumbDist(0,0,10,0) NM", NAV1_NAV_rhumbDistance(0.0, 0.0, 10.0, 0.0), 600.0, 1.0);
     TEST_NEAR("rhumbBrg(0,0,0,10) deg (along equator)", NAV1_NAV_rhumbBearing(0.0, 0.0, 0.0, 10.0), 90.0, 0.1);
@@ -175,6 +195,33 @@ int main()
         char dir;
         NAV1_GPS_decimalToDMM(-43.75833, &mins, &dir);
         TEST_NEAR("decimalToDMM(-43.75833) minutes", mins, 45.5, 0.1);
+    }
+
+    printf("\n--- ECEF ---\n");
+    {
+        double x, y, z;
+        NAV1_GEO_geodeticToEcef(0.0, 0.0, 0.0, &x, &y, &z);
+        TEST_NEAR("ecef(0,0,0) x", x, 6378137.0, 1.0);
+        TEST_NEAR("ecef(0,0,0) y", y, 0.0, 1.0);
+        TEST_NEAR("ecef(0,0,0) z", z, 0.0, 1.0);
+    }
+    {
+        double lat, lon, alt;
+        int ok = NAV1_GEO_ecefToGeodetic(6378137.0, 0.0, 0.0, &lat, &lon, &alt);
+        TEST_TRUE("ecef2geo ok", ok);
+        TEST_NEAR("ecef2geo lat", lat, 0.0, 0.001);
+        TEST_NEAR("ecef2geo lon", lon, 0.0, 0.001);
+        TEST_NEAR("ecef2geo alt", alt, 0.0, 0.1);
+    }
+    {
+        double x, y, z;
+        NAV1_GEO_geodeticToEcef(52.0, 5.0, 100.0, &x, &y, &z);
+        double lat, lon, alt;
+        int ok = NAV1_GEO_ecefToGeodetic(x, y, z, &lat, &lon, &alt);
+        TEST_TRUE("ecef rt ok", ok);
+        TEST_NEAR("ecef rt lat", lat, 52.0, 0.001);
+        TEST_NEAR("ecef rt lon", lon, 5.0, 0.001);
+        TEST_NEAR("ecef rt alt", alt, 100.0, 1.0);
     }
 
     printf("\n--- Wind Correction ---\n");
@@ -230,6 +277,12 @@ int main()
     printf("\n--- Pressure & Density Altitude ---\n");
     TEST_NEAR("pressureAlt(1000,29.92)", NAV1_AERO_pressureAltitude(1000.0, 29.92), 1000.0, 50.0);
     TEST_NEAR("densityAlt(1000,15,29.92)", NAV1_AERO_densityAltitude(1000.0, 15.0, 29.92), 1240.0, 50.0);
+
+    printf("\n--- Speed of Sound / Mach / CAS->TAS ---\n");
+    TEST_NEAR("sos ISA SL", NAV1_AERO_speedOfSound(15.0), 661.5, 1.0);
+    TEST_NEAR("mach 0.5 at 15C", NAV1_AERO_machNumber(330.7, 15.0), 0.5, 0.01);
+    TEST_NEAR("cas2tas SL ISA", NAV1_AERO_casToTas(100.0, 0.0, 15.0), 100.0, 0.5);
+    TEST_NEAR("cas2tas 10000ft", NAV1_AERO_casToTas(100.0, 10000.0, -5.0), 120.0, 5.0);
 
     printf("\n--- GPS Speed ---\n");
     TEST_NEAR("gpsSpeed 60NM in 1hr", NAV1_GPS_gpsSpeed(0.0, 0.0, 1.0, 0.0, 3600.0), 60.0, 1.0);
@@ -725,6 +778,28 @@ int main()
         NAV1_A429_a429Decode(w, &out);
         TEST_NEAR("a429 dec UTC", out.value, 12345.0, 0.5);
         TEST_STR("a429 dec UTC name", out.name, "UTC Time");
+    }
+    {
+        unsigned int w = NAV1_A429_a429Encode(0010, 1, 35000, 3);
+        TEST_TRUE("a429 enc parity", NAV1_A429_a429ParityCheck(NAV1_A429_a429SetParity(w)));
+        TEST_NEAR("a429 enc label", (double)NAV1_A429_a429Label(w), 0010, 0.5);
+        TEST_NEAR("a429 enc sdi", (double)NAV1_A429_a429SDI(w), 1.0, 0.5);
+        TEST_NEAR("a429 enc data", (double)NAV1_A429_a429Data(w), 35000.0, 0.5);
+        TEST_NEAR("a429 enc ssm", (double)NAV1_A429_a429SSM(w), 3.0, 0.5);
+    }
+    {
+        unsigned int w = NAV1_A429_a429EncodeBNR(0010, 0, 35000.0, 1.0, 1, 3);
+        TEST_TRUE("a429 encBNR parity", NAV1_A429_a429ParityCheck(w));
+        NAV1_ARINC429Word out;
+        NAV1_A429_a429Decode(w, &out);
+        TEST_NEAR("a429 encBNR alt", out.value, 35000.0, 0.5);
+    }
+    {
+        unsigned int w = NAV1_A429_a429EncodeBCD(0042, 0, 12345.0, 6, 3);
+        TEST_TRUE("a429 encBCD parity", NAV1_A429_a429ParityCheck(w));
+        NAV1_ARINC429Word out;
+        NAV1_A429_a429Decode(w, &out);
+        TEST_NEAR("a429 encBCD utc", out.value, 12345.0, 0.5);
     }
 
     printf("\n=== Results: %d/%d passed ===\n", tests_passed, tests_run);

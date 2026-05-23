@@ -9,4 +9,8 @@ NAV1_EXPORT void NAV1_AERO_isaAtmosphere(double altitudeFt, double *temperatureC
 NAV1_EXPORT double NAV1_AERO_pressureAltitude(double altitudeFt, double altimeterSettingInHg);
 NAV1_EXPORT double NAV1_AERO_densityAltitude(double altitudeFt, double oatC, double altimeterSettingInHg);
 
+NAV1_EXPORT double NAV1_AERO_speedOfSound(double oatC);
+NAV1_EXPORT double NAV1_AERO_machNumber(double tasKts, double oatC);
+NAV1_EXPORT double NAV1_AERO_casToTas(double casKts, double pressureAltFt, double oatC);
+
 #endif

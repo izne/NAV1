@@ -195,3 +195,46 @@ int NAV1_A429_a429LabelInfo(unsigned int label, char *outName, char *outUnit, in
     }
     return 0;
 }
+
+unsigned int NAV1_A429_a429Encode(unsigned int label, unsigned int sdi, unsigned int dataField, unsigned int ssm)
+{
+    return (label & 0xFF) | ((sdi & 0x3) << 8)
+         | ((dataField & 0x7FFFF) << 10) | ((ssm & 0x3) << 29);
+}
+
+unsigned int NAV1_A429_a429SetParity(unsigned int word)
+{
+    unsigned int v = word;
+    int bits = 0;
+    while (v)
+    {
+        bits++;
+        v &= v - 1;
+    }
+    if (bits & 1)
+        return word & 0x7FFFFFFF;
+    return word | 0x80000000;
+}
+
+unsigned int NAV1_A429_a429EncodeBNR(unsigned int label, unsigned int sdi, double value, double lsbWeight, int isSigned, unsigned int ssm)
+{
+    int raw = (int)(value / lsbWeight + (value >= 0 ? 0.5 : -0.5));
+    unsigned int dataField;
+    if (isSigned && raw < 0)
+        dataField = ((unsigned int)(-raw) & 0x7FFFF) | 0x40000;
+    else
+        dataField = (unsigned int)(raw & 0x7FFFF);
+    return NAV1_A429_a429SetParity(NAV1_A429_a429Encode(label, sdi, dataField, ssm));
+}
+
+unsigned int NAV1_A429_a429EncodeBCD(unsigned int label, unsigned int sdi, double value, int digitCount, unsigned int ssm)
+{
+    int i, ival = (int)(value + 0.5);
+    unsigned int dataField = 0;
+    for (i = 0; i < digitCount; i++)
+    {
+        dataField |= (unsigned int)(ival % 10) << (4 * i);
+        ival /= 10;
+    }
+    return NAV1_A429_a429SetParity(NAV1_A429_a429Encode(label, sdi, dataField, ssm));
+}

@@ -63,3 +63,28 @@ NAV1_EXPORT double NAV1_AERO_densityAltitude(double altitudeFt, double oatC, dou
     const double isaTemp = 15.0 - 1.98 * PA / 1000.0;
     return PA + 120.0 * (oatC - isaTemp);
 }
+
+#define AERO_R     287.058
+#define AERO_GAMMA 1.4
+
+NAV1_EXPORT double NAV1_AERO_speedOfSound(double oatC)
+{
+    return sqrt(AERO_GAMMA * AERO_R * (oatC + 273.15)) * 1.94384;
+}
+
+NAV1_EXPORT double NAV1_AERO_machNumber(double tasKts, double oatC)
+{
+    return tasKts / NAV1_AERO_speedOfSound(oatC);
+}
+
+NAV1_EXPORT double NAV1_AERO_casToTas(double casKts, double pressureAltFt, double oatC)
+{
+    double t_isa, p_hPa, rho;
+    NAV1_AERO_isaAtmosphere(pressureAltFt, &t_isa, &p_hPa, &rho);
+    {
+        const double T = oatC + 273.15;
+        const double sigma = (p_hPa * 100.0) / (AERO_R * T) / 1.225;
+        if (sigma < 0.01) return casKts * 10.0;
+        return casKts / sqrt(sigma);
+    }
+}
