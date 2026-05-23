@@ -88,3 +88,14 @@ NAV1_EXPORT double NAV1_AERO_casToTas(double casKts, double pressureAltFt, doubl
         return casKts / sqrt(sigma);
     }
 }
+
+NAV1_EXPORT void NAV1_AERO_windTriangle(double headingDeg, double tasKts, double windDirDeg, double windSpeedKts, double *groundTrackDeg, double *groundSpeedKts)
+{
+    const double windTowards = fmod(windDirDeg + 180.0, 360.0);
+    const double aw = toRad(windTowards - headingDeg);
+    const double crosswind = windSpeedKts * sin(aw);
+    const double headwind  = -windSpeedKts * cos(aw);
+    *groundSpeedKts = tasKts + headwind;
+    const double drift = asin(crosswind / tasKts);
+    *groundTrackDeg = fmod(headingDeg + toDeg(drift) + 360.0, 360.0);
+}

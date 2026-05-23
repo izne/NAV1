@@ -176,3 +176,40 @@ NAV1_EXPORT double NAV1_GEO_shortestAngularDistance(double from, double to)
 {
     return NAV1_GEO_normalizeAngle(to - from);
 }
+
+NAV1_EXPORT int NAV1_GEO_intersectingRadials(double lat1, double lon1, double brg1, double lat2, double lon2, double brg2, double *outLat, double *outLon)
+{
+    const double lat1_r = lat1 * M_PI / 180.0;
+    const double lon1_r = lon1 * M_PI / 180.0;
+    const double lat2_r = lat2 * M_PI / 180.0;
+    const double lon2_r = lon2 * M_PI / 180.0;
+    const double brg1_r = brg1 * M_PI / 180.0;
+    const double brg2_r = brg2 * M_PI / 180.0;
+
+    const double df = (lat2 - lat1) * M_PI / 180.0;
+    const double dl = (lon2 - lon1) * M_PI / 180.0;
+    const double a = sin(df / 2.0) * sin(df / 2.0) + cos(lat1_r) * cos(lat2_r) * sin(dl / 2.0) * sin(dl / 2.0);
+    const double c = 2.0 * atan2(sqrt(a), sqrt(1.0 - a));
+
+    const double brg_ab = atan2(sin(lon2_r - lon1_r) * cos(lat2_r),
+                                cos(lat1_r) * sin(lat2_r) - sin(lat1_r) * cos(lat2_r) * cos(lon2_r - lon1_r));
+    const double brg_ba = atan2(sin(lon1_r - lon2_r) * cos(lat1_r),
+                                cos(lat2_r) * sin(lat1_r) - sin(lat2_r) * cos(lat1_r) * cos(lon1_r - lon2_r));
+
+    double alpha = NAV1_GEO_normalizeAngle((brg1_r - brg_ab) * 180.0 / M_PI) * M_PI / 180.0;
+    double beta  = NAV1_GEO_normalizeAngle((brg_ba - brg2_r) * 180.0 / M_PI) * M_PI / 180.0;
+    if (alpha < 0.0) alpha = -alpha;
+    if (beta < 0.0) beta = -beta;
+
+    if (alpha < 1e-12) { *outLat = lat1; *outLon = lon1; return 1; }
+    if (beta < 1e-12)  { *outLat = lat2; *outLon = lon2; return 1; }
+
+    const double sum = alpha + beta;
+    if (sum > M_PI - 1e-12 || fabs(sin(sum)) < 1e-12)
+        return 0;
+
+    const double a_dist = asin(sin(c) * sin(alpha) / sin(sum));
+    const double dNm = a_dist * R / 1852.0;
+    NAV1_GEO_destinationPoint(lat2, lon2, brg2, dNm, outLat, outLon);
+    return 1;
+}

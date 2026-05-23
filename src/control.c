@@ -1,4 +1,5 @@
 #include "control.h"
+#include <math.h>
 
 NAV1_EXPORT void NAV1_CTL_lpfInit(NAV1_LowPassFilter *f, double initial)
 {
@@ -103,4 +104,10 @@ NAV1_EXPORT double NAV1_CTL_angularSlewUpdate(NAV1_AngularSlew *s, double target
     if (err < -step) err = -step;
     s->output = NAV1_GEO_normalizeAngle(s->output + err);
     return s->output;
+}
+
+NAV1_EXPORT double NAV1_CTL_deadband(double value, double width)
+{
+    if (fabs(value) < width) return 0.0;
+    return value;
 }

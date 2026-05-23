@@ -236,6 +236,22 @@ int main()
     TEST_NEAR("shortDist 170->-170", NAV1_GEO_shortestAngularDistance(170.0, -170.0), 20.0, 0.001);
     TEST_NEAR("shortDist 10->350", NAV1_GEO_shortestAngularDistance(10.0, 350.0), -20.0, 0.001);
 
+    printf("\n--- Intersecting Radials ---\n");
+    {
+        double lat, lon;
+        int ok = NAV1_GEO_intersectingRadials(50.0, 5.0, 180.0, 49.0, 7.0, 270.0, &lat, &lon);
+        TEST_TRUE("intRad ok", ok);
+        TEST_NEAR("intRad lat", lat, 49.0, 0.5);
+        TEST_NEAR("intRad lon", lon, 5.0, 0.5);
+    }
+    {
+        double lat, lon;
+        int ok = NAV1_GEO_intersectingRadials(0.0, 0.0, 45.0, 10.0, 0.0, 135.0, &lat, &lon);
+        TEST_TRUE("intRad converge", ok);
+        TEST_NEAR("intRad converge lat", lat, 5.0, 0.5);
+        TEST_NEAR("intRad converge lon", lon, 5.0, 0.5);
+    }
+
     printf("\n--- Wind Correction ---\n");
     {
         double heading, gs, wca;
@@ -269,6 +285,26 @@ int main()
         NAV1_AERO_windComponents(270.0, 20.0, 360.0, &xw, &hw);
         TEST_NEAR("windComp(270,20,360) headwind", hw, 0.0, 0.5);
         TEST_NEAR("windComp(270,20,360) crosswind right", xw, 20.0, 1.0);
+    }
+
+    printf("\n--- Wind Triangle (Forward) ---\n");
+    {
+        double track, gs;
+        NAV1_AERO_windTriangle(90.0, 100.0, 270.0, 20.0, &track, &gs);
+        TEST_NEAR("wTri headwind GS", gs, 80.0, 1.0);
+        TEST_NEAR("wTri headwind track", track, 90.0, 1.0);
+    }
+    {
+        double track, gs;
+        NAV1_AERO_windTriangle(90.0, 100.0, 90.0, 20.0, &track, &gs);
+        TEST_NEAR("wTri tailwind GS", gs, 120.0, 1.0);
+        TEST_NEAR("wTri tailwind track", track, 90.0, 1.0);
+    }
+    {
+        double track, gs;
+        NAV1_AERO_windTriangle(360.0, 100.0, 270.0, 20.0, &track, &gs);
+        TEST_NEAR("wTri xwind GS", gs, 100.0, 1.0);
+        TEST_NEAR("wTri xwind track drift", track, 11.5, 1.0);
     }
 
     printf("\n--- ISA Atmosphere ---\n");
@@ -332,6 +368,8 @@ int main()
     TEST_NEAR("timeToWaypoint(100,200)", NAV1_FLT_timeToWaypoint(100.0, 200.0), 1800.0, 1.0);
     TEST_NEAR("fuelEndurance(50,10)", NAV1_FLT_fuelEndurance(50.0, 10.0), 5.0, 0.1);
     TEST_NEAR("fuelRange(50,10,120)", NAV1_FLT_fuelRange(50.0, 10.0, 120.0), 600.0, 1.0);
+    TEST_NEAR("fuelReq(300,120,10)", NAV1_FLT_fuelRequired(300.0, 120.0, 10.0), 25.0, 0.5);
+    TEST_NEAR("specRange(120,10)", NAV1_FLT_specificRange(120.0, 10.0), 12.0, 0.5);
 
     printf("\n--- Control Systems ---\n");
     {
@@ -395,6 +433,12 @@ int main()
         TEST_NEAR("as wrap 170->-170", NAV1_CTL_angularSlewUpdate(&as, -170.0, 10.0, 1.0), 180.0, 0.001);
         TEST_NEAR("as wrap step2", NAV1_CTL_angularSlewUpdate(&as, -170.0, 10.0, 1.0), -170.0, 0.001);
     }
+
+    printf("\n--- Deadband ---\n");
+    TEST_NEAR("db inside", NAV1_CTL_deadband(2.0, 5.0), 0.0, 0.001);
+    TEST_NEAR("db edge", NAV1_CTL_deadband(5.0, 5.0), 5.0, 0.001);
+    TEST_NEAR("db outside pos", NAV1_CTL_deadband(6.0, 5.0), 6.0, 0.001);
+    TEST_NEAR("db outside neg", NAV1_CTL_deadband(-6.0, 5.0), -6.0, 0.001);
 
     printf("\n--- NMEA Parser ---\n");
     {

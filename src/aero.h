@@ -13,4 +13,6 @@ NAV1_EXPORT double NAV1_AERO_speedOfSound(double oatC);
 NAV1_EXPORT double NAV1_AERO_machNumber(double tasKts, double oatC);
 NAV1_EXPORT double NAV1_AERO_casToTas(double casKts, double pressureAltFt, double oatC);
 
+NAV1_EXPORT void   NAV1_AERO_windTriangle(double headingDeg, double tasKts, double windDirDeg, double windSpeedKts, double *groundTrackDeg, double *groundSpeedKts);
+
 #endif

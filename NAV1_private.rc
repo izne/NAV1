@@ -4,8 +4,6 @@
 #include <windows.h> // include for version info constants
 
 
-A ICON "NAV1.ico"
-
 //
 // TO CHANGE VERSION INFORMATION, EDIT PROJECT OPTIONS...
 //

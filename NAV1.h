@@ -49,6 +49,7 @@ NAV1_EXPORT void   NAV1_GEO_geodeticToEcef(double lat, double lon, double altM, 
 NAV1_EXPORT int    NAV1_GEO_ecefToGeodetic(double x, double y, double z, double *lat, double *lon, double *altM);
 NAV1_EXPORT double NAV1_GEO_normalizeAngle(double a);
 NAV1_EXPORT double NAV1_GEO_shortestAngularDistance(double from, double to);
+NAV1_EXPORT int    NAV1_GEO_intersectingRadials(double lat1, double lon1, double brg1, double lat2, double lon2, double brg2, double *outLat, double *outLon);
 
 /* ------------------------------------------------------------------ */
 /*  Unit conversions — NAV1_CONV_*                                    */
@@ -99,6 +100,7 @@ NAV1_EXPORT double NAV1_AERO_densityAltitude(double altitudeFt, double oatC, dou
 NAV1_EXPORT double NAV1_AERO_speedOfSound(double oatC);
 NAV1_EXPORT double NAV1_AERO_machNumber(double tasKts, double oatC);
 NAV1_EXPORT double NAV1_AERO_casToTas(double casKts, double pressureAltFt, double oatC);
+NAV1_EXPORT void   NAV1_AERO_windTriangle(double headingDeg, double tasKts, double windDirDeg, double windSpeedKts, double *groundTrackDeg, double *groundSpeedKts);
 
 /* ------------------------------------------------------------------ */
 /*  GPS helpers — NAV1_GPS_*                                          */
@@ -121,6 +123,8 @@ NAV1_EXPORT double NAV1_FLT_topOfDescent(double currentAltFt, double targetAltFt
 NAV1_EXPORT double NAV1_FLT_timeToWaypoint(double distNm, double gsKts);
 NAV1_EXPORT double NAV1_FLT_fuelEndurance(double fuelGal, double flowGph);
 NAV1_EXPORT double NAV1_FLT_fuelRange(double fuelGal, double flowGph, double gsKts);
+NAV1_EXPORT double NAV1_FLT_fuelRequired(double distNm, double gsKts, double flowGph);
+NAV1_EXPORT double NAV1_FLT_specificRange(double gsKts, double flowGph);
 
 /* ------------------------------------------------------------------ */
 /*  Signal processing — NAV1_CTL_*                                    */
@@ -174,6 +178,7 @@ typedef struct {
 
 NAV1_EXPORT void   NAV1_CTL_angularSlewInit(NAV1_AngularSlew *s, double initial);
 NAV1_EXPORT double NAV1_CTL_angularSlewUpdate(NAV1_AngularSlew *s, double target, double maxRate, double dt);
+NAV1_EXPORT double NAV1_CTL_deadband(double value, double width);
 
 /* ------------------------------------------------------------------ */
 /*  NMEA parser — NAV1_NMEA_*                                         */

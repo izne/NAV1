@@ -35,3 +35,13 @@ NAV1_EXPORT double NAV1_FLT_fuelRange(double fuelGal, double flowGph, double gsK
 {
     return fuelGal / flowGph * gsKts;
 }
+
+NAV1_EXPORT double NAV1_FLT_fuelRequired(double distNm, double gsKts, double flowGph)
+{
+    return distNm / gsKts * flowGph;
+}
+
+NAV1_EXPORT double NAV1_FLT_specificRange(double gsKts, double flowGph)
+{
+    return gsKts / flowGph;
+}

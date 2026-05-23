@@ -18,4 +18,6 @@ NAV1_EXPORT int    NAV1_GEO_ecefToGeodetic(double x, double y, double z, double 
 NAV1_EXPORT double NAV1_GEO_normalizeAngle(double a);
 NAV1_EXPORT double NAV1_GEO_shortestAngularDistance(double from, double to);
 
+NAV1_EXPORT int    NAV1_GEO_intersectingRadials(double lat1, double lon1, double brg1, double lat2, double lon2, double brg2, double *outLat, double *outLon);
+
 #endif

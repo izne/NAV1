@@ -13,7 +13,7 @@ Compiler=-DBUILDING_DLL=1_@@_-D_USE_MATH_DEFINES_@@_-std=c89_@@_
 CppCompiler=-DBUILDING_DLL=1_@@_-D_USE_MATH_DEFINES_@@_-std=c89_@@_
 Linker=
 IsCpp=0
-Icon=NAV1.ico
+Icon=
 ExeOutput=
 ObjectOutput=
 LogOutput=
