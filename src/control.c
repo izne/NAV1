@@ -89,3 +89,18 @@ NAV1_EXPORT double NAV1_CTL_cfUpdate(NAV1_ComplementaryFilter *f, double accelAn
     f->angle = alpha * accelAngle + (1.0 - alpha) * (f->angle + gyroRate * dt);
     return f->angle;
 }
+
+NAV1_EXPORT void NAV1_CTL_angularSlewInit(NAV1_AngularSlew *s, double initial)
+{
+    s->output = initial;
+}
+
+NAV1_EXPORT double NAV1_CTL_angularSlewUpdate(NAV1_AngularSlew *s, double target, double maxRate, double dt)
+{
+    double err = NAV1_GEO_shortestAngularDistance(s->output, target);
+    double step = maxRate * dt;
+    if (err > step) err = step;
+    if (err < -step) err = -step;
+    s->output = NAV1_GEO_normalizeAngle(s->output + err);
+    return s->output;
+}

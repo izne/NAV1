@@ -224,6 +224,18 @@ int main()
         TEST_NEAR("ecef rt alt", alt, 100.0, 1.0);
     }
 
+    printf("\n--- Angle Helpers ---\n");
+    TEST_NEAR("norm 0", NAV1_GEO_normalizeAngle(0.0), 0.0, 0.001);
+    TEST_NEAR("norm 180", NAV1_GEO_normalizeAngle(180.0), 180.0, 0.001);
+    TEST_NEAR("norm 181", NAV1_GEO_normalizeAngle(181.0), -179.0, 0.001);
+    TEST_NEAR("norm 360", NAV1_GEO_normalizeAngle(360.0), 0.0, 0.001);
+    TEST_NEAR("norm -181", NAV1_GEO_normalizeAngle(-181.0), 179.0, 0.001);
+    TEST_NEAR("norm 540", NAV1_GEO_normalizeAngle(540.0), 180.0, 0.001);
+    TEST_NEAR("norm -360", NAV1_GEO_normalizeAngle(-360.0), 0.0, 0.001);
+    TEST_NEAR("shortDist 0->90", NAV1_GEO_shortestAngularDistance(0.0, 90.0), 90.0, 0.001);
+    TEST_NEAR("shortDist 170->-170", NAV1_GEO_shortestAngularDistance(170.0, -170.0), 20.0, 0.001);
+    TEST_NEAR("shortDist 10->350", NAV1_GEO_shortestAngularDistance(10.0, 350.0), -20.0, 0.001);
+
     printf("\n--- Wind Correction ---\n");
     {
         double heading, gs, wca;
@@ -363,6 +375,25 @@ int main()
         NAV1_CTL_cfInit(&cf, 0.0);
         TEST_NEAR("CompFilter first", NAV1_CTL_cfUpdate(&cf, 10.0, 0.0, 0.01, 0.5), 5.0, 0.01);
         TEST_NEAR("CompFilter second", NAV1_CTL_cfUpdate(&cf, 10.0, 0.0, 0.01, 0.5), 7.5, 0.01);
+    }
+
+    printf("\n--- Angular Slew ---\n");
+    {
+        NAV1_AngularSlew as;
+        NAV1_CTL_angularSlewInit(&as, 0.0);
+        TEST_NEAR("asInit output", as.output, 0.0, 0.001);
+    }
+    {
+        NAV1_AngularSlew as;
+        NAV1_CTL_angularSlewInit(&as, 0.0);
+        TEST_NEAR("as step1", NAV1_CTL_angularSlewUpdate(&as, -33.0, 2.0, 1.0), -2.0, 0.001);
+        TEST_NEAR("as step2", NAV1_CTL_angularSlewUpdate(&as, -33.0, 2.0, 1.0), -4.0, 0.001);
+    }
+    {
+        NAV1_AngularSlew as;
+        NAV1_CTL_angularSlewInit(&as, 170.0);
+        TEST_NEAR("as wrap 170->-170", NAV1_CTL_angularSlewUpdate(&as, -170.0, 10.0, 1.0), 180.0, 0.001);
+        TEST_NEAR("as wrap step2", NAV1_CTL_angularSlewUpdate(&as, -170.0, 10.0, 1.0), -170.0, 0.001);
     }
 
     printf("\n--- NMEA Parser ---\n");

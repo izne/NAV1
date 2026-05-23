@@ -163,3 +163,16 @@ NAV1_EXPORT int NAV1_GEO_ecefToGeodetic(double x, double y, double z, double *la
     }
     return 1;
 }
+
+NAV1_EXPORT double NAV1_GEO_normalizeAngle(double a)
+{
+    double r = fmod(a, 360.0);
+    if (r > 180.0) r -= 360.0;
+    if (r <= -180.0) r += 360.0;
+    return r;
+}
+
+NAV1_EXPORT double NAV1_GEO_shortestAngularDistance(double from, double to)
+{
+    return NAV1_GEO_normalizeAngle(to - from);
+}

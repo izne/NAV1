@@ -45,4 +45,11 @@ typedef struct {
 NAV1_EXPORT void NAV1_CTL_cfInit(NAV1_ComplementaryFilter *f, double initial);
 NAV1_EXPORT double NAV1_CTL_cfUpdate(NAV1_ComplementaryFilter *f, double accelAngle, double gyroRate, double dt, double alpha);
 
+typedef struct {
+    double output;
+} NAV1_AngularSlew;
+
+NAV1_EXPORT void   NAV1_CTL_angularSlewInit(NAV1_AngularSlew *s, double initial);
+NAV1_EXPORT double NAV1_CTL_angularSlewUpdate(NAV1_AngularSlew *s, double target, double maxRate, double dt);
+
 #endif

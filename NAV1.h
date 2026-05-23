@@ -47,6 +47,8 @@ NAV1_EXPORT double NAV1_GEO_dmsToDecimal(int degrees, int minutes, double second
 NAV1_EXPORT void   NAV1_GEO_decimalToDMS(double decimal, int *degrees, int *minutes, double *seconds);
 NAV1_EXPORT void   NAV1_GEO_geodeticToEcef(double lat, double lon, double altM, double *x, double *y, double *z);
 NAV1_EXPORT int    NAV1_GEO_ecefToGeodetic(double x, double y, double z, double *lat, double *lon, double *altM);
+NAV1_EXPORT double NAV1_GEO_normalizeAngle(double a);
+NAV1_EXPORT double NAV1_GEO_shortestAngularDistance(double from, double to);
 
 /* ------------------------------------------------------------------ */
 /*  Unit conversions — NAV1_CONV_*                                    */
@@ -165,6 +167,13 @@ typedef struct {
 
 NAV1_EXPORT void   NAV1_CTL_cfInit(NAV1_ComplementaryFilter *f, double initial);
 NAV1_EXPORT double NAV1_CTL_cfUpdate(NAV1_ComplementaryFilter *f, double accelAngle, double gyroRate, double dt, double alpha);
+
+typedef struct {
+    double output;
+} NAV1_AngularSlew;
+
+NAV1_EXPORT void   NAV1_CTL_angularSlewInit(NAV1_AngularSlew *s, double initial);
+NAV1_EXPORT double NAV1_CTL_angularSlewUpdate(NAV1_AngularSlew *s, double target, double maxRate, double dt);
 
 /* ------------------------------------------------------------------ */
 /*  NMEA parser — NAV1_NMEA_*                                         */
