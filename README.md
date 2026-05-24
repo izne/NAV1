@@ -96,12 +96,13 @@ printf("Roll cmd: %.1f deg\n", roll.output);           /* -33.0 */
 
 `export.h` provides the `NAV1_EXPORT` macro:
 
-| Build context          | `NAV1_EXPORT` resolves to    |
-|------------------------|------------------------------|
-| Windows DLL build      | `__declspec(dllexport)`      |
-| Windows consumer       | `__declspec(dllimport)`      |
-| Borland C++ DLL build  | `__export`                   |
-| Static library / DOS   | *(empty -- no decoration)*   |
+| Build context              | `NAV1_EXPORT` resolves to                    |
+|----------------------------|----------------------------------------------|
+| Windows DLL build          | `__declspec(dllexport)`                      |
+| Windows consumer           | `__declspec(dllimport)`                      |
+| Borland C++ DLL build      | `__export`                                   |
+| Linux / macOS (GCC/Clang)  | `__attribute__((visibility("default")))`     |
+| Static library / DOS       | *(empty -- no decoration)*                   |
 
 The math itself is pure C89 (sin, cos, atan2, sqrt, log, pow, exp, fmod).
 
