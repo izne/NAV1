@@ -2,6 +2,7 @@
 #include "gps.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 
 static const char *fieldPtr(const char *s, int idx, int *len)
@@ -157,4 +158,37 @@ int NAV1_NMEA_nmeaParse(const char *sentence, NAV1_NMEAData *out)
 
     out->hasFix = fix;
     return fix;
+}
+
+unsigned char NAV1_NMEA_nmeaChecksumCompute(const char *sentence, char *outHex)
+{
+    const char *star, *p;
+    unsigned char cs = 0;
+    if (!sentence || sentence[0] != '$') { outHex[0] = '0'; outHex[1] = '0'; outHex[2] = '\0'; return 0; }
+    star = strchr(sentence, '*');
+    for (p = sentence + 1; star ? (p < star) : (*p); p++)
+        cs ^= (unsigned char)*p;
+    sprintf(outHex, "%02X", cs);
+    return cs;
+}
+
+int NAV1_NMEA_nmeaParseGSA(const char *sentence, double *pdop, double *hdop, double *vdop)
+{
+    char buf[32], type[8];
+    *pdop = *hdop = *vdop = 0.0;
+    if (!sentence || !copyField(sentence, 0, type, sizeof(type)))
+        return 0;
+    {
+        int typeLen = (int)strlen(type);
+        if (typeLen < 3) return 0;
+        const char *suffix = type + typeLen - 3;
+        if (strcmp(suffix, "GSA") != 0) return 0;
+    }
+    if (copyField(sentence, 15, buf, sizeof(buf)))
+        *pdop = atof(buf);
+    if (copyField(sentence, 16, buf, sizeof(buf)))
+        *hdop = atof(buf);
+    if (copyField(sentence, 17, buf, sizeof(buf)))
+        *vdop = atof(buf);
+    return 1;
 }

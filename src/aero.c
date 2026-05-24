@@ -127,3 +127,18 @@ NAV1_EXPORT double NAV1_AERO_vsFromFlightPathAngle(double fpaDeg, double gsKts)
 {
     return tan(toRad(fpaDeg)) * gsKts * 6076.12 / 60.0;
 }
+
+NAV1_EXPORT double NAV1_AERO_reciprocalHeading(double heading)
+{
+    return fmod(heading + 180.0, 360.0);
+}
+
+NAV1_EXPORT double NAV1_AERO_standardRateTurnBank(double tasKts)
+{
+    return NAV1_AERO_bankForRate(tasKts, 3.0);
+}
+
+NAV1_EXPORT double NAV1_AERO_trueAltitude(double pressureAltitudeFt, double oatC)
+{
+    return pressureAltitudeFt * (oatC + 273.15) / (15.0 + 273.15);
+}

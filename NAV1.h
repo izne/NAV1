@@ -76,6 +76,14 @@ NAV1_EXPORT double NAV1_CONV_hPaToInHg(double hPa);
 NAV1_EXPORT double NAV1_CONV_inHgTohPa(double inHg);
 NAV1_EXPORT double NAV1_CONV_hPaToPsi(double hPa);
 NAV1_EXPORT double NAV1_CONV_psiTohPa(double psi);
+NAV1_EXPORT double NAV1_CONV_galToL(double gal);
+NAV1_EXPORT double NAV1_CONV_lToGal(double l);
+NAV1_EXPORT double NAV1_CONV_lbToKg(double lb);
+NAV1_EXPORT double NAV1_CONV_kgToLb(double kg);
+NAV1_EXPORT double NAV1_CONV_nmToFt(double nm);
+NAV1_EXPORT double NAV1_CONV_ftToNm(double ft);
+NAV1_EXPORT double NAV1_CONV_degToRad(double deg);
+NAV1_EXPORT double NAV1_CONV_radToDeg(double rad);
 
 /* ------------------------------------------------------------------ */
 /*  Advanced geodesy — NAV1_NAV_*                                     */
@@ -94,6 +102,7 @@ NAV1_EXPORT int    NAV1_NAV_courseIntercept(double lat, double lon, double headi
 #define NAV1_NAV_HOLD_PARALLEL  1
 #define NAV1_NAV_HOLD_TEARDROP  2
 NAV1_EXPORT int    NAV1_NAV_holdEntryMode(double inboundCourse, double headingToFix, int rightTurn);
+NAV1_EXPORT void   NAV1_NAV_fixRadialDistance(double vorLat, double vorLon, double radialDeg, double distNm, double *outLat, double *outLon);
 
 /* ------------------------------------------------------------------ */
 /*  Aviation math — NAV1_AERO_*                                       */
@@ -113,6 +122,9 @@ NAV1_EXPORT double NAV1_AERO_turnRate(double tasKts, double bankDeg);
 NAV1_EXPORT double NAV1_AERO_bankForRate(double tasKts, double rateDegPerSec);
 NAV1_EXPORT double NAV1_AERO_flightPathAngle(double vsFpm, double gsKts);
 NAV1_EXPORT double NAV1_AERO_vsFromFlightPathAngle(double fpaDeg, double gsKts);
+NAV1_EXPORT double NAV1_AERO_reciprocalHeading(double heading);
+NAV1_EXPORT double NAV1_AERO_standardRateTurnBank(double tasKts);
+NAV1_EXPORT double NAV1_AERO_trueAltitude(double pressureAltitudeFt, double oatC);
 
 /* ------------------------------------------------------------------ */
 /*  GPS helpers — NAV1_GPS_*                                          */
@@ -137,6 +149,8 @@ NAV1_EXPORT double NAV1_FLT_fuelEndurance(double fuelGal, double flowGph);
 NAV1_EXPORT double NAV1_FLT_fuelRange(double fuelGal, double flowGph, double gsKts);
 NAV1_EXPORT double NAV1_FLT_fuelRequired(double distNm, double gsKts, double flowGph);
 NAV1_EXPORT double NAV1_FLT_specificRange(double gsKts, double flowGph);
+NAV1_EXPORT double NAV1_FLT_alternateFuelRequired(double altDistNm, double gsKts, double flowGph, double reserveMin);
+NAV1_EXPORT double NAV1_FLT_criticalFuel(double totalGal, double reserveGal);
 
 /* ------------------------------------------------------------------ */
 /*  Signal processing — NAV1_CTL_*                                    */
@@ -192,6 +206,13 @@ NAV1_EXPORT void   NAV1_CTL_angularSlewInit(NAV1_AngularSlew *s, double initial)
 NAV1_EXPORT double NAV1_CTL_angularSlewUpdate(NAV1_AngularSlew *s, double target, double maxRate, double dt);
 NAV1_EXPORT double NAV1_CTL_deadband(double value, double width);
 
+typedef struct {
+    double output;
+} NAV1_Hysteresis;
+
+NAV1_EXPORT void   NAV1_CTL_hystInit(NAV1_Hysteresis *h);
+NAV1_EXPORT double NAV1_CTL_hystUpdate(NAV1_Hysteresis *h, double x, double low, double high);
+
 /* ------------------------------------------------------------------ */
 /*  NMEA parser — NAV1_NMEA_*                                         */
 /* ------------------------------------------------------------------ */
@@ -213,6 +234,8 @@ typedef struct {
 } NAV1_NMEAData;
 
 NAV1_EXPORT int NAV1_NMEA_nmeaParse(const char *sentence, NAV1_NMEAData *out);
+NAV1_EXPORT unsigned char NAV1_NMEA_nmeaChecksumCompute(const char *sentence, char *outHex);
+NAV1_EXPORT int NAV1_NMEA_nmeaParseGSA(const char *sentence, double *pdop, double *hdop, double *vdop);
 
 /* ------------------------------------------------------------------ */
 /*  Route management — NAV1_RTE_*                                     */
@@ -449,6 +472,7 @@ NAV1_EXPORT int    NAV1_METAR_metarParse(const char *raw, NAV1_MetarData *out);
 NAV1_EXPORT double NAV1_METAR_metarWindAvg(const NAV1_MetarData *m);
 NAV1_EXPORT double NAV1_METAR_metarCrosswind(const NAV1_MetarData *m, double rwyHdg);
 NAV1_EXPORT double NAV1_METAR_metarHeadwind(const NAV1_MetarData *m, double rwyHdg);
+NAV1_EXPORT double NAV1_METAR_metarTemperatureSpread(const NAV1_MetarData *m);
 
 #ifdef __cplusplus
 }

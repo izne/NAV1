@@ -31,4 +31,14 @@ NAV1_EXPORT double NAV1_CONV_inHgTohPa(double inHg);
 NAV1_EXPORT double NAV1_CONV_hPaToPsi(double hPa);
 NAV1_EXPORT double NAV1_CONV_psiTohPa(double psi);
 
+
+NAV1_EXPORT double NAV1_CONV_galToL(double gal);
+NAV1_EXPORT double NAV1_CONV_lToGal(double l);
+NAV1_EXPORT double NAV1_CONV_lbToKg(double lb);
+NAV1_EXPORT double NAV1_CONV_kgToLb(double kg);
+NAV1_EXPORT double NAV1_CONV_nmToFt(double nm);
+NAV1_EXPORT double NAV1_CONV_ftToNm(double ft);
+NAV1_EXPORT double NAV1_CONV_degToRad(double deg);
+NAV1_EXPORT double NAV1_CONV_radToDeg(double rad);
+
 #endif

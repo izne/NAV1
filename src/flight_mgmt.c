@@ -45,3 +45,13 @@ NAV1_EXPORT double NAV1_FLT_specificRange(double gsKts, double flowGph)
 {
     return gsKts / flowGph;
 }
+
+NAV1_EXPORT double NAV1_FLT_alternateFuelRequired(double altDistNm, double gsKts, double flowGph, double reserveMin)
+{
+    return altDistNm / gsKts * flowGph + reserveMin / 60.0 * flowGph;
+}
+
+NAV1_EXPORT double NAV1_FLT_criticalFuel(double totalGal, double reserveGal)
+{
+    return totalGal - reserveGal;
+}

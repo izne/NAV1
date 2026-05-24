@@ -8,7 +8,7 @@ A static and shared library providing geodesy, unit conversion, aviation, GPS/NM
 test.bat          -- compile test harness + run all tests
 ```
 
-Output: `=== Results: 343/343 passed ===`
+Output: `=== Results: 377/377 passed ===`
 
 ## Build
 
@@ -27,18 +27,18 @@ Output: `=== Results: 343/343 passed ===`
 |----------------|--------------|-----------------------|:-----------:|------------------------------------|
 | Core / Geodesy | `NAV1_GEO_` | `geo.c` / `geo.h`     | 14          | Distance, bearing, destination, midpoint, cross-track, DMS, ECEF, angle helpers, intersecting radials, intermediate point |
 | DLL Entry      | --           | `nav1.c` / `nav1.h`   | 2           | Version, WinVer |
-| Conversions    | `NAV1_CONV_` | `conv.c` / `conv.h`   | 20          | Length, speed, temperature, pressure |
-| Navigation     | `NAV1_NAV_` | `nav.c` / `nav.h`     | 10          | Along-track, waypoints, rhumb line, antipode, compass, closest point on course, lead point, course intercept, hold entry |
-| Aviation       | `NAV1_AERO_` | `aero.c` / `aero.h`   | 14          | Wind correction, ISA atmosphere, pressure/density altitude, speed of sound, Mach, CAS→TAS, wind triangle, turn radius/rate, bank for rate, flight path angle |
+| Conversions    | `NAV1_CONV_` | `conv.c` / `conv.h`   | 28          | Length, speed, temperature, pressure, volume, weight, angle |
+| Navigation     | `NAV1_NAV_` | `nav.c` / `nav.h`     | 11          | Along-track, waypoints, rhumb line, antipode, compass, closest point on course, lead point, course intercept, hold entry, fix radial distance |
+| Aviation       | `NAV1_AERO_` | `aero.c` / `aero.h`   | 17          | Wind correction, ISA atmosphere, pressure/density altitude, speed of sound, Mach, CAS→TAS, wind triangle, turn radius/rate, bank for rate, flight path angle, reciprocal heading, standard rate turn bank, true altitude |
 | GPS            | `NAV1_GPS_` | `gps.c` / `gps.h`     | 6           | DMM conversion, GPS speed, NMEA checksum, lat/lon validation |
-| Flight Mgmt    | `NAV1_FLT_` | `flight_mgmt.c` / `flight_mgmt.h` | 8 | Time to altitude, VS, TOD, waypoint, fuel, specific range, fuel required |
-| Control        | `NAV1_CTL_` | `control.c` / `control.h` | 12 (+ 7 structs) | LPF, slew limiter, moving avg, PID, complementary filter, angular slew, deadband |
-| NMEA           | `NAV1_NMEA_` | `nmea.c` / `nmea.h` | 1 (+ 1 struct) | Parse $--GGA / $--RMC sentences |
+| Flight Mgmt    | `NAV1_FLT_` | `flight_mgmt.c` / `flight_mgmt.h` | 10 | Time to altitude, VS, TOD, waypoint, fuel, specific range, fuel required, alternate fuel, critical fuel |
+| Control        | `NAV1_CTL_` | `control.c` / `control.h` | 13 (+ 8 structs) | LPF, slew limiter, moving avg, PID, complementary filter, angular slew, deadband, hysteresis |
+| NMEA           | `NAV1_NMEA_` | `nmea.c` / `nmea.h` | 3 (+ 1 struct) | Parse $--GGA / $--RMC / $--GSA, checksum compute |
 | Route          | `NAV1_RTE_` | `route.c` / `route.h` | 11 (+ 2 structs) | Waypoint list, sequencing, CSV I/O |
 | X-Plane Nav    | `NAV1_XPL_` | `xplane_nav.c` / `xplane_nav.h` | 6 (+ 2 structs) | Nav database loader, ICAO FPL parser |
 | ARINC 429      | `NAV1_A429_` | `arinc429.c` / `arinc429.h` | 13 (+ 1 struct, 41 labels) | Word encoder/decoder, BNR/BCD, parity, label lookup |
 | ARINC 424      | `NAV1_A424_` | `arinc424.c` / `arinc424.h` | 2 (+ 6 structs) | Nav database parser (airports, waypoints, runways, ILS) |
-| METAR          | `NAV1_METAR_` | `metar.c` / `metar.h` | 4 (+ 3 structs) | METAR parser: parse, wind avg, crosswind, headwind |
+| METAR          | `NAV1_METAR_` | `metar.c` / `metar.h` | 5 (+ 3 structs) | METAR parser: parse, wind avg, crosswind, headwind, temperature spread |
 
 ## Geodesy (Haversine)
 
@@ -116,19 +116,19 @@ NAV1/
 |   |-- nav1.h             Internal master header (includes all sub-headers)
 |   |-- nav1.c             DllMain + Version, WinVer
 |   |-- geo.h / geo.c      Core geodesy (14 functions)
-|   |-- conv.h / conv.c    Unit conversions (20 functions)
-|   |-- nav.h / nav.c      Advanced navigation (10 functions)
-|   |-- aero.h / aero.c    Aviation math (14 functions)
+|   |-- conv.h / conv.c    Unit conversions (28 functions)
+|   |-- nav.h / nav.c      Advanced navigation (11 functions)
+|   |-- aero.h / aero.c    Aviation math (17 functions)
 |   |-- gps.h / gps.c      GPS helpers (6 functions)
-|   |-- flight_mgmt.h / .c Flight planning (8 functions)
-|   |-- control.h / .c     Signal processing (7 structs, 12 functions)
-|   |-- nmea.h / nmea.c    NMEA parser (1 struct, 1 function)
+|   |-- flight_mgmt.h / .c Flight planning (10 functions)
+|   |-- control.h / .c     Signal processing (8 structs, 13 functions)
+|   |-- nmea.h / nmea.c    NMEA parser (1 struct, 3 functions)
 |   |-- route.h / route.c  Route management + CSV I/O (11 functions)
 |   |-- xplane_nav.h / .c  X-Plane nav database + ICAO FPL (6 functions)
 |   |-- arinc429.h / .c    ARINC 429 word encoder/decoder (13 functions, 41 labels)
 |   |-- arinc424.h / .c    ARINC 424 nav database parser (2 functions, 6 structs)
 |-- NAV1.h                 Public API header (single include)
-|-- test_nav1.c            343-test harness
+|-- test_nav1.c            377-test harness
 |-- test.bat               One-command compile + run
 |-- NAV1.dev               Dev-C++ project file
 |-- Makefile.win            Build rules

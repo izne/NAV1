@@ -48,4 +48,6 @@ NAV1_EXPORT double NAV1_METAR_metarWindAvg(const NAV1_MetarData *m);
 NAV1_EXPORT double NAV1_METAR_metarCrosswind(const NAV1_MetarData *m, double rwyHdg);
 NAV1_EXPORT double NAV1_METAR_metarHeadwind(const NAV1_MetarData *m, double rwyHdg);
 
+NAV1_EXPORT double NAV1_METAR_metarTemperatureSpread(const NAV1_MetarData *m);
+
 #endif

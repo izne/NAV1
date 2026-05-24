@@ -1,5 +1,9 @@
 #include "conv.h"
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
 #define M_PER_FT  0.3048
 #define M_PER_NM  1852.0
 #define KM_PER_NM 1.852
@@ -105,4 +109,48 @@ NAV1_EXPORT double NAV1_CONV_hPaToPsi(double hPa)
 NAV1_EXPORT double NAV1_CONV_psiTohPa(double psi)
 {
     return psi / 0.01450377;
+}
+
+#define L_PER_GAL 3.78541
+#define KG_PER_LB 0.453592
+#define FT_PER_NM 6076.12
+
+NAV1_EXPORT double NAV1_CONV_galToL(double gal)
+{
+    return gal * L_PER_GAL;
+}
+
+NAV1_EXPORT double NAV1_CONV_lToGal(double l)
+{
+    return l / L_PER_GAL;
+}
+
+NAV1_EXPORT double NAV1_CONV_lbToKg(double lb)
+{
+    return lb * KG_PER_LB;
+}
+
+NAV1_EXPORT double NAV1_CONV_kgToLb(double kg)
+{
+    return kg / KG_PER_LB;
+}
+
+NAV1_EXPORT double NAV1_CONV_nmToFt(double nm)
+{
+    return nm * FT_PER_NM;
+}
+
+NAV1_EXPORT double NAV1_CONV_ftToNm(double ft)
+{
+    return ft / FT_PER_NM;
+}
+
+NAV1_EXPORT double NAV1_CONV_degToRad(double deg)
+{
+    return deg * M_PI / 180.0;
+}
+
+NAV1_EXPORT double NAV1_CONV_radToDeg(double rad)
+{
+    return rad * 180.0 / M_PI;
 }

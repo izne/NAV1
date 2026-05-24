@@ -54,4 +54,11 @@ NAV1_EXPORT double NAV1_CTL_angularSlewUpdate(NAV1_AngularSlew *s, double target
 
 NAV1_EXPORT double NAV1_CTL_deadband(double value, double width);
 
+typedef struct {
+    double output;
+} NAV1_Hysteresis;
+
+NAV1_EXPORT void   NAV1_CTL_hystInit(NAV1_Hysteresis *h);
+NAV1_EXPORT double NAV1_CTL_hystUpdate(NAV1_Hysteresis *h, double x, double low, double high);
+
 #endif

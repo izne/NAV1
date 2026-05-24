@@ -928,6 +928,92 @@ int main()
         TEST_NEAR("a429 encBCD utc", out.value, 12345.0, 0.5);
     }
 
+    printf("\n--- New CONV Functions ---\n");
+    TEST_NEAR("galToL(1)", NAV1_CONV_galToL(1.0), 3.78541, 0.001);
+    TEST_NEAR("lToGal(3.78541)", NAV1_CONV_lToGal(3.78541), 1.0, 0.001);
+    TEST_NEAR("lbToKg(1)", NAV1_CONV_lbToKg(1.0), 0.453592, 0.001);
+    TEST_NEAR("kgToLb(0.453592)", NAV1_CONV_kgToLb(0.453592), 1.0, 0.001);
+    TEST_NEAR("nmToFt(1)", NAV1_CONV_nmToFt(1.0), 6076.12, 0.01);
+    TEST_NEAR("ftToNm(6076.12)", NAV1_CONV_ftToNm(6076.12), 1.0, 0.001);
+    TEST_NEAR("degToRad(180)", NAV1_CONV_degToRad(180.0), 3.141592653589793, 0.0001);
+    TEST_NEAR("radToDeg(PI)", NAV1_CONV_radToDeg(3.141592653589793), 180.0, 0.0001);
+
+    printf("\n--- New AERO Functions ---\n");
+    TEST_NEAR("reciprocalHeading(0)", NAV1_AERO_reciprocalHeading(0.0), 180.0, 0.001);
+    TEST_NEAR("reciprocalHeading(180)", NAV1_AERO_reciprocalHeading(180.0), 0.0, 0.001);
+    TEST_NEAR("reciprocalHeading(350)", NAV1_AERO_reciprocalHeading(350.0), 170.0, 0.001);
+    TEST_NEAR("standardRateTurnBank(120)", NAV1_AERO_standardRateTurnBank(120.0), 18.5, 1.5);
+    TEST_NEAR("trueAltitude(10000,10)", NAV1_AERO_trueAltitude(10000.0, 10.0), 9826.6, 10.0);
+
+    printf("\n--- CTL Hysteresis ---\n");
+    {
+        NAV1_Hysteresis h;
+        NAV1_CTL_hystInit(&h);
+        TEST_NEAR("hyst init output", h.output, 0.0, 0.001);
+        TEST_NEAR("hyst below low", NAV1_CTL_hystUpdate(&h, 0.0, 1.0, 5.0), 0.0, 0.001);
+        TEST_NEAR("hyst above high", NAV1_CTL_hystUpdate(&h, 6.0, 1.0, 5.0), 1.0, 0.001);
+        TEST_NEAR("hyst stays high", NAV1_CTL_hystUpdate(&h, 3.0, 1.0, 5.0), 1.0, 0.001);
+        TEST_NEAR("hyst below low turns off", NAV1_CTL_hystUpdate(&h, 0.0, 1.0, 5.0), 0.0, 0.001);
+    }
+
+    printf("\n--- NMEA Checksum Compute ---\n");
+    {
+        char hex[4];
+        unsigned char cs = NAV1_NMEA_nmeaChecksumCompute("$GPGGA,123519*77", hex);
+        TEST_NEAR("nmeaCS value", (double)cs, (double)0x77, 0.5);
+        TEST_STR("nmeaCS hex", hex, "77");
+    }
+    {
+        char hex[4];
+        unsigned char cs = NAV1_NMEA_nmeaChecksumCompute("$GPGGA,123519,4807.038,N,01131.000,E,1,08,0.9,545.4,M,46.9,M,,*47", hex);
+        TEST_NEAR("nmeaCS full value", (double)cs, (double)0x47, 0.5);
+    }
+
+    printf("\n--- NMEA GSA Parser ---\n");
+    {
+        double pdop, hdop, vdop;
+        int ok = NAV1_NMEA_nmeaParseGSA("$GPGSA,A,3,01,02,03,04,05,06,07,08,09,10,11,12,1.5,0.9,1.2*", &pdop, &hdop, &vdop);
+        TEST_TRUE("nmeaGSA ok", ok);
+        TEST_NEAR("nmeaGSA pdop", pdop, 1.5, 0.01);
+        TEST_NEAR("nmeaGSA hdop", hdop, 0.9, 0.01);
+        TEST_NEAR("nmeaGSA vdop", vdop, 1.2, 0.01);
+    }
+    {
+        double pdop, hdop, vdop;
+        int ok = NAV1_NMEA_nmeaParseGSA("$GPGGA,123519*47", &pdop, &hdop, &vdop);
+        TEST_TRUE("nmeaGSA wrong type", !ok);
+    }
+
+    printf("\n--- METAR Temperature Spread ---\n");
+    {
+        NAV1_MetarData m;
+        NAV1_METAR_metarParse("KSEA 221653Z 21012KT 10SM OVC010 12/09 Q1019", &m);
+        TEST_NEAR("metar spread", NAV1_METAR_metarTemperatureSpread(&m), 3.0, 0.01);
+    }
+    {
+        NAV1_MetarData m;
+        NAV1_METAR_metarParse("KSEA 221653Z 21012KT 10SM OVC010 M25/M30 Q1019", &m);
+        TEST_NEAR("metar spread neg", NAV1_METAR_metarTemperatureSpread(&m), 5.0, 0.01);
+    }
+
+    printf("\n--- New FLT Functions ---\n");
+    TEST_NEAR("alternateFuel(100,120,10,45)", NAV1_FLT_alternateFuelRequired(100.0, 120.0, 10.0, 45.0), 15.83, 0.5);
+    TEST_NEAR("criticalFuel(100,30)", NAV1_FLT_criticalFuel(100.0, 30.0), 70.0, 0.01);
+
+    printf("\n--- NAV fixRadialDistance ---\n");
+    {
+        double lat, lon;
+        NAV1_NAV_fixRadialDistance(0.0, 0.0, 0.0, 60.0, &lat, &lon);
+        TEST_NEAR("fixRadial N 60nm lat", lat, 1.0, 0.1);
+        TEST_NEAR("fixRadial N 60nm lon", lon, 0.0, 0.1);
+    }
+    {
+        double lat, lon;
+        NAV1_NAV_fixRadialDistance(48.0, 11.0, 90.0, 30.0, &lat, &lon);
+        TEST_NEAR("fixRadial E 30nm lat", lat, 48.0, 0.1);
+        TEST_NEAR("fixRadial E 30nm lon", lon, 11.75, 0.1);
+    }
+
     printf("\n=== Results: %d/%d passed ===\n", tests_passed, tests_run);
     return tests_passed == tests_run ? 0 : 1;
 }

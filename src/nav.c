@@ -183,3 +183,8 @@ NAV1_EXPORT int NAV1_NAV_holdEntryMode(double inboundCourse, double headingToFix
         return NAV1_NAV_HOLD_PARALLEL;
     }
 }
+
+NAV1_EXPORT void NAV1_NAV_fixRadialDistance(double vorLat, double vorLon, double radialDeg, double distNm, double *outLat, double *outLon)
+{
+    NAV1_GEO_destinationPoint(vorLat, vorLon, radialDeg, distNm, outLat, outLon);
+}

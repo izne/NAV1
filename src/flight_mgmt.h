@@ -13,4 +13,7 @@ NAV1_EXPORT double NAV1_FLT_fuelRange(double fuelGal, double flowGph, double gsK
 NAV1_EXPORT double NAV1_FLT_fuelRequired(double distNm, double gsKts, double flowGph);
 NAV1_EXPORT double NAV1_FLT_specificRange(double gsKts, double flowGph);
 
+NAV1_EXPORT double NAV1_FLT_alternateFuelRequired(double altDistNm, double gsKts, double flowGph, double reserveMin);
+NAV1_EXPORT double NAV1_FLT_criticalFuel(double totalGal, double reserveGal);
+
 #endif

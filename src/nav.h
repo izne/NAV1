@@ -20,4 +20,6 @@ NAV1_EXPORT void NAV1_NAV_leadPoint(double lat, double lon, double outboundCours
 NAV1_EXPORT int  NAV1_NAV_courseIntercept(double lat, double lon, double heading, double targetLat, double targetLon, double targetCourse, double interceptAngle, double *outLat, double *outLon);
 NAV1_EXPORT int  NAV1_NAV_holdEntryMode(double inboundCourse, double headingToFix, int rightTurn);
 
+NAV1_EXPORT void NAV1_NAV_fixRadialDistance(double vorLat, double vorLon, double radialDeg, double distNm, double *outLat, double *outLon);
+
 #endif

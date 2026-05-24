@@ -34,19 +34,19 @@ UnitCount=28
 [VersionInfo]
 Major=1
 Minor=2
-Release=1
-Build=3
+Release=2
+Build=1
 LanguageID=1033
 CharsetID=1252
 CompanyName=github.com/izne
-FileVersion=1.2.1.3
+FileVersion=1.2.2.1
 FileDescription=Angelov NAV1 System
 InternalName=NAV1
 LegalCopyright=
 LegalTrademarks=(c) 2022 - 2026 Dimitar Angelov
 OriginalFilename=NAV1.dll
 ProductName=Angelov NAV1 System
-ProductVersion=1.2.1.3
+ProductVersion=1.2.2.1
 AutoIncBuildNr=0
 SyncProduct=1
 

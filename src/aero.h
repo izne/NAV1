@@ -21,4 +21,8 @@ NAV1_EXPORT double NAV1_AERO_bankForRate(double tasKts, double rateDegPerSec);
 NAV1_EXPORT double NAV1_AERO_flightPathAngle(double vsFpm, double gsKts);
 NAV1_EXPORT double NAV1_AERO_vsFromFlightPathAngle(double fpaDeg, double gsKts);
 
+NAV1_EXPORT double NAV1_AERO_reciprocalHeading(double heading);
+NAV1_EXPORT double NAV1_AERO_standardRateTurnBank(double tasKts);
+NAV1_EXPORT double NAV1_AERO_trueAltitude(double pressureAltitudeFt, double oatC);
+
 #endif

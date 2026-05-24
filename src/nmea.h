@@ -21,4 +21,7 @@ typedef struct {
 
 NAV1_EXPORT int NAV1_NMEA_nmeaParse(const char *sentence, NAV1_NMEAData *out);
 
+NAV1_EXPORT unsigned char NAV1_NMEA_nmeaChecksumCompute(const char *sentence, char *outHex);
+NAV1_EXPORT int NAV1_NMEA_nmeaParseGSA(const char *sentence, double *pdop, double *hdop, double *vdop);
+
 #endif

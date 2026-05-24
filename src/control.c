@@ -111,3 +111,15 @@ NAV1_EXPORT double NAV1_CTL_deadband(double value, double width)
     if (fabs(value) < width) return 0.0;
     return value;
 }
+
+NAV1_EXPORT void NAV1_CTL_hystInit(NAV1_Hysteresis *h)
+{
+    h->output = 0.0;
+}
+
+NAV1_EXPORT double NAV1_CTL_hystUpdate(NAV1_Hysteresis *h, double x, double low, double high)
+{
+    if (x > high) h->output = 1.0;
+    else if (x < low) h->output = 0.0;
+    return h->output;
+}

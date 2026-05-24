@@ -587,3 +587,10 @@ NAV1_EXPORT double NAV1_METAR_metarHeadwind(const NAV1_MetarData *m,
     ws = (double)m->windSpeedKt;
     return ws * cos(d);
 }
+
+NAV1_EXPORT double NAV1_METAR_metarTemperatureSpread(const NAV1_MetarData *m)
+{
+    if (!m) return 0.0;
+    if (m->tempC > 900.0 || m->dewpointC > 900.0) return 0.0;
+    return m->tempC - m->dewpointC;
+}
