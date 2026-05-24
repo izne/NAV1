@@ -150,3 +150,36 @@ NAV1_EXPORT int NAV1_NAV_closestPointOnCourse(double lat1, double lon1, double l
     }
     return 1;
 }
+
+NAV1_EXPORT void NAV1_NAV_leadPoint(double lat, double lon, double outboundCourse, double radiusNm, double interceptCourse, double *outLat, double *outLon)
+{
+    double delta = NAV1_GEO_shortestAngularDistance(outboundCourse, interceptCourse);
+    double deltaRad = fabs(delta) * M_PI / 180.0;
+    double leadDist = radiusNm * tan(deltaRad / 2.0);
+    if (leadDist < 0) leadDist = -leadDist;
+    NAV1_GEO_destinationPoint(lat, lon, outboundCourse, leadDist, outLat, outLon);
+}
+
+NAV1_EXPORT int NAV1_NAV_courseIntercept(double lat, double lon, double heading, double targetLat, double targetLon, double targetCourse, double interceptAngle, double *outLat, double *outLon)
+{
+    double brg1 = fmod(heading + 360.0, 360.0);
+    double brg2 = fmod(targetCourse + interceptAngle + 360.0, 360.0);
+    return NAV1_GEO_intersectingRadials(lat, lon, brg1, targetLat, targetLon, brg2, outLat, outLon);
+}
+
+NAV1_EXPORT int NAV1_NAV_holdEntryMode(double inboundCourse, double headingToFix, int rightTurn)
+{
+    double alpha = NAV1_GEO_shortestAngularDistance(inboundCourse, headingToFix);
+    if (rightTurn)
+    {
+        if (alpha >= -110.0 && alpha <= 70.0) return NAV1_NAV_HOLD_DIRECT;
+        if (alpha > 70.0 && alpha <= 110.0) return NAV1_NAV_HOLD_TEARDROP;
+        return NAV1_NAV_HOLD_PARALLEL;
+    }
+    else
+    {
+        if (alpha >= -70.0 && alpha <= 110.0) return NAV1_NAV_HOLD_DIRECT;
+        if (alpha >= -110.0 && alpha < -70.0) return NAV1_NAV_HOLD_TEARDROP;
+        return NAV1_NAV_HOLD_PARALLEL;
+    }
+}

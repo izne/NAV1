@@ -99,3 +99,31 @@ NAV1_EXPORT void NAV1_AERO_windTriangle(double headingDeg, double tasKts, double
     const double drift = asin(crosswind / tasKts);
     *groundTrackDeg = fmod(headingDeg + toDeg(drift) + 360.0, 360.0);
 }
+
+#define G_KTS  68625.0
+
+NAV1_EXPORT double NAV1_AERO_turnRadius(double tasKts, double bankDeg)
+{
+    return tasKts * tasKts / (G_KTS * tan(toRad(bankDeg)));
+}
+
+NAV1_EXPORT double NAV1_AERO_turnRate(double tasKts, double bankDeg)
+{
+    return 1091.0 * tan(toRad(bankDeg)) / tasKts;
+}
+
+NAV1_EXPORT double NAV1_AERO_bankForRate(double tasKts, double rateDegPerSec)
+{
+    return toDeg(atan(tasKts * rateDegPerSec / 1091.0));
+}
+
+NAV1_EXPORT double NAV1_AERO_flightPathAngle(double vsFpm, double gsKts)
+{
+    if (gsKts < 0.1) return 0.0;
+    return toDeg(atan(vsFpm * 60.0 / (gsKts * 6076.12)));
+}
+
+NAV1_EXPORT double NAV1_AERO_vsFromFlightPathAngle(double fpaDeg, double gsKts)
+{
+    return tan(toRad(fpaDeg)) * gsKts * 6076.12 / 60.0;
+}

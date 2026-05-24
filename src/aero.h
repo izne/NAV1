@@ -15,4 +15,10 @@ NAV1_EXPORT double NAV1_AERO_casToTas(double casKts, double pressureAltFt, doubl
 
 NAV1_EXPORT void   NAV1_AERO_windTriangle(double headingDeg, double tasKts, double windDirDeg, double windSpeedKts, double *groundTrackDeg, double *groundSpeedKts);
 
+NAV1_EXPORT double NAV1_AERO_turnRadius(double tasKts, double bankDeg);
+NAV1_EXPORT double NAV1_AERO_turnRate(double tasKts, double bankDeg);
+NAV1_EXPORT double NAV1_AERO_bankForRate(double tasKts, double rateDegPerSec);
+NAV1_EXPORT double NAV1_AERO_flightPathAngle(double vsFpm, double gsKts);
+NAV1_EXPORT double NAV1_AERO_vsFromFlightPathAngle(double fpaDeg, double gsKts);
+
 #endif

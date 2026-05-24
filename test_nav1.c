@@ -148,6 +148,36 @@ int main()
         TEST_NEAR("closest before A lon", lon, 0.0, 0.01);
     }
 
+    printf("\n--- Lead Point ---\n");
+    {
+        double lat, lon;
+        NAV1_NAV_leadPoint(50.0, 5.0, 90.0, 5.0, 180.0, &lat, &lon);
+        TEST_NEAR("leadPt lat", lat, 50.0, 0.1);
+    }
+    {
+        double lat, lon;
+        NAV1_NAV_leadPoint(0.0, 0.0, 0.0, 5.0, 90.0, &lat, &lon);
+        TEST_NEAR("leadPt north->east lat", lat, 0.0, 0.1);
+        TEST_NEAR("leadPt north->east lon", lon, 0.0, 0.5);
+    }
+
+    printf("\n--- Course Intercept ---\n");
+    {
+        double lat, lon;
+        int ok = NAV1_NAV_courseIntercept(50.0, 5.0, 180.0, 49.0, 7.0, 270.0, 0.0, &lat, &lon);
+        TEST_TRUE("crsInt same as intRad", ok);
+        TEST_NEAR("crsInt lat", lat, 49.0, 0.5);
+        TEST_NEAR("crsInt lon", lon, 5.0, 0.5);
+    }
+
+    printf("\n--- Hold Entry ---\n");
+    TEST_TRUE("hold direct", NAV1_NAV_holdEntryMode(180.0, 180.0, 1) == NAV1_NAV_HOLD_DIRECT);
+    TEST_TRUE("hold teardrop", NAV1_NAV_holdEntryMode(180.0, 270.0, 1) == NAV1_NAV_HOLD_TEARDROP);
+    TEST_TRUE("hold parallel", NAV1_NAV_holdEntryMode(180.0, 0.0, 1) == NAV1_NAV_HOLD_PARALLEL);
+    TEST_TRUE("hold left direct", NAV1_NAV_holdEntryMode(180.0, 180.0, 0) == NAV1_NAV_HOLD_DIRECT);
+    TEST_TRUE("hold left teardrop", NAV1_NAV_holdEntryMode(180.0, 90.0, 0) == NAV1_NAV_HOLD_TEARDROP);
+    TEST_TRUE("hold left parallel", NAV1_NAV_holdEntryMode(180.0, 0.0, 0) == NAV1_NAV_HOLD_PARALLEL);
+
     printf("\n--- Rhumb Line ---\n");
     TEST_NEAR("rhumbDist(0,0,10,0) NM", NAV1_NAV_rhumbDistance(0.0, 0.0, 10.0, 0.0), 600.0, 1.0);
     TEST_NEAR("rhumbBrg(0,0,0,10) deg (along equator)", NAV1_NAV_rhumbBearing(0.0, 0.0, 0.0, 10.0), 90.0, 0.1);
@@ -252,6 +282,20 @@ int main()
         TEST_NEAR("intRad converge lon", lon, 5.0, 0.5);
     }
 
+    printf("\n--- Intermediate Point ---\n");
+    {
+        double lat, lon;
+        NAV1_GEO_intermediatePoint(0.0, 0.0, 10.0, 0.0, 0.5, &lat, &lon);
+        TEST_NEAR("intPt half lat", lat, 5.0, 0.1);
+        TEST_NEAR("intPt half lon", lon, 0.0, 0.01);
+    }
+    {
+        double lat, lon;
+        NAV1_GEO_intermediatePoint(0.0, 0.0, 10.0, 10.0, 0.25, &lat, &lon);
+        TEST_NEAR("intPt frac lat", lat, 2.5, 0.2);
+        TEST_NEAR("intPt frac lon", lon, 2.5, 0.2);
+    }
+
     printf("\n--- Wind Correction ---\n");
     {
         double heading, gs, wca;
@@ -306,6 +350,13 @@ int main()
         TEST_NEAR("wTri xwind GS", gs, 100.0, 1.0);
         TEST_NEAR("wTri xwind track drift", track, 11.5, 1.0);
     }
+
+    printf("\n--- Turn Math ---\n");
+    TEST_NEAR("turnR 120kt 25deg", NAV1_AERO_turnRadius(120.0, 25.0), 0.45, 0.02);
+    TEST_NEAR("turnRate kts", NAV1_AERO_turnRate(120.0, 25.0), 4.2, 0.5);
+    TEST_NEAR("bankForRate", NAV1_AERO_bankForRate(120.0, 3.0), 18.5, 1.5);
+    TEST_NEAR("FPA 500fpm 100kt", NAV1_AERO_flightPathAngle(500.0, 100.0), 2.8, 0.5);
+    TEST_NEAR("VS from 3deg 100kt", NAV1_AERO_vsFromFlightPathAngle(3.0, 100.0), 530.0, 30.0);
 
     printf("\n--- ISA Atmosphere ---\n");
     {

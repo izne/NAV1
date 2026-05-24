@@ -213,3 +213,22 @@ NAV1_EXPORT int NAV1_GEO_intersectingRadials(double lat1, double lon1, double br
     NAV1_GEO_destinationPoint(lat2, lon2, brg2, dNm, outLat, outLon);
     return 1;
 }
+
+NAV1_EXPORT void NAV1_GEO_intermediatePoint(double lat1, double lon1, double lat2, double lon2, double fraction, double *outLat, double *outLon)
+{
+    const double lat1_r = lat1 * M_PI / 180.0;
+    const double lon1_r = lon1 * M_PI / 180.0;
+    const double lat2_r = lat2 * M_PI / 180.0;
+    const double lon2_r = lon2 * M_PI / 180.0;
+    const double df = (lat2 - lat1) * M_PI / 180.0;
+    const double dl = (lon2 - lon1) * M_PI / 180.0;
+    const double a = sin(df / 2.0) * sin(df / 2.0) + cos(lat1_r) * cos(lat2_r) * sin(dl / 2.0) * sin(dl / 2.0);
+    const double c = 2.0 * atan2(sqrt(a), sqrt(1.0 - a));
+    const double A = sin((1.0 - fraction) * c) / sin(c);
+    const double B = sin(fraction * c) / sin(c);
+    const double x = A * cos(lat1_r) * cos(lon1_r) + B * cos(lat2_r) * cos(lon2_r);
+    const double y = A * cos(lat1_r) * sin(lon1_r) + B * cos(lat2_r) * sin(lon2_r);
+    const double z = A * sin(lat1_r) + B * sin(lat2_r);
+    *outLat = atan2(z, sqrt(x * x + y * y)) * 180.0 / M_PI;
+    *outLon = atan2(y, x) * 180.0 / M_PI;
+}

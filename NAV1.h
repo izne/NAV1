@@ -50,6 +50,7 @@ NAV1_EXPORT int    NAV1_GEO_ecefToGeodetic(double x, double y, double z, double 
 NAV1_EXPORT double NAV1_GEO_normalizeAngle(double a);
 NAV1_EXPORT double NAV1_GEO_shortestAngularDistance(double from, double to);
 NAV1_EXPORT int    NAV1_GEO_intersectingRadials(double lat1, double lon1, double brg1, double lat2, double lon2, double brg2, double *outLat, double *outLon);
+NAV1_EXPORT void   NAV1_GEO_intermediatePoint(double lat1, double lon1, double lat2, double lon2, double fraction, double *outLat, double *outLon);
 
 /* ------------------------------------------------------------------ */
 /*  Unit conversions — NAV1_CONV_*                                    */
@@ -87,6 +88,12 @@ NAV1_EXPORT double NAV1_NAV_rhumbBearing(double lat1, double lon1, double lat2, 
 NAV1_EXPORT void   NAV1_NAV_antipodalPoint(double lat, double lon, double *outLat, double *outLon);
 NAV1_EXPORT void   NAV1_NAV_bearingToCompass(double bearing, char *out, int outSize);
 NAV1_EXPORT int    NAV1_NAV_closestPointOnCourse(double lat1, double lon1, double lat2, double lon2, double lat3, double lon3, double *outLat, double *outLon);
+NAV1_EXPORT void   NAV1_NAV_leadPoint(double lat, double lon, double outboundCourse, double radiusNm, double interceptCourse, double *outLat, double *outLon);
+NAV1_EXPORT int    NAV1_NAV_courseIntercept(double lat, double lon, double heading, double targetLat, double targetLon, double targetCourse, double interceptAngle, double *outLat, double *outLon);
+#define NAV1_NAV_HOLD_DIRECT    0
+#define NAV1_NAV_HOLD_PARALLEL  1
+#define NAV1_NAV_HOLD_TEARDROP  2
+NAV1_EXPORT int    NAV1_NAV_holdEntryMode(double inboundCourse, double headingToFix, int rightTurn);
 
 /* ------------------------------------------------------------------ */
 /*  Aviation math — NAV1_AERO_*                                       */
@@ -101,6 +108,11 @@ NAV1_EXPORT double NAV1_AERO_speedOfSound(double oatC);
 NAV1_EXPORT double NAV1_AERO_machNumber(double tasKts, double oatC);
 NAV1_EXPORT double NAV1_AERO_casToTas(double casKts, double pressureAltFt, double oatC);
 NAV1_EXPORT void   NAV1_AERO_windTriangle(double headingDeg, double tasKts, double windDirDeg, double windSpeedKts, double *groundTrackDeg, double *groundSpeedKts);
+NAV1_EXPORT double NAV1_AERO_turnRadius(double tasKts, double bankDeg);
+NAV1_EXPORT double NAV1_AERO_turnRate(double tasKts, double bankDeg);
+NAV1_EXPORT double NAV1_AERO_bankForRate(double tasKts, double rateDegPerSec);
+NAV1_EXPORT double NAV1_AERO_flightPathAngle(double vsFpm, double gsKts);
+NAV1_EXPORT double NAV1_AERO_vsFromFlightPathAngle(double fpaDeg, double gsKts);
 
 /* ------------------------------------------------------------------ */
 /*  GPS helpers — NAV1_GPS_*                                          */
