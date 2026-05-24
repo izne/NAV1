@@ -1,0 +1,977 @@
+Open Watcom Library Manager Version 1.9
+Portions Copyright (c) 1984-2002 Sybase, Inc. All Rights Reserved.
+Source code is available under the Sybase Open Watcom Public License.
+See http://www.openwatcom.org/ for details.
+NAV1_A424_a424Free....................................................d000001.o
+NAV1_A424_a424ParseFile...............................................d000002.o
+NAV1_A429_a429Data....................................................d000003.o
+NAV1_A429_a429DataBCD.................................................d000004.o
+NAV1_A429_a429DataBNR.................................................d000005.o
+NAV1_A429_a429Decode..................................................d000006.o
+NAV1_A429_a429Encode..................................................d000007.o
+NAV1_A429_a429EncodeBCD...............................................d000008.o
+NAV1_A429_a429EncodeBNR...............................................d000009.o
+NAV1_A429_a429Label...................................................d000010.o
+NAV1_A429_a429LabelInfo...............................................d000011.o
+NAV1_A429_a429ParityCheck.............................................d000012.o
+NAV1_A429_a429SDI.....................................................d000013.o
+NAV1_A429_a429SSM.....................................................d000014.o
+NAV1_A429_a429SetParity...............................................d000015.o
+NAV1_AERO_bankForRate.................................................d000016.o
+NAV1_AERO_casToTas....................................................d000017.o
+NAV1_AERO_densityAltitude.............................................d000018.o
+NAV1_AERO_flightPathAngle.............................................d000019.o
+NAV1_AERO_isaAtmosphere...............................................d000020.o
+NAV1_AERO_machNumber..................................................d000021.o
+NAV1_AERO_pressureAltitude............................................d000022.o
+NAV1_AERO_reciprocalHeading...........................................d000023.o
+NAV1_AERO_speedOfSound................................................d000024.o
+NAV1_AERO_standardRateTurnBank........................................d000025.o
+NAV1_AERO_trueAltitude................................................d000026.o
+NAV1_AERO_turnRadius..................................................d000027.o
+NAV1_AERO_turnRate....................................................d000028.o
+NAV1_AERO_vsFromFlightPathAngle.......................................d000029.o
+NAV1_AERO_windComponents..............................................d000030.o
+NAV1_AERO_windCorrection..............................................d000031.o
+NAV1_AERO_windTriangle................................................d000032.o
+NAV1_CONV_cToF........................................................d000033.o
+NAV1_CONV_cmToInch....................................................d000034.o
+NAV1_CONV_degToRad....................................................d000035.o
+NAV1_CONV_fToC........................................................d000036.o
+NAV1_CONV_ftToM.......................................................d000037.o
+NAV1_CONV_ftToNm......................................................d000038.o
+NAV1_CONV_galToL......................................................d000039.o
+NAV1_CONV_hPaToInHg...................................................d000040.o
+NAV1_CONV_hPaToPsi....................................................d000041.o
+NAV1_CONV_inHgTohPa...................................................d000042.o
+NAV1_CONV_inchToCm....................................................d000043.o
+NAV1_CONV_kgToLb......................................................d000044.o
+NAV1_CONV_kgToTonne...................................................d000045.o
+NAV1_CONV_kmToMi......................................................d000046.o
+NAV1_CONV_kmToNm......................................................d000047.o
+NAV1_CONV_kmhToKnots..................................................d000048.o
+NAV1_CONV_knotsToKmh..................................................d000049.o
+NAV1_CONV_knotsToMs...................................................d000050.o
+NAV1_CONV_lToGal......................................................d000051.o
+NAV1_CONV_lbToKg......................................................d000052.o
+NAV1_CONV_mToFt.......................................................d000053.o
+NAV1_CONV_mToNm.......................................................d000054.o
+NAV1_CONV_miToKm......................................................d000055.o
+NAV1_CONV_miToNm......................................................d000056.o
+NAV1_CONV_msToKnots...................................................d000057.o
+NAV1_CONV_nmToFt......................................................d000058.o
+NAV1_CONV_nmToKm......................................................d000059.o
+NAV1_CONV_nmToM.......................................................d000060.o
+NAV1_CONV_nmToMi......................................................d000061.o
+NAV1_CONV_psiTohPa....................................................d000062.o
+NAV1_CONV_radToDeg....................................................d000063.o
+NAV1_CONV_tonneToKg...................................................d000064.o
+NAV1_CTL_angularSlewInit..............................................d000065.o
+NAV1_CTL_angularSlewUpdate............................................d000066.o
+NAV1_CTL_cfInit.......................................................d000067.o
+NAV1_CTL_cfUpdate.....................................................d000068.o
+NAV1_CTL_deadband.....................................................d000069.o
+NAV1_CTL_hystInit.....................................................d000070.o
+NAV1_CTL_hystUpdate...................................................d000071.o
+NAV1_CTL_lpfInit......................................................d000072.o
+NAV1_CTL_lpfUpdate....................................................d000073.o
+NAV1_CTL_maInit.......................................................d000074.o
+NAV1_CTL_maUpdate.....................................................d000075.o
+NAV1_CTL_pidInit......................................................d000076.o
+NAV1_CTL_pidUpdate....................................................d000077.o
+NAV1_CTL_slewInit.....................................................d000078.o
+NAV1_CTL_slewUpdate...................................................d000079.o
+NAV1_FLT_alternateFuelRequired........................................d000080.o
+NAV1_FLT_criticalFuel.................................................d000081.o
+NAV1_FLT_fuelEndurance................................................d000082.o
+NAV1_FLT_fuelRange....................................................d000083.o
+NAV1_FLT_fuelRequired.................................................d000084.o
+NAV1_FLT_requiredVerticalSpeed........................................d000085.o
+NAV1_FLT_specificRange................................................d000086.o
+NAV1_FLT_timeToAltitude...............................................d000087.o
+NAV1_FLT_timeToWaypoint...............................................d000088.o
+NAV1_FLT_topOfDescent.................................................d000089.o
+NAV1_GEO_crossTrackDistance...........................................d000090.o
+NAV1_GEO_decimalToDMS.................................................d000091.o
+NAV1_GEO_destinationPoint.............................................d000092.o
+NAV1_GEO_distanceToTarget.............................................d000093.o
+NAV1_GEO_dmsToDecimal.................................................d000094.o
+NAV1_GEO_ecefToGeodetic...............................................d000095.o
+NAV1_GEO_finalBearing.................................................d000096.o
+NAV1_GEO_geodeticToEcef...............................................d000097.o
+NAV1_GEO_headingToTarget..............................................d000098.o
+NAV1_GEO_intermediatePoint............................................d000099.o
+NAV1_GEO_intersectingRadials..........................................d000100.o
+NAV1_GEO_midpoint.....................................................d000101.o
+NAV1_GEO_normalizeAngle...............................................d000102.o
+NAV1_GEO_shortestAngularDistance......................................d000103.o
+NAV1_GPS_decimalToDMM.................................................d000104.o
+NAV1_GPS_dmmToDecimal.................................................d000105.o
+NAV1_GPS_gpsSpeed.....................................................d000106.o
+NAV1_GPS_isValidLatitude..............................................d000107.o
+NAV1_GPS_isValidLongitude.............................................d000108.o
+NAV1_GPS_nmeaChecksum.................................................d000109.o
+NAV1_METAR_metarCrosswind.............................................d000110.o
+NAV1_METAR_metarHeadwind..............................................d000111.o
+NAV1_METAR_metarParse.................................................d000112.o
+NAV1_METAR_metarTemperatureSpread.....................................d000113.o
+NAV1_METAR_metarWindAvg...............................................d000114.o
+NAV1_NAV_alongTrackDistance...........................................d000115.o
+NAV1_NAV_antipodalPoint...............................................d000116.o
+NAV1_NAV_bearingToCompass.............................................d000117.o
+NAV1_NAV_closestPointOnCourse.........................................d000118.o
+NAV1_NAV_courseIntercept..............................................d000119.o
+NAV1_NAV_fixRadialDistance............................................d000120.o
+NAV1_NAV_greatCircleWaypoints.........................................d000121.o
+NAV1_NAV_holdEntryMode................................................d000122.o
+NAV1_NAV_leadPoint....................................................d000123.o
+NAV1_NAV_rhumbBearing.................................................d000124.o
+NAV1_NAV_rhumbDistance................................................d000125.o
+NAV1_NMEA_nmeaChecksumCompute.........................................d000126.o
+NAV1_NMEA_nmeaParse...................................................d000127.o
+NAV1_NMEA_nmeaParseGSA................................................d000128.o
+NAV1_PERF_climbGradient...............................................d000129.o
+NAV1_PERF_crosswindExceedance.........................................d000130.o
+NAV1_PERF_fpaFromGradient.............................................d000131.o
+NAV1_PERF_headwindFraction............................................d000132.o
+NAV1_PERF_requiredRunwayLength........................................d000133.o
+NAV1_RTE_routeAdd.....................................................d000134.o
+NAV1_RTE_routeClear...................................................d000135.o
+NAV1_RTE_routeDirectTo................................................d000136.o
+NAV1_RTE_routeInit....................................................d000137.o
+NAV1_RTE_routeInsert..................................................d000138.o
+NAV1_RTE_routeLegInfo.................................................d000139.o
+NAV1_RTE_routeLoadCSV.................................................d000140.o
+NAV1_RTE_routeRemove..................................................d000141.o
+NAV1_RTE_routeSaveCSV.................................................d000142.o
+NAV1_RTE_routeSequence................................................d000143.o
+NAV1_RTE_routeTurnAnticipation........................................d000144.o
+NAV1_WB_cgFromMoments.................................................d000145.o
+NAV1_WB_cogAdd........................................................d000146.o
+NAV1_WB_cogRemove.....................................................d000147.o
+NAV1_WB_fuelVolume....................................................d000148.o
+NAV1_WB_fuelWeight....................................................d000149.o
+NAV1_WB_moment........................................................d000150.o
+NAV1_WB_tonneToWeight.................................................d000151.o
+NAV1_WB_weightToTonne.................................................d000152.o
+NAV1_XPL_fplParseRoute................................................d000153.o
+NAV1_XPL_xpFixLoad....................................................d000154.o
+NAV1_XPL_xpNavFindByID................................................d000155.o
+NAV1_XPL_xpNavFindNearest.............................................d000156.o
+NAV1_XPL_xpNavFree....................................................d000157.o
+NAV1_XPL_xpNavLoad....................................................d000158.o
+NAV1_dll_iname........................................................d000161.o
+Version...............................................................d000159.o
+WinVer................................................................d000160.o
+__imp_NAV1_A424_a424Free..............................................d000001.o
+__imp_NAV1_A424_a424ParseFile.........................................d000002.o
+__imp_NAV1_A429_a429Data..............................................d000003.o
+__imp_NAV1_A429_a429DataBCD...........................................d000004.o
+__imp_NAV1_A429_a429DataBNR...........................................d000005.o
+__imp_NAV1_A429_a429Decode............................................d000006.o
+__imp_NAV1_A429_a429Encode............................................d000007.o
+__imp_NAV1_A429_a429EncodeBCD.........................................d000008.o
+__imp_NAV1_A429_a429EncodeBNR.........................................d000009.o
+__imp_NAV1_A429_a429Label.............................................d000010.o
+__imp_NAV1_A429_a429LabelInfo.........................................d000011.o
+__imp_NAV1_A429_a429ParityCheck.......................................d000012.o
+__imp_NAV1_A429_a429SDI...............................................d000013.o
+__imp_NAV1_A429_a429SSM...............................................d000014.o
+__imp_NAV1_A429_a429SetParity.........................................d000015.o
+__imp_NAV1_AERO_bankForRate...........................................d000016.o
+__imp_NAV1_AERO_casToTas..............................................d000017.o
+__imp_NAV1_AERO_densityAltitude.......................................d000018.o
+__imp_NAV1_AERO_flightPathAngle.......................................d000019.o
+__imp_NAV1_AERO_isaAtmosphere.........................................d000020.o
+__imp_NAV1_AERO_machNumber............................................d000021.o
+__imp_NAV1_AERO_pressureAltitude......................................d000022.o
+__imp_NAV1_AERO_reciprocalHeading.....................................d000023.o
+__imp_NAV1_AERO_speedOfSound..........................................d000024.o
+__imp_NAV1_AERO_standardRateTurnBank..................................d000025.o
+__imp_NAV1_AERO_trueAltitude..........................................d000026.o
+__imp_NAV1_AERO_turnRadius............................................d000027.o
+__imp_NAV1_AERO_turnRate..............................................d000028.o
+__imp_NAV1_AERO_vsFromFlightPathAngle.................................d000029.o
+__imp_NAV1_AERO_windComponents........................................d000030.o
+__imp_NAV1_AERO_windCorrection........................................d000031.o
+__imp_NAV1_AERO_windTriangle..........................................d000032.o
+__imp_NAV1_CONV_cToF..................................................d000033.o
+__imp_NAV1_CONV_cmToInch..............................................d000034.o
+__imp_NAV1_CONV_degToRad..............................................d000035.o
+__imp_NAV1_CONV_fToC..................................................d000036.o
+__imp_NAV1_CONV_ftToM.................................................d000037.o
+__imp_NAV1_CONV_ftToNm................................................d000038.o
+__imp_NAV1_CONV_galToL................................................d000039.o
+__imp_NAV1_CONV_hPaToInHg.............................................d000040.o
+__imp_NAV1_CONV_hPaToPsi..............................................d000041.o
+__imp_NAV1_CONV_inHgTohPa.............................................d000042.o
+__imp_NAV1_CONV_inchToCm..............................................d000043.o
+__imp_NAV1_CONV_kgToLb................................................d000044.o
+__imp_NAV1_CONV_kgToTonne.............................................d000045.o
+__imp_NAV1_CONV_kmToMi................................................d000046.o
+__imp_NAV1_CONV_kmToNm................................................d000047.o
+__imp_NAV1_CONV_kmhToKnots............................................d000048.o
+__imp_NAV1_CONV_knotsToKmh............................................d000049.o
+__imp_NAV1_CONV_knotsToMs.............................................d000050.o
+__imp_NAV1_CONV_lToGal................................................d000051.o
+__imp_NAV1_CONV_lbToKg................................................d000052.o
+__imp_NAV1_CONV_mToFt.................................................d000053.o
+__imp_NAV1_CONV_mToNm.................................................d000054.o
+__imp_NAV1_CONV_miToKm................................................d000055.o
+__imp_NAV1_CONV_miToNm................................................d000056.o
+__imp_NAV1_CONV_msToKnots.............................................d000057.o
+__imp_NAV1_CONV_nmToFt................................................d000058.o
+__imp_NAV1_CONV_nmToKm................................................d000059.o
+__imp_NAV1_CONV_nmToM.................................................d000060.o
+__imp_NAV1_CONV_nmToMi................................................d000061.o
+__imp_NAV1_CONV_psiTohPa..............................................d000062.o
+__imp_NAV1_CONV_radToDeg..............................................d000063.o
+__imp_NAV1_CONV_tonneToKg.............................................d000064.o
+__imp_NAV1_CTL_angularSlewInit........................................d000065.o
+__imp_NAV1_CTL_angularSlewUpdate......................................d000066.o
+__imp_NAV1_CTL_cfInit.................................................d000067.o
+__imp_NAV1_CTL_cfUpdate...............................................d000068.o
+__imp_NAV1_CTL_deadband...............................................d000069.o
+__imp_NAV1_CTL_hystInit...............................................d000070.o
+__imp_NAV1_CTL_hystUpdate.............................................d000071.o
+__imp_NAV1_CTL_lpfInit................................................d000072.o
+__imp_NAV1_CTL_lpfUpdate..............................................d000073.o
+__imp_NAV1_CTL_maInit.................................................d000074.o
+__imp_NAV1_CTL_maUpdate...............................................d000075.o
+__imp_NAV1_CTL_pidInit................................................d000076.o
+__imp_NAV1_CTL_pidUpdate..............................................d000077.o
+__imp_NAV1_CTL_slewInit...............................................d000078.o
+__imp_NAV1_CTL_slewUpdate.............................................d000079.o
+__imp_NAV1_FLT_alternateFuelRequired..................................d000080.o
+__imp_NAV1_FLT_criticalFuel...........................................d000081.o
+__imp_NAV1_FLT_fuelEndurance..........................................d000082.o
+__imp_NAV1_FLT_fuelRange..............................................d000083.o
+__imp_NAV1_FLT_fuelRequired...........................................d000084.o
+__imp_NAV1_FLT_requiredVerticalSpeed..................................d000085.o
+__imp_NAV1_FLT_specificRange..........................................d000086.o
+__imp_NAV1_FLT_timeToAltitude.........................................d000087.o
+__imp_NAV1_FLT_timeToWaypoint.........................................d000088.o
+__imp_NAV1_FLT_topOfDescent...........................................d000089.o
+__imp_NAV1_GEO_crossTrackDistance.....................................d000090.o
+__imp_NAV1_GEO_decimalToDMS...........................................d000091.o
+__imp_NAV1_GEO_destinationPoint.......................................d000092.o
+__imp_NAV1_GEO_distanceToTarget.......................................d000093.o
+__imp_NAV1_GEO_dmsToDecimal...........................................d000094.o
+__imp_NAV1_GEO_ecefToGeodetic.........................................d000095.o
+__imp_NAV1_GEO_finalBearing...........................................d000096.o
+__imp_NAV1_GEO_geodeticToEcef.........................................d000097.o
+__imp_NAV1_GEO_headingToTarget........................................d000098.o
+__imp_NAV1_GEO_intermediatePoint......................................d000099.o
+__imp_NAV1_GEO_intersectingRadials....................................d000100.o
+__imp_NAV1_GEO_midpoint...............................................d000101.o
+__imp_NAV1_GEO_normalizeAngle.........................................d000102.o
+__imp_NAV1_GEO_shortestAngularDistance................................d000103.o
+__imp_NAV1_GPS_decimalToDMM...........................................d000104.o
+__imp_NAV1_GPS_dmmToDecimal...........................................d000105.o
+__imp_NAV1_GPS_gpsSpeed...............................................d000106.o
+__imp_NAV1_GPS_isValidLatitude........................................d000107.o
+__imp_NAV1_GPS_isValidLongitude.......................................d000108.o
+__imp_NAV1_GPS_nmeaChecksum...........................................d000109.o
+__imp_NAV1_METAR_metarCrosswind.......................................d000110.o
+__imp_NAV1_METAR_metarHeadwind........................................d000111.o
+__imp_NAV1_METAR_metarParse...........................................d000112.o
+__imp_NAV1_METAR_metarTemperatureSpread...............................d000113.o
+__imp_NAV1_METAR_metarWindAvg.........................................d000114.o
+__imp_NAV1_NAV_alongTrackDistance.....................................d000115.o
+__imp_NAV1_NAV_antipodalPoint.........................................d000116.o
+__imp_NAV1_NAV_bearingToCompass.......................................d000117.o
+__imp_NAV1_NAV_closestPointOnCourse...................................d000118.o
+__imp_NAV1_NAV_courseIntercept........................................d000119.o
+__imp_NAV1_NAV_fixRadialDistance......................................d000120.o
+__imp_NAV1_NAV_greatCircleWaypoints...................................d000121.o
+__imp_NAV1_NAV_holdEntryMode..........................................d000122.o
+__imp_NAV1_NAV_leadPoint..............................................d000123.o
+__imp_NAV1_NAV_rhumbBearing...........................................d000124.o
+__imp_NAV1_NAV_rhumbDistance..........................................d000125.o
+__imp_NAV1_NMEA_nmeaChecksumCompute...................................d000126.o
+__imp_NAV1_NMEA_nmeaParse.............................................d000127.o
+__imp_NAV1_NMEA_nmeaParseGSA..........................................d000128.o
+__imp_NAV1_PERF_climbGradient.........................................d000129.o
+__imp_NAV1_PERF_crosswindExceedance...................................d000130.o
+__imp_NAV1_PERF_fpaFromGradient.......................................d000131.o
+__imp_NAV1_PERF_headwindFraction......................................d000132.o
+__imp_NAV1_PERF_requiredRunwayLength..................................d000133.o
+__imp_NAV1_RTE_routeAdd...............................................d000134.o
+__imp_NAV1_RTE_routeClear.............................................d000135.o
+__imp_NAV1_RTE_routeDirectTo..........................................d000136.o
+__imp_NAV1_RTE_routeInit..............................................d000137.o
+__imp_NAV1_RTE_routeInsert............................................d000138.o
+__imp_NAV1_RTE_routeLegInfo...........................................d000139.o
+__imp_NAV1_RTE_routeLoadCSV...........................................d000140.o
+__imp_NAV1_RTE_routeRemove............................................d000141.o
+__imp_NAV1_RTE_routeSaveCSV...........................................d000142.o
+__imp_NAV1_RTE_routeSequence..........................................d000143.o
+__imp_NAV1_RTE_routeTurnAnticipation..................................d000144.o
+__imp_NAV1_WB_cgFromMoments...........................................d000145.o
+__imp_NAV1_WB_cogAdd..................................................d000146.o
+__imp_NAV1_WB_cogRemove...............................................d000147.o
+__imp_NAV1_WB_fuelVolume..............................................d000148.o
+__imp_NAV1_WB_fuelWeight..............................................d000149.o
+__imp_NAV1_WB_moment..................................................d000150.o
+__imp_NAV1_WB_tonneToWeight...........................................d000151.o
+__imp_NAV1_WB_weightToTonne...........................................d000152.o
+__imp_NAV1_XPL_fplParseRoute..........................................d000153.o
+__imp_NAV1_XPL_xpFixLoad..............................................d000154.o
+__imp_NAV1_XPL_xpNavFindByID..........................................d000155.o
+__imp_NAV1_XPL_xpNavFindNearest.......................................d000156.o
+__imp_NAV1_XPL_xpNavFree..............................................d000157.o
+__imp_NAV1_XPL_xpNavLoad..............................................d000158.o
+__imp_Version.........................................................d000159.o
+__imp_WinVer..........................................................d000160.o
+_head_NAV1_dll........................................................d000000.o
+ 
+d000161.o               Offset=000024a2H
+    NAV1_dll_iname
+ 
+d000000.o               Offset=000025e2H
+    _head_NAV1_dll
+ 
+d000160.o               Offset=00002758H
+    WinVer
+    __imp_WinVer
+ 
+d000159.o               Offset=00002970H
+    Version
+    __imp_Version
+ 
+d000158.o               Offset=00002b8aH
+    NAV1_XPL_xpNavLoad
+    __imp_NAV1_XPL_xpNavLoad
+ 
+d000157.o               Offset=00002dceH
+    NAV1_XPL_xpNavFree
+    __imp_NAV1_XPL_xpNavFree
+ 
+d000156.o               Offset=00003012H
+    NAV1_XPL_xpNavFindNearest
+    __imp_NAV1_XPL_xpNavFindNearest
+ 
+d000155.o               Offset=00003268H
+    NAV1_XPL_xpNavFindByID
+    __imp_NAV1_XPL_xpNavFindByID
+ 
+d000154.o               Offset=000034b8H
+    NAV1_XPL_xpFixLoad
+    __imp_NAV1_XPL_xpFixLoad
+ 
+d000153.o               Offset=000036fcH
+    NAV1_XPL_fplParseRoute
+    __imp_NAV1_XPL_fplParseRoute
+ 
+d000152.o               Offset=0000394cH
+    NAV1_WB_weightToTonne
+    __imp_NAV1_WB_weightToTonne
+ 
+d000151.o               Offset=00003b96H
+    NAV1_WB_tonneToWeight
+    __imp_NAV1_WB_tonneToWeight
+ 
+d000150.o               Offset=00003de0H
+    NAV1_WB_moment
+    __imp_NAV1_WB_moment
+ 
+d000149.o               Offset=00004018H
+    NAV1_WB_fuelWeight
+    __imp_NAV1_WB_fuelWeight
+ 
+d000148.o               Offset=0000425cH
+    NAV1_WB_fuelVolume
+    __imp_NAV1_WB_fuelVolume
+ 
+d000147.o               Offset=000044a0H
+    NAV1_WB_cogRemove
+    __imp_NAV1_WB_cogRemove
+ 
+d000146.o               Offset=000046deH
+    NAV1_WB_cogAdd
+    __imp_NAV1_WB_cogAdd
+ 
+d000145.o               Offset=00004916H
+    NAV1_WB_cgFromMoments
+    __imp_NAV1_WB_cgFromMoments
+ 
+d000144.o               Offset=00004b60H
+    NAV1_RTE_routeTurnAnticipation
+    __imp_NAV1_RTE_routeTurnAnticipation
+ 
+d000143.o               Offset=00004dc8H
+    NAV1_RTE_routeSequence
+    __imp_NAV1_RTE_routeSequence
+ 
+d000142.o               Offset=00005018H
+    NAV1_RTE_routeSaveCSV
+    __imp_NAV1_RTE_routeSaveCSV
+ 
+d000141.o               Offset=00005262H
+    NAV1_RTE_routeRemove
+    __imp_NAV1_RTE_routeRemove
+ 
+d000140.o               Offset=000054aaH
+    NAV1_RTE_routeLoadCSV
+    __imp_NAV1_RTE_routeLoadCSV
+ 
+d000139.o               Offset=000056f4H
+    NAV1_RTE_routeLegInfo
+    __imp_NAV1_RTE_routeLegInfo
+ 
+d000138.o               Offset=0000593eH
+    NAV1_RTE_routeInsert
+    __imp_NAV1_RTE_routeInsert
+ 
+d000137.o               Offset=00005b86H
+    NAV1_RTE_routeInit
+    __imp_NAV1_RTE_routeInit
+ 
+d000136.o               Offset=00005dcaH
+    NAV1_RTE_routeDirectTo
+    __imp_NAV1_RTE_routeDirectTo
+ 
+d000135.o               Offset=0000601aH
+    NAV1_RTE_routeClear
+    __imp_NAV1_RTE_routeClear
+ 
+d000134.o               Offset=00006260H
+    NAV1_RTE_routeAdd
+    __imp_NAV1_RTE_routeAdd
+ 
+d000133.o               Offset=0000649eH
+    NAV1_PERF_requiredRunwayLength
+    __imp_NAV1_PERF_requiredRunwayLength
+ 
+d000132.o               Offset=00006706H
+    NAV1_PERF_headwindFraction
+    __imp_NAV1_PERF_headwindFraction
+ 
+d000131.o               Offset=00006962H
+    NAV1_PERF_fpaFromGradient
+    __imp_NAV1_PERF_fpaFromGradient
+ 
+d000130.o               Offset=00006bb8H
+    NAV1_PERF_crosswindExceedance
+    __imp_NAV1_PERF_crosswindExceedance
+ 
+d000129.o               Offset=00006e1aH
+    NAV1_PERF_climbGradient
+    __imp_NAV1_PERF_climbGradient
+ 
+d000128.o               Offset=0000706cH
+    NAV1_NMEA_nmeaParseGSA
+    __imp_NAV1_NMEA_nmeaParseGSA
+ 
+d000127.o               Offset=000072bcH
+    NAV1_NMEA_nmeaParse
+    __imp_NAV1_NMEA_nmeaParse
+ 
+d000126.o               Offset=00007502H
+    NAV1_NMEA_nmeaChecksumCompute
+    __imp_NAV1_NMEA_nmeaChecksumCompute
+ 
+d000125.o               Offset=00007764H
+    NAV1_NAV_rhumbDistance
+    __imp_NAV1_NAV_rhumbDistance
+ 
+d000124.o               Offset=000079b4H
+    NAV1_NAV_rhumbBearing
+    __imp_NAV1_NAV_rhumbBearing
+ 
+d000123.o               Offset=00007bfeH
+    NAV1_NAV_leadPoint
+    __imp_NAV1_NAV_leadPoint
+ 
+d000122.o               Offset=00007e42H
+    NAV1_NAV_holdEntryMode
+    __imp_NAV1_NAV_holdEntryMode
+ 
+d000121.o               Offset=00008092H
+    NAV1_NAV_greatCircleWaypoints
+    __imp_NAV1_NAV_greatCircleWaypoints
+ 
+d000120.o               Offset=000082f4H
+    NAV1_NAV_fixRadialDistance
+    __imp_NAV1_NAV_fixRadialDistance
+ 
+d000119.o               Offset=00008550H
+    NAV1_NAV_courseIntercept
+    __imp_NAV1_NAV_courseIntercept
+ 
+d000118.o               Offset=000087a4H
+    NAV1_NAV_closestPointOnCourse
+    __imp_NAV1_NAV_closestPointOnCourse
+ 
+d000117.o               Offset=00008a06H
+    NAV1_NAV_bearingToCompass
+    __imp_NAV1_NAV_bearingToCompass
+ 
+d000116.o               Offset=00008c5cH
+    NAV1_NAV_antipodalPoint
+    __imp_NAV1_NAV_antipodalPoint
+ 
+d000115.o               Offset=00008eaeH
+    NAV1_NAV_alongTrackDistance
+    __imp_NAV1_NAV_alongTrackDistance
+ 
+d000114.o               Offset=0000910cH
+    NAV1_METAR_metarWindAvg
+    __imp_NAV1_METAR_metarWindAvg
+ 
+d000113.o               Offset=0000935eH
+    NAV1_METAR_metarTemperatureSpread
+    __imp_NAV1_METAR_metarTemperatureSpread
+ 
+d000112.o               Offset=000095ccH
+    NAV1_METAR_metarParse
+    __imp_NAV1_METAR_metarParse
+ 
+d000111.o               Offset=00009816H
+    NAV1_METAR_metarHeadwind
+    __imp_NAV1_METAR_metarHeadwind
+ 
+d000110.o               Offset=00009a6aH
+    NAV1_METAR_metarCrosswind
+    __imp_NAV1_METAR_metarCrosswind
+ 
+d000109.o               Offset=00009cc0H
+    NAV1_GPS_nmeaChecksum
+    __imp_NAV1_GPS_nmeaChecksum
+ 
+d000108.o               Offset=00009f0aH
+    NAV1_GPS_isValidLongitude
+    __imp_NAV1_GPS_isValidLongitude
+ 
+d000107.o               Offset=0000a160H
+    NAV1_GPS_isValidLatitude
+    __imp_NAV1_GPS_isValidLatitude
+ 
+d000106.o               Offset=0000a3b4H
+    NAV1_GPS_gpsSpeed
+    __imp_NAV1_GPS_gpsSpeed
+ 
+d000105.o               Offset=0000a5f2H
+    NAV1_GPS_dmmToDecimal
+    __imp_NAV1_GPS_dmmToDecimal
+ 
+d000104.o               Offset=0000a83cH
+    NAV1_GPS_decimalToDMM
+    __imp_NAV1_GPS_decimalToDMM
+ 
+d000103.o               Offset=0000aa86H
+    NAV1_GEO_shortestAngularDistance
+    __imp_NAV1_GEO_shortestAngularDistance
+ 
+d000102.o               Offset=0000acf2H
+    NAV1_GEO_normalizeAngle
+    __imp_NAV1_GEO_normalizeAngle
+ 
+d000101.o               Offset=0000af44H
+    NAV1_GEO_midpoint
+    __imp_NAV1_GEO_midpoint
+ 
+d000100.o               Offset=0000b182H
+    NAV1_GEO_intersectingRadials
+    __imp_NAV1_GEO_intersectingRadials
+ 
+d000099.o               Offset=0000b3e2H
+    NAV1_GEO_intermediatePoint
+    __imp_NAV1_GEO_intermediatePoint
+ 
+d000098.o               Offset=0000b63eH
+    NAV1_GEO_headingToTarget
+    __imp_NAV1_GEO_headingToTarget
+ 
+d000097.o               Offset=0000b892H
+    NAV1_GEO_geodeticToEcef
+    __imp_NAV1_GEO_geodeticToEcef
+ 
+d000096.o               Offset=0000bae4H
+    NAV1_GEO_finalBearing
+    __imp_NAV1_GEO_finalBearing
+ 
+d000095.o               Offset=0000bd2eH
+    NAV1_GEO_ecefToGeodetic
+    __imp_NAV1_GEO_ecefToGeodetic
+ 
+d000094.o               Offset=0000bf80H
+    NAV1_GEO_dmsToDecimal
+    __imp_NAV1_GEO_dmsToDecimal
+ 
+d000093.o               Offset=0000c1caH
+    NAV1_GEO_distanceToTarget
+    __imp_NAV1_GEO_distanceToTarget
+ 
+d000092.o               Offset=0000c420H
+    NAV1_GEO_destinationPoint
+    __imp_NAV1_GEO_destinationPoint
+ 
+d000091.o               Offset=0000c676H
+    NAV1_GEO_decimalToDMS
+    __imp_NAV1_GEO_decimalToDMS
+ 
+d000090.o               Offset=0000c8c0H
+    NAV1_GEO_crossTrackDistance
+    __imp_NAV1_GEO_crossTrackDistance
+ 
+d000089.o               Offset=0000cb1eH
+    NAV1_FLT_topOfDescent
+    __imp_NAV1_FLT_topOfDescent
+ 
+d000088.o               Offset=0000cd68H
+    NAV1_FLT_timeToWaypoint
+    __imp_NAV1_FLT_timeToWaypoint
+ 
+d000087.o               Offset=0000cfbaH
+    NAV1_FLT_timeToAltitude
+    __imp_NAV1_FLT_timeToAltitude
+ 
+d000086.o               Offset=0000d20cH
+    NAV1_FLT_specificRange
+    __imp_NAV1_FLT_specificRange
+ 
+d000085.o               Offset=0000d45cH
+    NAV1_FLT_requiredVerticalSpeed
+    __imp_NAV1_FLT_requiredVerticalSpeed
+ 
+d000084.o               Offset=0000d6c4H
+    NAV1_FLT_fuelRequired
+    __imp_NAV1_FLT_fuelRequired
+ 
+d000083.o               Offset=0000d90eH
+    NAV1_FLT_fuelRange
+    __imp_NAV1_FLT_fuelRange
+ 
+d000082.o               Offset=0000db52H
+    NAV1_FLT_fuelEndurance
+    __imp_NAV1_FLT_fuelEndurance
+ 
+d000081.o               Offset=0000dda2H
+    NAV1_FLT_criticalFuel
+    __imp_NAV1_FLT_criticalFuel
+ 
+d000080.o               Offset=0000dfecH
+    NAV1_FLT_alternateFuelRequired
+    __imp_NAV1_FLT_alternateFuelRequired
+ 
+d000079.o               Offset=0000e254H
+    NAV1_CTL_slewUpdate
+    __imp_NAV1_CTL_slewUpdate
+ 
+d000078.o               Offset=0000e49aH
+    NAV1_CTL_slewInit
+    __imp_NAV1_CTL_slewInit
+ 
+d000077.o               Offset=0000e6d8H
+    NAV1_CTL_pidUpdate
+    __imp_NAV1_CTL_pidUpdate
+ 
+d000076.o               Offset=0000e91cH
+    NAV1_CTL_pidInit
+    __imp_NAV1_CTL_pidInit
+ 
+d000075.o               Offset=0000eb58H
+    NAV1_CTL_maUpdate
+    __imp_NAV1_CTL_maUpdate
+ 
+d000074.o               Offset=0000ed96H
+    NAV1_CTL_maInit
+    __imp_NAV1_CTL_maInit
+ 
+d000073.o               Offset=0000efd0H
+    NAV1_CTL_lpfUpdate
+    __imp_NAV1_CTL_lpfUpdate
+ 
+d000072.o               Offset=0000f214H
+    NAV1_CTL_lpfInit
+    __imp_NAV1_CTL_lpfInit
+ 
+d000071.o               Offset=0000f450H
+    NAV1_CTL_hystUpdate
+    __imp_NAV1_CTL_hystUpdate
+ 
+d000070.o               Offset=0000f696H
+    NAV1_CTL_hystInit
+    __imp_NAV1_CTL_hystInit
+ 
+d000069.o               Offset=0000f8d4H
+    NAV1_CTL_deadband
+    __imp_NAV1_CTL_deadband
+ 
+d000068.o               Offset=0000fb12H
+    NAV1_CTL_cfUpdate
+    __imp_NAV1_CTL_cfUpdate
+ 
+d000067.o               Offset=0000fd50H
+    NAV1_CTL_cfInit
+    __imp_NAV1_CTL_cfInit
+ 
+d000066.o               Offset=0000ff8aH
+    NAV1_CTL_angularSlewUpdate
+    __imp_NAV1_CTL_angularSlewUpdate
+ 
+d000065.o               Offset=000101e6H
+    NAV1_CTL_angularSlewInit
+    __imp_NAV1_CTL_angularSlewInit
+ 
+d000064.o               Offset=0001043aH
+    NAV1_CONV_tonneToKg
+    __imp_NAV1_CONV_tonneToKg
+ 
+d000063.o               Offset=00010680H
+    NAV1_CONV_radToDeg
+    __imp_NAV1_CONV_radToDeg
+ 
+d000062.o               Offset=000108c4H
+    NAV1_CONV_psiTohPa
+    __imp_NAV1_CONV_psiTohPa
+ 
+d000061.o               Offset=00010b08H
+    NAV1_CONV_nmToMi
+    __imp_NAV1_CONV_nmToMi
+ 
+d000060.o               Offset=00010d44H
+    NAV1_CONV_nmToM
+    __imp_NAV1_CONV_nmToM
+ 
+d000059.o               Offset=00010f7eH
+    NAV1_CONV_nmToKm
+    __imp_NAV1_CONV_nmToKm
+ 
+d000058.o               Offset=000111baH
+    NAV1_CONV_nmToFt
+    __imp_NAV1_CONV_nmToFt
+ 
+d000057.o               Offset=000113f6H
+    NAV1_CONV_msToKnots
+    __imp_NAV1_CONV_msToKnots
+ 
+d000056.o               Offset=0001163cH
+    NAV1_CONV_miToNm
+    __imp_NAV1_CONV_miToNm
+ 
+d000055.o               Offset=00011878H
+    NAV1_CONV_miToKm
+    __imp_NAV1_CONV_miToKm
+ 
+d000054.o               Offset=00011ab4H
+    NAV1_CONV_mToNm
+    __imp_NAV1_CONV_mToNm
+ 
+d000053.o               Offset=00011ceeH
+    NAV1_CONV_mToFt
+    __imp_NAV1_CONV_mToFt
+ 
+d000052.o               Offset=00011f28H
+    NAV1_CONV_lbToKg
+    __imp_NAV1_CONV_lbToKg
+ 
+d000051.o               Offset=00012164H
+    NAV1_CONV_lToGal
+    __imp_NAV1_CONV_lToGal
+ 
+d000050.o               Offset=000123a0H
+    NAV1_CONV_knotsToMs
+    __imp_NAV1_CONV_knotsToMs
+ 
+d000049.o               Offset=000125e6H
+    NAV1_CONV_knotsToKmh
+    __imp_NAV1_CONV_knotsToKmh
+ 
+d000048.o               Offset=0001282eH
+    NAV1_CONV_kmhToKnots
+    __imp_NAV1_CONV_kmhToKnots
+ 
+d000047.o               Offset=00012a76H
+    NAV1_CONV_kmToNm
+    __imp_NAV1_CONV_kmToNm
+ 
+d000046.o               Offset=00012cb2H
+    NAV1_CONV_kmToMi
+    __imp_NAV1_CONV_kmToMi
+ 
+d000045.o               Offset=00012eeeH
+    NAV1_CONV_kgToTonne
+    __imp_NAV1_CONV_kgToTonne
+ 
+d000044.o               Offset=00013134H
+    NAV1_CONV_kgToLb
+    __imp_NAV1_CONV_kgToLb
+ 
+d000043.o               Offset=00013370H
+    NAV1_CONV_inchToCm
+    __imp_NAV1_CONV_inchToCm
+ 
+d000042.o               Offset=000135b4H
+    NAV1_CONV_inHgTohPa
+    __imp_NAV1_CONV_inHgTohPa
+ 
+d000041.o               Offset=000137faH
+    NAV1_CONV_hPaToPsi
+    __imp_NAV1_CONV_hPaToPsi
+ 
+d000040.o               Offset=00013a3eH
+    NAV1_CONV_hPaToInHg
+    __imp_NAV1_CONV_hPaToInHg
+ 
+d000039.o               Offset=00013c84H
+    NAV1_CONV_galToL
+    __imp_NAV1_CONV_galToL
+ 
+d000038.o               Offset=00013ec0H
+    NAV1_CONV_ftToNm
+    __imp_NAV1_CONV_ftToNm
+ 
+d000037.o               Offset=000140fcH
+    NAV1_CONV_ftToM
+    __imp_NAV1_CONV_ftToM
+ 
+d000036.o               Offset=00014336H
+    NAV1_CONV_fToC
+    __imp_NAV1_CONV_fToC
+ 
+d000035.o               Offset=0001456eH
+    NAV1_CONV_degToRad
+    __imp_NAV1_CONV_degToRad
+ 
+d000034.o               Offset=000147b2H
+    NAV1_CONV_cmToInch
+    __imp_NAV1_CONV_cmToInch
+ 
+d000033.o               Offset=000149f6H
+    NAV1_CONV_cToF
+    __imp_NAV1_CONV_cToF
+ 
+d000032.o               Offset=00014c2eH
+    NAV1_AERO_windTriangle
+    __imp_NAV1_AERO_windTriangle
+ 
+d000031.o               Offset=00014e7eH
+    NAV1_AERO_windCorrection
+    __imp_NAV1_AERO_windCorrection
+ 
+d000030.o               Offset=000150d2H
+    NAV1_AERO_windComponents
+    __imp_NAV1_AERO_windComponents
+ 
+d000029.o               Offset=00015326H
+    NAV1_AERO_vsFromFlightPathAngle
+    __imp_NAV1_AERO_vsFromFlightPathAngle
+ 
+d000028.o               Offset=00015590H
+    NAV1_AERO_turnRate
+    __imp_NAV1_AERO_turnRate
+ 
+d000027.o               Offset=000157d4H
+    NAV1_AERO_turnRadius
+    __imp_NAV1_AERO_turnRadius
+ 
+d000026.o               Offset=00015a1cH
+    NAV1_AERO_trueAltitude
+    __imp_NAV1_AERO_trueAltitude
+ 
+d000025.o               Offset=00015c6cH
+    NAV1_AERO_standardRateTurnBank
+    __imp_NAV1_AERO_standardRateTurnBank
+ 
+d000024.o               Offset=00015ed4H
+    NAV1_AERO_speedOfSound
+    __imp_NAV1_AERO_speedOfSound
+ 
+d000023.o               Offset=00016124H
+    NAV1_AERO_reciprocalHeading
+    __imp_NAV1_AERO_reciprocalHeading
+ 
+d000022.o               Offset=00016382H
+    NAV1_AERO_pressureAltitude
+    __imp_NAV1_AERO_pressureAltitude
+ 
+d000021.o               Offset=000165deH
+    NAV1_AERO_machNumber
+    __imp_NAV1_AERO_machNumber
+ 
+d000020.o               Offset=00016826H
+    NAV1_AERO_isaAtmosphere
+    __imp_NAV1_AERO_isaAtmosphere
+ 
+d000019.o               Offset=00016a78H
+    NAV1_AERO_flightPathAngle
+    __imp_NAV1_AERO_flightPathAngle
+ 
+d000018.o               Offset=00016cceH
+    NAV1_AERO_densityAltitude
+    __imp_NAV1_AERO_densityAltitude
+ 
+d000017.o               Offset=00016f24H
+    NAV1_AERO_casToTas
+    __imp_NAV1_AERO_casToTas
+ 
+d000016.o               Offset=00017168H
+    NAV1_AERO_bankForRate
+    __imp_NAV1_AERO_bankForRate
+ 
+d000015.o               Offset=000173b2H
+    NAV1_A429_a429SetParity
+    __imp_NAV1_A429_a429SetParity
+ 
+d000014.o               Offset=00017604H
+    NAV1_A429_a429SSM
+    __imp_NAV1_A429_a429SSM
+ 
+d000013.o               Offset=00017842H
+    NAV1_A429_a429SDI
+    __imp_NAV1_A429_a429SDI
+ 
+d000012.o               Offset=00017a80H
+    NAV1_A429_a429ParityCheck
+    __imp_NAV1_A429_a429ParityCheck
+ 
+d000011.o               Offset=00017cd6H
+    NAV1_A429_a429LabelInfo
+    __imp_NAV1_A429_a429LabelInfo
+ 
+d000010.o               Offset=00017f28H
+    NAV1_A429_a429Label
+    __imp_NAV1_A429_a429Label
+ 
+d000009.o               Offset=0001816eH
+    NAV1_A429_a429EncodeBNR
+    __imp_NAV1_A429_a429EncodeBNR
+ 
+d000008.o               Offset=000183c0H
+    NAV1_A429_a429EncodeBCD
+    __imp_NAV1_A429_a429EncodeBCD
+ 
+d000007.o               Offset=00018612H
+    NAV1_A429_a429Encode
+    __imp_NAV1_A429_a429Encode
+ 
+d000006.o               Offset=0001885aH
+    NAV1_A429_a429Decode
+    __imp_NAV1_A429_a429Decode
+ 
+d000005.o               Offset=00018aa2H
+    NAV1_A429_a429DataBNR
+    __imp_NAV1_A429_a429DataBNR
+ 
+d000004.o               Offset=00018cecH
+    NAV1_A429_a429DataBCD
+    __imp_NAV1_A429_a429DataBCD
+ 
+d000003.o               Offset=00018f36H
+    NAV1_A429_a429Data
+    __imp_NAV1_A429_a429Data
+ 
+d000002.o               Offset=0001917aH
+    NAV1_A424_a424ParseFile
+    __imp_NAV1_A424_a424ParseFile
+ 
+d000001.o               Offset=000193ccH
+    NAV1_A424_a424Free
+    __imp_NAV1_A424_a424Free
+ 
+Open Watcom C/C++ LIB Clone for 386  Version 1.9
+Portions Copyright (c) 1995-2002 Sybase, Inc. All Rights Reserved.
+Source code is available under the Sybase Open Watcom Public License.
+See http://www.openwatcom.org/ for details.

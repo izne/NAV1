@@ -1014,6 +1014,36 @@ int main()
         TEST_NEAR("fixRadial E 30nm lon", lon, 11.75, 0.1);
     }
 
+    printf("\n--- New CONV (metric) ---\n");
+    TEST_NEAR("cmToInch(2.54)", NAV1_CONV_cmToInch(2.54), 1.0, 0.001);
+    TEST_NEAR("inchToCm(1)", NAV1_CONV_inchToCm(1.0), 2.54, 0.001);
+    TEST_NEAR("kgToTonne(1000)", NAV1_CONV_kgToTonne(1000.0), 1.0, 0.001);
+    TEST_NEAR("tonneToKg(1)", NAV1_CONV_tonneToKg(1.0), 1000.0, 0.001);
+
+    printf("\n--- PERF Module ---\n");
+    TEST_NEAR("climbGradient(3deg)", NAV1_PERF_climbGradient(3.0), 5.24, 0.1);
+    TEST_NEAR("fpaFromGradient(5.24)", NAV1_PERF_fpaFromGradient(5.24), 3.0, 0.1);
+    TEST_NEAR("runway dry 2000m", NAV1_PERF_requiredRunwayLength(2000.0, NAV1_PERF_RUNWAY_DRY), 2000.0, 0.1);
+    TEST_NEAR("runway wet", NAV1_PERF_requiredRunwayLength(2000.0, NAV1_PERF_RUNWAY_WET), 2600.0, 0.1);
+    TEST_NEAR("runway ice", NAV1_PERF_requiredRunwayLength(2000.0, NAV1_PERF_RUNWAY_ICE), 4000.0, 0.1);
+    TEST_NEAR("runway soft", NAV1_PERF_requiredRunwayLength(2000.0, NAV1_PERF_RUNWAY_SOFT), 3000.0, 0.1);
+    TEST_NEAR("crosswindExceed within limit", NAV1_PERF_crosswindExceedance(270.0, 10.0, 270.0, 20.0), 0.0, 0.01);
+    TEST_NEAR("crosswindExceed exceeded", NAV1_PERF_crosswindExceedance(270.0, 30.0, 360.0, 20.0), 10.0, 0.5);
+    TEST_NEAR("headwindFraction full headwind", NAV1_PERF_headwindFraction(360.0, 20.0, 360.0), 1.0, 0.01);
+    TEST_NEAR("headwindFraction full crosswind", NAV1_PERF_headwindFraction(270.0, 20.0, 360.0), 0.0, 0.01);
+
+    printf("\n--- WB Module ---\n");
+    TEST_NEAR("moment(100,200)", NAV1_WB_moment(100.0, 200.0), 20000.0, 0.01);
+    TEST_NEAR("cgFromMoments(20000,100)", NAV1_WB_cgFromMoments(20000.0, 100.0), 200.0, 0.01);
+    TEST_NEAR("fuelWeight avgas 100L", NAV1_WB_fuelWeight(100.0, NAV1_WB_FUEL_AVGAS), 72.0, 0.01);
+    TEST_NEAR("fuelWeight jetA 100L", NAV1_WB_fuelWeight(100.0, NAV1_WB_FUEL_JETA), 80.4, 0.01);
+    TEST_NEAR("fuelVolume avgas 72kg", NAV1_WB_fuelVolume(72.0, NAV1_WB_FUEL_AVGAS), 100.0, 0.01);
+    TEST_NEAR("fuelVolume jetA 80.4kg", NAV1_WB_fuelVolume(80.4, NAV1_WB_FUEL_JETA), 100.0, 0.1);
+    TEST_NEAR("cogAdd", NAV1_WB_cogAdd(200.0, 100.0, 50.0, 150.0), 183.33, 0.1);
+    TEST_NEAR("cogRemove", NAV1_WB_cogRemove(183.33, 150.0, 50.0, 150.0), 200.0, 1.0);
+    TEST_NEAR("weightToTonne(1000)", NAV1_WB_weightToTonne(1000.0), 1.0, 0.001);
+    TEST_NEAR("tonneToWeight(1)", NAV1_WB_tonneToWeight(1.0), 1000.0, 0.001);
+
     printf("\n=== Results: %d/%d passed ===\n", tests_passed, tests_run);
     return tests_passed == tests_run ? 0 : 1;
 }

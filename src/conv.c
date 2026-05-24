@@ -154,3 +154,25 @@ NAV1_EXPORT double NAV1_CONV_radToDeg(double rad)
 {
     return rad * 180.0 / M_PI;
 }
+
+#define CM_PER_INCH 2.54
+
+NAV1_EXPORT double NAV1_CONV_cmToInch(double cm)
+{
+    return cm / CM_PER_INCH;
+}
+
+NAV1_EXPORT double NAV1_CONV_inchToCm(double inch)
+{
+    return inch * CM_PER_INCH;
+}
+
+NAV1_EXPORT double NAV1_CONV_kgToTonne(double kg)
+{
+    return kg / 1000.0;
+}
+
+NAV1_EXPORT double NAV1_CONV_tonneToKg(double tonne)
+{
+    return tonne * 1000.0;
+}

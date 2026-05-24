@@ -84,6 +84,10 @@ NAV1_EXPORT double NAV1_CONV_nmToFt(double nm);
 NAV1_EXPORT double NAV1_CONV_ftToNm(double ft);
 NAV1_EXPORT double NAV1_CONV_degToRad(double deg);
 NAV1_EXPORT double NAV1_CONV_radToDeg(double rad);
+NAV1_EXPORT double NAV1_CONV_cmToInch(double cm);
+NAV1_EXPORT double NAV1_CONV_inchToCm(double inch);
+NAV1_EXPORT double NAV1_CONV_kgToTonne(double kg);
+NAV1_EXPORT double NAV1_CONV_tonneToKg(double tonne);
 
 /* ------------------------------------------------------------------ */
 /*  Advanced geodesy — NAV1_NAV_*                                     */
@@ -473,6 +477,37 @@ NAV1_EXPORT double NAV1_METAR_metarWindAvg(const NAV1_MetarData *m);
 NAV1_EXPORT double NAV1_METAR_metarCrosswind(const NAV1_MetarData *m, double rwyHdg);
 NAV1_EXPORT double NAV1_METAR_metarHeadwind(const NAV1_MetarData *m, double rwyHdg);
 NAV1_EXPORT double NAV1_METAR_metarTemperatureSpread(const NAV1_MetarData *m);
+
+/* ------------------------------------------------------------------ */
+/*  Aircraft performance — NAV1_PERF_                                  */
+/* ------------------------------------------------------------------ */
+
+#define NAV1_PERF_RUNWAY_DRY   0
+#define NAV1_PERF_RUNWAY_WET   1
+#define NAV1_PERF_RUNWAY_ICE   2
+#define NAV1_PERF_RUNWAY_SOFT  3
+
+NAV1_EXPORT double NAV1_PERF_climbGradient(double flightPathDeg);
+NAV1_EXPORT double NAV1_PERF_fpaFromGradient(double gradientPct);
+NAV1_EXPORT double NAV1_PERF_requiredRunwayLength(double dryLength, int condition);
+NAV1_EXPORT double NAV1_PERF_crosswindExceedance(double windDirDeg, double windSpeedKts, double rwyHeadingDeg, double maxCrosswindKts);
+NAV1_EXPORT double NAV1_PERF_headwindFraction(double windDirDeg, double windSpeedKts, double rwyHeadingDeg);
+
+/* ------------------------------------------------------------------ */
+/*  Weight & Balance — NAV1_WB_                                        */
+/* ------------------------------------------------------------------ */
+
+#define NAV1_WB_FUEL_AVGAS  0
+#define NAV1_WB_FUEL_JETA   1
+
+NAV1_EXPORT double NAV1_WB_moment(double weightKg, double armCm);
+NAV1_EXPORT double NAV1_WB_cgFromMoments(double totalMomentKgCm, double totalWeightKg);
+NAV1_EXPORT double NAV1_WB_fuelWeight(double volumeL, int type);
+NAV1_EXPORT double NAV1_WB_fuelVolume(double weightKg, int type);
+NAV1_EXPORT double NAV1_WB_cogAdd(double cgCm, double totalWeightKg, double addWeightKg, double addArmCm);
+NAV1_EXPORT double NAV1_WB_cogRemove(double cgCm, double totalWeightKg, double removeWeightKg, double removeArmCm);
+NAV1_EXPORT double NAV1_WB_weightToTonne(double weightKg);
+NAV1_EXPORT double NAV1_WB_tonneToWeight(double tonnes);
 
 #ifdef __cplusplus
 }
