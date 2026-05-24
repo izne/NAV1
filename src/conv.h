@@ -45,5 +45,9 @@ NAV1_EXPORT double NAV1_CONV_cmToInch(double cm);
 NAV1_EXPORT double NAV1_CONV_inchToCm(double inch);
 NAV1_EXPORT double NAV1_CONV_kgToTonne(double kg);
 NAV1_EXPORT double NAV1_CONV_tonneToKg(double tonne);
+NAV1_EXPORT double NAV1_CONV_mToKm(double m);
+NAV1_EXPORT double NAV1_CONV_kmToM(double km);
+NAV1_EXPORT double NAV1_CONV_knotsToMph(double kts);
+NAV1_EXPORT double NAV1_CONV_mphToKnots(double mph);
 
 #endif

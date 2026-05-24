@@ -24,5 +24,7 @@ NAV1_EXPORT double NAV1_AERO_vsFromFlightPathAngle(double fpaDeg, double gsKts);
 NAV1_EXPORT double NAV1_AERO_reciprocalHeading(double heading);
 NAV1_EXPORT double NAV1_AERO_standardRateTurnBank(double tasKts);
 NAV1_EXPORT double NAV1_AERO_trueAltitude(double pressureAltitudeFt, double oatC);
+NAV1_EXPORT double NAV1_AERO_tasToCas(double tasKts, double pressureAltFt, double oatC);
+NAV1_EXPORT double NAV1_AERO_coldTemperatureAltCorrection(double indicatedAltFt, double oatC);
 
 #endif

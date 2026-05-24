@@ -142,3 +142,25 @@ NAV1_EXPORT double NAV1_AERO_trueAltitude(double pressureAltitudeFt, double oatC
 {
     return pressureAltitudeFt * (oatC + 273.15) / (15.0 + 273.15);
 }
+
+NAV1_EXPORT double NAV1_AERO_tasToCas(double tasKts, double pressureAltFt, double oatC)
+{
+    double t_isa, p_hPa, rho;
+    NAV1_AERO_isaAtmosphere(pressureAltFt, &t_isa, &p_hPa, &rho);
+    {
+        const double T = oatC + 273.15;
+        const double sigma = (p_hPa * 100.0) / (AERO_R * T) / 1.225;
+        if (sigma < 0.01) return tasKts;
+        return tasKts * sqrt(sigma);
+    }
+}
+
+NAV1_EXPORT double NAV1_AERO_coldTemperatureAltCorrection(double indicatedAltFt, double oatC)
+{
+    double isaTemp;
+    double t_isa, p_hPa, rho;
+    NAV1_AERO_isaAtmosphere(indicatedAltFt, &t_isa, &p_hPa, &rho);
+    isaTemp = t_isa;
+    if (oatC >= isaTemp) return 0.0;
+    return indicatedAltFt * (isaTemp - oatC) / (273.15 + oatC);
+}

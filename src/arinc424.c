@@ -305,6 +305,68 @@ int NAV1_A424_a424ParseFile(const char *filename, NAV1_A424Database *db)
     return (db->nairports > 0 || db->nwaypoints > 0 || db->nrunways > 0 || db->nils > 0) ? 1 : 0;
 }
 
+static double deg2rad(double d) { return d * 3.14159265358979323846 / 180.0; }
+
+const NAV1_A424Airport *NAV1_A424_a424FindAirport(const NAV1_A424Database *db, const char *icao)
+{
+    int i;
+    if (!db || !icao) return 0;
+    for (i = 0; i < db->nairports; i++)
+        if (strncmp(db->airports[i].icao, icao, NAV1_A424_ICAO_LEN - 1) == 0)
+            return &db->airports[i];
+    return 0;
+}
+
+const NAV1_A424Waypoint *NAV1_A424_a424FindWaypoint(const NAV1_A424Database *db, const char *ident)
+{
+    int i;
+    if (!db || !ident) return 0;
+    for (i = 0; i < db->nwaypoints; i++)
+        if (strncmp(db->waypoints[i].ident, ident, NAV1_A424_IDENT_LEN - 1) == 0)
+            return &db->waypoints[i];
+    return 0;
+}
+
+int NAV1_A424_a424FindNearestWaypoint(const NAV1_A424Database *db, double lat, double lon)
+{
+    int i, bestIdx = -1;
+    double bestDist = 1e100;
+    if (!db) return -1;
+    for (i = 0; i < db->nwaypoints; i++) {
+        double dlat = deg2rad(db->waypoints[i].latitude - lat);
+        double dlon = deg2rad(db->waypoints[i].longitude - lon);
+        double a = sin(dlat / 2) * sin(dlat / 2) +
+                   cos(deg2rad(lat)) * cos(deg2rad(db->waypoints[i].latitude)) *
+                   sin(dlon / 2) * sin(dlon / 2);
+        double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+        double d = c * 3440.06479;
+        if (d < bestDist) { bestDist = d; bestIdx = i; }
+    }
+    return bestIdx;
+}
+
+const NAV1_A424Runway *NAV1_A424_a424FindRunway(const NAV1_A424Database *db, const char *icao, const char *rwyIdent)
+{
+    int i;
+    if (!db || !icao || !rwyIdent) return 0;
+    for (i = 0; i < db->nrunways; i++)
+        if (strncmp(db->runways[i].icao, icao, NAV1_A424_ICAO_LEN - 1) == 0 &&
+            strncmp(db->runways[i].rwyIdent, rwyIdent, NAV1_A424_IDENT_LEN - 1) == 0)
+            return &db->runways[i];
+    return 0;
+}
+
+const NAV1_A424ILS *NAV1_A424_a424FindILS(const NAV1_A424Database *db, const char *icao, const char *rwyIdent)
+{
+    int i;
+    if (!db || !icao || !rwyIdent) return 0;
+    for (i = 0; i < db->nils; i++)
+        if (strncmp(db->ils[i].icao, icao, NAV1_A424_ICAO_LEN - 1) == 0 &&
+            strncmp(db->ils[i].rwyIdent, rwyIdent, NAV1_A424_IDENT_LEN - 1) == 0)
+            return &db->ils[i];
+    return 0;
+}
+
 void NAV1_A424_a424Free(NAV1_A424Database *db)
 {
     if (db)

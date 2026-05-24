@@ -86,5 +86,10 @@ typedef struct {
 
 NAV1_EXPORT int  NAV1_A424_a424ParseFile(const char *filename, NAV1_A424Database *db);
 NAV1_EXPORT void NAV1_A424_a424Free(NAV1_A424Database *db);
+NAV1_EXPORT const NAV1_A424Airport *NAV1_A424_a424FindAirport(const NAV1_A424Database *db, const char *icao);
+NAV1_EXPORT const NAV1_A424Waypoint *NAV1_A424_a424FindWaypoint(const NAV1_A424Database *db, const char *ident);
+NAV1_EXPORT int  NAV1_A424_a424FindNearestWaypoint(const NAV1_A424Database *db, double lat, double lon);
+NAV1_EXPORT const NAV1_A424Runway *NAV1_A424_a424FindRunway(const NAV1_A424Database *db, const char *icao, const char *rwyIdent);
+NAV1_EXPORT const NAV1_A424ILS *NAV1_A424_a424FindILS(const NAV1_A424Database *db, const char *icao, const char *rwyIdent);
 
 #endif

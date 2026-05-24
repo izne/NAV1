@@ -8,8 +8,8 @@
 // TO CHANGE VERSION INFORMATION, EDIT PROJECT OPTIONS...
 //
 1 VERSIONINFO
-FILEVERSION 1,2,3,4
-PRODUCTVERSION 1,2,3,4
+FILEVERSION 1,2,4,4
+PRODUCTVERSION 1,2,4,4
 FILETYPE VFT_DLL
 {
   BLOCK "StringFileInfo"
@@ -17,14 +17,14 @@ FILETYPE VFT_DLL
     BLOCK "040904E4"
     {
       VALUE "CompanyName", "github.com/izne"
-      VALUE "FileVersion", "1.2.3.4"
+      VALUE "FileVersion", "1.2.4.4"
       VALUE "FileDescription", "Angelov NAV1 System"
       VALUE "InternalName", "NAV1"
       VALUE "LegalCopyright", ""
       VALUE "LegalTrademarks", "(c) 2022 - 2026 Dimitar Angelov"
       VALUE "OriginalFilename", "NAV1.dll"
       VALUE "ProductName", "Angelov NAV1 System"
-      VALUE "ProductVersion", "1.2.3.4"
+      VALUE "ProductVersion", "1.2.4.4"
     }
   }
   BLOCK "VarFileInfo"

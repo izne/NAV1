@@ -187,6 +187,52 @@ int NAV1_RTE_routeSaveCSV(const char *filename, const NAV1_Route *route)
     return 1;
 }
 
+int NAV1_RTE_routeReverse(NAV1_Route *route)
+{
+    int i, j;
+    if (!route || route->count < 2) return 0;
+    for (i = 0, j = route->count - 1; i < j; i++, j--) {
+        NAV1_Waypoint tmp = route->waypoints[i];
+        route->waypoints[i] = route->waypoints[j];
+        route->waypoints[j] = tmp;
+    }
+    return 1;
+}
+
+double NAV1_RTE_routeTotalDistance(const NAV1_Route *route)
+{
+    int i;
+    double total = 0.0, brg, dist;
+    if (!route || route->count < 2) return 0.0;
+    for (i = 0; i < route->count - 1; i++) {
+        double lat1 = route->waypoints[i].latitude;
+        double lon1 = route->waypoints[i].longitude;
+        double lat2 = route->waypoints[i + 1].latitude;
+        double lon2 = route->waypoints[i + 1].longitude;
+        total += NAV1_GEO_distanceToTarget(lat1, lon1, lat2, lon2);
+    }
+    return total;
+}
+
+int NAV1_RTE_routeETA(const NAV1_Route *route, double gsKts, double *totalTimeSec)
+{
+    double totalDist;
+    if (!route || gsKts < 0.1) return 0;
+    totalDist = NAV1_RTE_routeTotalDistance(route);
+    if (totalTimeSec) *totalTimeSec = totalDist / gsKts * 3600.0;
+    return 1;
+}
+
+int NAV1_RTE_routeFindByIdent(const NAV1_Route *route, const char *ident)
+{
+    int i;
+    if (!route || !ident) return -1;
+    for (i = 0; i < route->count; i++)
+        if (strcmp(route->waypoints[i].ident, ident) == 0)
+            return i;
+    return -1;
+}
+
 int NAV1_RTE_routeLoadCSV(const char *filename, NAV1_Waypoint *buffer, int capacity, NAV1_Route *route)
 {
     FILE *f;

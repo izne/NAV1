@@ -176,3 +176,23 @@ NAV1_EXPORT double NAV1_CONV_tonneToKg(double tonne)
 {
     return tonne * 1000.0;
 }
+
+NAV1_EXPORT double NAV1_CONV_mToKm(double m)
+{
+    return m / 1000.0;
+}
+
+NAV1_EXPORT double NAV1_CONV_kmToM(double km)
+{
+    return km * 1000.0;
+}
+
+NAV1_EXPORT double NAV1_CONV_knotsToMph(double kts)
+{
+    return kts * 1.15078;
+}
+
+NAV1_EXPORT double NAV1_CONV_mphToKnots(double mph)
+{
+    return mph / 1.15078;
+}

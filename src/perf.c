@@ -36,6 +36,46 @@ NAV1_EXPORT double NAV1_PERF_crosswindExceedance(double windDirDeg, double windS
     return (excess > 0) ? excess : 0.0;
 }
 
+NAV1_EXPORT double NAV1_PERF_takeoffDistance(double dryLength, int condition, double windComponentKts, double slopePct, double densityAltFt)
+{
+    double dist = dryLength;
+    switch (condition) {
+        case NAV1_PERF_RUNWAY_WET:  dist *= 1.3; break;
+        case NAV1_PERF_RUNWAY_ICE:  dist *= 2.0; break;
+        case NAV1_PERF_RUNWAY_SOFT: dist *= 1.5; break;
+    }
+    if (windComponentKts > 0.0)
+        dist -= dist * (windComponentKts / 100.0) * 0.1;
+    else
+        dist += dist * (-windComponentKts / 100.0) * 0.15;
+    if (slopePct > 0.0)
+        dist += dist * (slopePct / 100.0) * 0.1;
+    else
+        dist -= dist * (-slopePct / 100.0) * 0.05;
+    if (densityAltFt > 0.0)
+        dist += dist * (densityAltFt / 1000.0) * 0.01;
+    return dist > 0.0 ? dist : 0.0;
+}
+
+NAV1_EXPORT double NAV1_PERF_landingDistance(double dryLength, int condition, double windComponentKts, double slopePct)
+{
+    double dist = dryLength;
+    switch (condition) {
+        case NAV1_PERF_RUNWAY_WET:  dist *= 1.4; break;
+        case NAV1_PERF_RUNWAY_ICE:  dist *= 2.5; break;
+        case NAV1_PERF_RUNWAY_SOFT: dist *= 1.8; break;
+    }
+    if (windComponentKts > 0.0)
+        dist -= dist * (windComponentKts / 100.0) * 0.05;
+    else
+        dist += dist * (-windComponentKts / 100.0) * 0.1;
+    if (slopePct > 0.0)
+        dist -= dist * (slopePct / 100.0) * 0.03;
+    else
+        dist += dist * (-slopePct / 100.0) * 0.04;
+    return dist > 0.0 ? dist : 0.0;
+}
+
 NAV1_EXPORT double NAV1_PERF_headwindFraction(double windDirDeg, double windSpeedKts, double rwyHeadingDeg)
 {
     double xw, hw;

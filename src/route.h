@@ -21,5 +21,9 @@ NAV1_EXPORT int  NAV1_RTE_routeLegInfo(const NAV1_Route *route, int index, doubl
 NAV1_EXPORT int  NAV1_RTE_routeTurnAnticipation(const NAV1_Route *route, double groundSpeedKts, double turnRateDegS, double *outLat, double *outLon);
 NAV1_EXPORT int  NAV1_RTE_routeSaveCSV(const char *filename, const NAV1_Route *route);
 NAV1_EXPORT int  NAV1_RTE_routeLoadCSV(const char *filename, NAV1_Waypoint *buffer, int capacity, NAV1_Route *route);
+NAV1_EXPORT int  NAV1_RTE_routeReverse(NAV1_Route *route);
+NAV1_EXPORT double NAV1_RTE_routeTotalDistance(const NAV1_Route *route);
+NAV1_EXPORT int  NAV1_RTE_routeETA(const NAV1_Route *route, double gsKts, double *totalTimeSec);
+NAV1_EXPORT int  NAV1_RTE_routeFindByIdent(const NAV1_Route *route, const char *ident);
 
 #endif

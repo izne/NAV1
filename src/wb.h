@@ -14,5 +14,6 @@ NAV1_EXPORT double NAV1_WB_cogAdd(double cgCm, double totalWeightKg, double addW
 NAV1_EXPORT double NAV1_WB_cogRemove(double cgCm, double totalWeightKg, double removeWeightKg, double removeArmCm);
 NAV1_EXPORT double NAV1_WB_weightToTonne(double weightKg);
 NAV1_EXPORT double NAV1_WB_tonneToWeight(double tonnes);
+NAV1_EXPORT int    NAV1_WB_cgEnvelopeCheck(double cgCm, double cgMinCm, double cgMaxCm);
 
 #endif

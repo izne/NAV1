@@ -1044,6 +1044,183 @@ int main()
     TEST_NEAR("weightToTonne(1000)", NAV1_WB_weightToTonne(1000.0), 1.0, 0.001);
     TEST_NEAR("tonneToWeight(1)", NAV1_WB_tonneToWeight(1.0), 1000.0, 0.001);
 
+    printf("\n--- New CONV (m/km, mph) ---\n");
+    TEST_NEAR("mToKm(1000)", NAV1_CONV_mToKm(1000.0), 1.0, 0.001);
+    TEST_NEAR("kmToM(1)", NAV1_CONV_kmToM(1.0), 1000.0, 0.001);
+    TEST_NEAR("knotsToMph(100)", NAV1_CONV_knotsToMph(100.0), 115.078, 0.1);
+    TEST_NEAR("mphToKnots(115)", NAV1_CONV_mphToKnots(115.078), 100.0, 0.1);
+
+    printf("\n--- New AERO Functions ---\n");
+    TEST_NEAR("tasToCas SL ISA", NAV1_AERO_tasToCas(100.0, 0.0, 15.0), 100.0, 0.5);
+    TEST_NEAR("tasToCas 10000ft", NAV1_AERO_tasToCas(100.0, 10000.0, -5.0), 86.0, 1.0);
+    TEST_NEAR("coldTempCorr 0 diff", NAV1_AERO_coldTemperatureAltCorrection(5000.0, 15.0), 0.0, 1.0);
+    {
+        double corr = NAV1_AERO_coldTemperatureAltCorrection(5000.0, -20.0);
+        TEST_TRUE("coldTempCorr neg", corr > 0.0);
+    }
+
+    printf("\n--- ROUTE Helpers ---\n");
+    {
+        NAV1_Waypoint buf[5];
+        NAV1_Route r;
+        double t;
+        int idx;
+        NAV1_RTE_routeInit(&r, buf, 5);
+        NAV1_RTE_routeAdd(&r, 0.0, 0.0, 0.0, "A", "Alpha", 0);
+        NAV1_RTE_routeAdd(&r, 10.0, 0.0, 0.0, "B", "Beta", 0);
+        NAV1_RTE_routeAdd(&r, 10.0, 10.0, 0.0, "C", "Gamma", 0);
+        NAV1_RTE_routeReverse(&r);
+        TEST_STR("routeReverse[0]", r.waypoints[0].ident, "C");
+        TEST_STR("routeReverse[1]", r.waypoints[1].ident, "B");
+        TEST_STR("routeReverse[2]", r.waypoints[2].ident, "A");
+        NAV1_RTE_routeReverse(&r);
+        t = NAV1_RTE_routeTotalDistance(&r);
+        TEST_TRUE("routeTotalDist > 0", t > 0.0);
+        NAV1_RTE_routeETA(&r, 100.0, &t);
+        TEST_TRUE("routeETA > 0", t > 0.0);
+        idx = NAV1_RTE_routeFindByIdent(&r, "A");
+        TEST_NEAR("routeFindByIdent A", (double)idx, 0.0, 0.1);
+        idx = NAV1_RTE_routeFindByIdent(&r, "B");
+        TEST_NEAR("routeFindByIdent B", (double)idx, 1.0, 0.1);
+        idx = NAV1_RTE_routeFindByIdent(&r, "NOTFOUND");
+        TEST_NEAR("routeFindByIdent missing", (double)idx, -1.0, 0.1);
+    }
+
+    printf("\n--- A424 Query Functions ---\n");
+    {
+        const NAV1_A424Airport *ap = NAV1_A424_a424FindAirport(0, "KLAX");
+        TEST_TRUE("a424FindAirport null db", ap == 0);
+        const NAV1_A424Waypoint *wp = NAV1_A424_a424FindWaypoint(0, "SMO");
+        TEST_TRUE("a424FindWaypoint null db", wp == 0);
+        int ni = NAV1_A424_a424FindNearestWaypoint(0, 34.0, -118.5);
+        TEST_NEAR("a424FindNearest null db", (double)ni, -1.0, 0.1);
+    }
+
+    printf("\n--- WB cgEnvelopeCheck ---\n");
+    TEST_TRUE("cg within limits", NAV1_WB_cgEnvelopeCheck(100.0, 90.0, 110.0));
+    TEST_TRUE("cg below min", !NAV1_WB_cgEnvelopeCheck(80.0, 90.0, 110.0));
+    TEST_TRUE("cg above max", !NAV1_WB_cgEnvelopeCheck(120.0, 90.0, 110.0));
+    TEST_TRUE("cg at min", NAV1_WB_cgEnvelopeCheck(90.0, 90.0, 110.0));
+    TEST_TRUE("cg at max", NAV1_WB_cgEnvelopeCheck(110.0, 90.0, 110.0));
+
+    printf("\n--- PERF takeoff/landing Distance ---\n");
+    TEST_NEAR("takeoff dry no wind", NAV1_PERF_takeoffDistance(2000.0, NAV1_PERF_RUNWAY_DRY, 0.0, 0.0, 0.0), 2000.0, 10.0);
+    TEST_NEAR("takeoff wet", NAV1_PERF_takeoffDistance(2000.0, NAV1_PERF_RUNWAY_WET, 0.0, 0.0, 0.0), 2600.0, 10.0);
+    TEST_NEAR("takeoff headwind", NAV1_PERF_takeoffDistance(2000.0, NAV1_PERF_RUNWAY_DRY, 10.0, 0.0, 0.0), 1980.0, 10.0);
+    TEST_NEAR("landing dry no wind", NAV1_PERF_landingDistance(2000.0, NAV1_PERF_RUNWAY_DRY, 0.0, 0.0), 2000.0, 10.0);
+    TEST_NEAR("landing wet", NAV1_PERF_landingDistance(2000.0, NAV1_PERF_RUNWAY_WET, 0.0, 0.0), 2800.0, 10.0);
+    TEST_NEAR("landing ice", NAV1_PERF_landingDistance(2000.0, NAV1_PERF_RUNWAY_ICE, 0.0, 0.0), 5000.0, 10.0);
+
+    printf("\n--- TAF Module ---\n");
+    {
+        NAV1_TafData t;
+        int ok = NAV1_TAF_tafParse("TAF KSEA 231730Z 2318/2418 18010G20KT 9999 BKN020", &t);
+        TEST_TRUE("taf parse ok", ok);
+        TEST_TRUE("taf valid", t.valid);
+        TEST_STR("taf icao", t.icao, "KSEA");
+        TEST_NEAR("taf day", (double)t.day, 23.0, 0.1);
+        TEST_NEAR("taf hour", (double)t.hour, 17.0, 0.1);
+        TEST_NEAR("taf min", (double)t.minute, 30.0, 0.1);
+        TEST_NEAR("taf windDir", (double)t.windDir, 180.0, 0.1);
+        TEST_NEAR("taf windSpeed", (double)t.windSpeedKt, 10.0, 0.1);
+        TEST_NEAR("taf windGust", (double)t.windGustKt, 20.0, 0.1);
+        TEST_NEAR("taf windAvg", NAV1_TAF_tafWindAvg(&t), 10.0, 0.1);
+        TEST_NEAR("taf ceiling", (double)NAV1_TAF_tafCeiling(&t), 2000.0, 100.0);
+    }
+    {
+        NAV1_TafData t;
+        int ok = NAV1_TAF_tafParse("TAF KLAX 231100Z 2312/2412 VRB03KT CAVOK", &t);
+        TEST_TRUE("taf vrb parse", ok);
+        TEST_NEAR("taf vrb speed", (double)t.windSpeedKt, 3.0, 0.1);
+    }
+    {
+        NAV1_TafData t;
+        int ok = NAV1_TAF_tafParse("TAF null input", 0);
+        TEST_TRUE("taf null input", !ok);
+    }
+    {
+        double xw = NAV1_TAF_tafCrosswind(0, 90.0);
+        TEST_NEAR("taf xwind null", xw, 0.0, 0.01);
+        double hw = NAV1_TAF_tafHeadwind(0, 90.0);
+        TEST_NEAR("taf hwind null", hw, 0.0, 0.01);
+        int cel = NAV1_TAF_tafCeiling(0);
+        TEST_NEAR("taf ceiling null", (double)cel, 0.0, 0.1);
+    }
+    {
+        NAV1_TafData t;
+        int ok = NAV1_TAF_tafParse("TAF EGLL 231050Z 2311/2411 27015KT 9999 FEW030 PROB30 TEMPO 2314/2318 6000 -RA BKN010 TX15/2315Z TN08/2406Z", &t);
+        TEST_TRUE("taf prob30", ok);
+        TEST_NEAR("taf prob30 count", (double)t.periodCount, 1.0, 0.1);
+        if (t.periodCount > 0) {
+            TEST_STR("taf prob30 type", t.periods[0].changeType, "TEMPO");
+            TEST_NEAR("taf prob30 prob", (double)t.periods[0].prob, 30.0, 0.1);
+        }
+    }
+
+    printf("\n--- VNAV Module ---\n");
+    {
+        double fpa, vs, ts;
+        int ok = NAV1_VNAV_verticalProfile(10000.0, 5000.0, 30.0, 120.0, &fpa, &vs, &ts);
+        TEST_TRUE("vnav profile ok", ok);
+        TEST_TRUE("vnav fpa < 0", fpa < 0.0);
+        TEST_TRUE("vnav vs < 0", vs < 0.0);
+        TEST_TRUE("vnav time > 0", ts > 0.0);
+    }
+    {
+        double fpa, vs, ts;
+        int ok = NAV1_VNAV_verticalProfile(5000.0, 10000.0, 30.0, 120.0, &fpa, &vs, &ts);
+        TEST_TRUE("vnav climb ok", ok);
+        TEST_TRUE("vnav climb fpa > 0", fpa > 0.0);
+        TEST_TRUE("vnav climb vs > 0", vs > 0.0);
+    }
+    TEST_NEAR("vnav TOC", NAV1_VNAV_topOfClimb(10000.0, 500.0, 120.0), 40.0, 1.0);
+    TEST_NEAR("vnav TOD", NAV1_VNAV_topOfDescent(10000.0, 500.0, 120.0), 40.0, 1.0);
+    {
+        double vs = NAV1_VNAV_requiredVSAtConstraint(10000.0, 5000.0, 30.0, 120.0);
+        TEST_TRUE("vnav reqVS < 0", vs < 0.0);
+    }
+    TEST_NEAR("vnav altAtDist", NAV1_VNAV_altitudeAtDistance(5000.0, 500.0, 120.0, 60.0), 20000.0, 10.0);
+    TEST_NEAR("vnav stepClimb", NAV1_VNAV_stepClimb(10000.0, 20000.0, 500.0, 120.0), 40.0, 1.0);
+    TEST_NEAR("vnav stepClimb zero", NAV1_VNAV_stepClimb(20000.0, 10000.0, 500.0, 120.0), 0.0, 0.1);
+
+    printf("\n--- HOLD Module ---\n");
+    {
+        NAV1_HoldPattern h;
+        NAV1_HOLD_patternInit(&h, 48.0, 11.0, 90.0, 1, 10.0);
+        double oh = NAV1_HOLD_outboundHeading(&h);
+        TEST_NEAR("hold outbound right", oh, 270.0, 1.0);
+        double lt, ln;
+        NAV1_HOLD_legPoints(&h, &lt, &ln, 0, 0);
+        TEST_TRUE("hold outbound lat ok", lt != 0.0);
+    }
+    {
+        NAV1_HoldPattern h;
+        NAV1_HOLD_patternInit(&h, 48.0, 11.0, 90.0, 0, 10.0);
+        double oh = NAV1_HOLD_outboundHeading(&h);
+        TEST_NEAR("hold outbound left", oh, 270.0, 1.0);
+    }
+    {
+        NAV1_HoldPattern h;
+        NAV1_HOLD_patternInit(&h, 48.0, 11.0, 90.0, 1, 10.0);
+        h.windDirDeg = 270.0; h.windSpeedKts = 20.0;
+        double oh = NAV1_HOLD_outboundHeading(&h);
+        TEST_NEAR("hold wind corr 20kt headwind", oh, 270.0, 1.0);
+    }
+    {
+        NAV1_HoldPattern h;
+        NAV1_HOLD_patternInit(&h, 48.0, 11.0, 0.0, 1, 10.0);
+        h.windDirDeg = 090.0; h.windSpeedKts = 20.0;
+        double oh = NAV1_HOLD_outboundHeading(&h);
+        TEST_TRUE("hold wind corr 20kt cross", oh != 180.0);
+    }
+    {
+        double lt, ln, alt, aln;
+        NAV1_HOLD_legPoints(0, &lt, &ln, &alt, &aln);
+        TEST_NEAR("hold null lat", lt, 0.0, 0.01);
+    }
+    TEST_NEAR("hold maxTime", NAV1_HOLD_maxHoldingTime(100.0, 10.0), 600.0, 0.1);
+    TEST_NEAR("hold maxTime zero", NAV1_HOLD_maxHoldingTime(100.0, 0.0), 0.0, 0.1);
+
     printf("\n=== Results: %d/%d passed ===\n", tests_passed, tests_run);
     return tests_passed == tests_run ? 0 : 1;
 }

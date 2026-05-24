@@ -88,6 +88,10 @@ NAV1_EXPORT double NAV1_CONV_cmToInch(double cm);
 NAV1_EXPORT double NAV1_CONV_inchToCm(double inch);
 NAV1_EXPORT double NAV1_CONV_kgToTonne(double kg);
 NAV1_EXPORT double NAV1_CONV_tonneToKg(double tonne);
+NAV1_EXPORT double NAV1_CONV_mToKm(double m);
+NAV1_EXPORT double NAV1_CONV_kmToM(double km);
+NAV1_EXPORT double NAV1_CONV_knotsToMph(double kts);
+NAV1_EXPORT double NAV1_CONV_mphToKnots(double mph);
 
 /* ------------------------------------------------------------------ */
 /*  Advanced geodesy — NAV1_NAV_*                                     */
@@ -129,6 +133,8 @@ NAV1_EXPORT double NAV1_AERO_vsFromFlightPathAngle(double fpaDeg, double gsKts);
 NAV1_EXPORT double NAV1_AERO_reciprocalHeading(double heading);
 NAV1_EXPORT double NAV1_AERO_standardRateTurnBank(double tasKts);
 NAV1_EXPORT double NAV1_AERO_trueAltitude(double pressureAltitudeFt, double oatC);
+NAV1_EXPORT double NAV1_AERO_tasToCas(double tasKts, double pressureAltFt, double oatC);
+NAV1_EXPORT double NAV1_AERO_coldTemperatureAltCorrection(double indicatedAltFt, double oatC);
 
 /* ------------------------------------------------------------------ */
 /*  GPS helpers — NAV1_GPS_*                                          */
@@ -263,6 +269,10 @@ NAV1_EXPORT int  NAV1_RTE_routeLegInfo(const NAV1_Route *route, int index, doubl
 NAV1_EXPORT int  NAV1_RTE_routeTurnAnticipation(const NAV1_Route *route, double groundSpeedKts, double turnRateDegS, double *outLat, double *outLon);
 NAV1_EXPORT int  NAV1_RTE_routeSaveCSV(const char *filename, const NAV1_Route *route);
 NAV1_EXPORT int  NAV1_RTE_routeLoadCSV(const char *filename, NAV1_Waypoint *buffer, int capacity, NAV1_Route *route);
+NAV1_EXPORT int  NAV1_RTE_routeReverse(NAV1_Route *route);
+NAV1_EXPORT double NAV1_RTE_routeTotalDistance(const NAV1_Route *route);
+NAV1_EXPORT int  NAV1_RTE_routeETA(const NAV1_Route *route, double gsKts, double *totalTimeSec);
+NAV1_EXPORT int  NAV1_RTE_routeFindByIdent(const NAV1_Route *route, const char *ident);
 
 /* ------------------------------------------------------------------ */
 /*  X-Plane nav database + ICAO FPL — NAV1_XPL_*                      */
@@ -427,6 +437,11 @@ typedef struct {
 
 NAV1_EXPORT int  NAV1_A424_a424ParseFile(const char *filename, NAV1_A424Database *db);
 NAV1_EXPORT void NAV1_A424_a424Free(NAV1_A424Database *db);
+NAV1_EXPORT const NAV1_A424Airport *NAV1_A424_a424FindAirport(const NAV1_A424Database *db, const char *icao);
+NAV1_EXPORT const NAV1_A424Waypoint *NAV1_A424_a424FindWaypoint(const NAV1_A424Database *db, const char *ident);
+NAV1_EXPORT int  NAV1_A424_a424FindNearestWaypoint(const NAV1_A424Database *db, double lat, double lon);
+NAV1_EXPORT const NAV1_A424Runway *NAV1_A424_a424FindRunway(const NAV1_A424Database *db, const char *icao, const char *rwyIdent);
+NAV1_EXPORT const NAV1_A424ILS *NAV1_A424_a424FindILS(const NAV1_A424Database *db, const char *icao, const char *rwyIdent);
 
 /* ------------------------------------------------------------------ */
 /*  METAR weather parser — NAV1_METAR_*                               */
@@ -492,6 +507,8 @@ NAV1_EXPORT double NAV1_PERF_fpaFromGradient(double gradientPct);
 NAV1_EXPORT double NAV1_PERF_requiredRunwayLength(double dryLength, int condition);
 NAV1_EXPORT double NAV1_PERF_crosswindExceedance(double windDirDeg, double windSpeedKts, double rwyHeadingDeg, double maxCrosswindKts);
 NAV1_EXPORT double NAV1_PERF_headwindFraction(double windDirDeg, double windSpeedKts, double rwyHeadingDeg);
+NAV1_EXPORT double NAV1_PERF_takeoffDistance(double dryLength, int condition, double windComponentKts, double slopePct, double densityAltFt);
+NAV1_EXPORT double NAV1_PERF_landingDistance(double dryLength, int condition, double windComponentKts, double slopePct);
 
 /* ------------------------------------------------------------------ */
 /*  Weight & Balance — NAV1_WB_                                        */
@@ -508,6 +525,100 @@ NAV1_EXPORT double NAV1_WB_cogAdd(double cgCm, double totalWeightKg, double addW
 NAV1_EXPORT double NAV1_WB_cogRemove(double cgCm, double totalWeightKg, double removeWeightKg, double removeArmCm);
 NAV1_EXPORT double NAV1_WB_weightToTonne(double weightKg);
 NAV1_EXPORT double NAV1_WB_tonneToWeight(double tonnes);
+NAV1_EXPORT int    NAV1_WB_cgEnvelopeCheck(double cgCm, double cgMinCm, double cgMaxCm);
+
+/* ------------------------------------------------------------------ */
+/*  TAF weather parser — NAV1_TAF_*                                   */
+/* ------------------------------------------------------------------ */
+
+#define NAV1_TAF_MAX_CLOUDS  8
+#define NAV1_TAF_MAX_WEATHER 6
+#define NAV1_TAF_MAX_PERIODS 6
+
+typedef struct {
+    int code;
+    int altitudeFt;
+    char type[8];
+} NAV1_TafCloud;
+
+typedef struct {
+    char intensity;
+    char descriptor[8];
+    char phenomena[8];
+} NAV1_TafWeather;
+
+typedef struct {
+    char changeType[8];
+    int fromHour;
+    int fromMin;
+    int toHour;
+    int toMin;
+    int prob;
+    int windDir;
+    int windSpeedKt;
+    int windGustKt;
+    int visibilityM;
+    int visibilitySM_num;
+    int visibilitySM_den;
+    NAV1_TafWeather sky[NAV1_TAF_MAX_WEATHER];
+    int skyCount;
+    NAV1_TafCloud clouds[NAV1_TAF_MAX_CLOUDS];
+    int cloudCount;
+} NAV1_TafPeriod;
+
+typedef struct {
+    char icao[8];
+    int day;
+    int hour;
+    int minute;
+    int validityDay;
+    int validityHour;
+    int validityMin;
+    int windDir;
+    int windSpeedKt;
+    int windGustKt;
+    double tempMinC;
+    double tempMaxC;
+    NAV1_TafPeriod periods[NAV1_TAF_MAX_PERIODS];
+    int periodCount;
+    int valid;
+} NAV1_TafData;
+
+NAV1_EXPORT int    NAV1_TAF_tafParse(const char *raw, NAV1_TafData *out);
+NAV1_EXPORT double NAV1_TAF_tafWindAvg(const NAV1_TafData *t);
+NAV1_EXPORT double NAV1_TAF_tafCrosswind(const NAV1_TafData *t, double rwyHdg);
+NAV1_EXPORT double NAV1_TAF_tafHeadwind(const NAV1_TafData *t, double rwyHdg);
+NAV1_EXPORT int    NAV1_TAF_tafCeiling(const NAV1_TafData *t);
+
+/* ------------------------------------------------------------------ */
+/*  Vertical Navigation (VNAV) — NAV1_VNAV_*                           */
+/* ------------------------------------------------------------------ */
+
+NAV1_EXPORT int    NAV1_VNAV_verticalProfile(double alt1Ft, double alt2Ft, double distNm, double gsKts, double *fpaDeg, double *vsFpm, double *timeSec);
+NAV1_EXPORT double NAV1_VNAV_topOfClimb(double altAboveFieldFt, double rateFpm, double gsKts);
+NAV1_EXPORT double NAV1_VNAV_topOfDescent(double altAboveTargetFt, double rateFpm, double gsKts);
+NAV1_EXPORT double NAV1_VNAV_requiredVSAtConstraint(double currentAltFt, double targetAltFt, double distNm, double gsKts);
+NAV1_EXPORT double NAV1_VNAV_altitudeAtDistance(double startAltFt, double vsFpm, double gsKts, double distNm);
+NAV1_EXPORT double NAV1_VNAV_stepClimb(double currentAltFt, double targetAltFt, double rateFpm, double gsKts);
+
+/* ------------------------------------------------------------------ */
+/*  Holding Pattern — NAV1_HOLD_*                                      */
+/* ------------------------------------------------------------------ */
+
+typedef struct {
+    double fixLat;
+    double fixLon;
+    double inboundCourse;
+    int rightTurn;
+    double legDistNm;
+    double windDirDeg;
+    double windSpeedKts;
+} NAV1_HoldPattern;
+
+NAV1_EXPORT void   NAV1_HOLD_patternInit(NAV1_HoldPattern *h, double fixLat, double fixLon, double inboundCourse, int rightTurn, double legDistNm);
+NAV1_EXPORT double NAV1_HOLD_outboundHeading(const NAV1_HoldPattern *h);
+NAV1_EXPORT void   NAV1_HOLD_legPoints(const NAV1_HoldPattern *h, double *outboundLat, double *outboundLon, double *abeamLat, double *abeamLon);
+NAV1_EXPORT double NAV1_HOLD_maxHoldingTime(double fuelRemainingGal, double flowGph);
 
 #ifdef __cplusplus
 }

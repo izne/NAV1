@@ -50,3 +50,9 @@ NAV1_EXPORT double NAV1_WB_tonneToWeight(double tonnes)
 {
     return tonnes * 1000.0;
 }
+
+NAV1_EXPORT int NAV1_WB_cgEnvelopeCheck(double cgCm, double cgMinCm, double cgMaxCm)
+{
+    if (cgMaxCm <= cgMinCm) return 0;
+    return (cgCm >= cgMinCm && cgCm <= cgMaxCm) ? 1 : 0;
+}

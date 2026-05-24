@@ -33,5 +33,8 @@ typedef struct {
 #include "arinc429.h"
 #include "arinc424.h"
 #include "metar.h"
+#include "taf.h"
+#include "vnav.h"
+#include "hold.h"
 
 #endif

@@ -13,5 +13,7 @@ NAV1_EXPORT double NAV1_PERF_fpaFromGradient(double gradientPct);
 NAV1_EXPORT double NAV1_PERF_requiredRunwayLength(double dryLength, int condition);
 NAV1_EXPORT double NAV1_PERF_crosswindExceedance(double windDirDeg, double windSpeedKts, double rwyHeadingDeg, double maxCrosswindKts);
 NAV1_EXPORT double NAV1_PERF_headwindFraction(double windDirDeg, double windSpeedKts, double rwyHeadingDeg);
+NAV1_EXPORT double NAV1_PERF_takeoffDistance(double dryLength, int condition, double windComponentKts, double slopePct, double densityAltFt);
+NAV1_EXPORT double NAV1_PERF_landingDistance(double dryLength, int condition, double windComponentKts, double slopePct);
 
 #endif
