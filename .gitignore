@@ -2,5 +2,7 @@
 *.dll
 *.a
 *.o
+plan_*.md
+session.md
 AGENTS.md
 

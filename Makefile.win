@@ -19,10 +19,13 @@ STATIC   = libNAV1.a
 
 .PHONY: all all-before all-after clean clean-custom
 
-all: all-before $(BIN) all-after
+all: all-before $(BIN) test_nav1.exe all-after
+
+test_nav1.exe: test_nav1.c $(BIN)
+	$(CC) test_nav1.c -o test_nav1.exe -Isrc -L. -lNAV1 -std=c89 -D_USE_MATH_DEFINES
 
 clean: clean-custom
-	${DEL} $(OBJ) $(BIN) $(DEF) $(STATIC)
+	${DEL} $(OBJ) $(BIN) $(DEF) $(STATIC) test_nav1.exe
 
 $(BIN): $(LINKOBJ)
 	$(CC) -shared $(LINKOBJ) -o $(BIN) $(LIBS) -Wl,--output-def,$(DEF),--out-implib,$(STATIC),--add-stdcall-alias

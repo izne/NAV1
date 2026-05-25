@@ -1,4 +1,4 @@
-# NAV1 -- a collection of navigation-related helper functions in C89
+# NAV1 - A collection of helper functions about navigation
 
 A static and shared library providing geodesy, unit conversion, aviation, GPS/NMEA, flight management, and control-system math for autopilot and navigation applications.
 
@@ -15,11 +15,11 @@ Output: `=== Results: 473/473 passed ===`
 | Tool            | Detail                                    |
 |-----------------|-------------------------------------------|
 | IDE             | Embarcadero Dev-C++ 6.3                   |
-| Compiler        | TDM-GCC 9.2.0 64-bit (gcc, C, not C++)   |
+| Compiler        | TDM-GCC 9.2.0 64-bit (gcc)                |
 | Project file    | `NAV1.dev`                                |
 | CLI build       | `make -f Makefile.win`                    |
 | Defines         | `BUILDING_DLL=1`, `_USE_MATH_DEFINES`     |
-| Output          | `NAV1.dll` + `libNAV1.a` (import lib)    |
+| Output          | `NAV1.dll` + `libNAV1.a` (import lib)     |
 
 ## Module Reference
 
@@ -106,6 +106,31 @@ printf("Roll cmd: %.1f deg\n", roll.output);           /* -33.0 */
 
 The math itself is pure C89 (sin, cos, atan2, sqrt, log, pow, exp, fmod).
 
+## Planned Upgrades
+
+### Error Handling (`plan_errorhandle.md`)
+
+A unified `NAV1_Status` error model for all functions that can fail (pointer params, parsing, I/O, lookups). Pure-math functions (scalar `double` in → `double` out) stay unchanged. Adds `src/status.h` with `NAV1_Status` enum.
+
+- 94 functions converted to return `NAV1_Status`
+- ~99 pure-math functions stay as `double`
+- Module-by-module migration (GEO → NAV → GPS → NMEA → AERO → HOLD → VNAV → METAR → TAF → WB → CTL → A429 → A424 → RTE → XPL)
+
+### MISRA-Inspired C89 Discipline (`plan_misra_c99.md`)
+
+Adopt MISRA C:2012 principles for safety-critical coding style. No C99 features except `<stdint.h>`. Adds `src/impl.h` with `NAV1_Bool` and stdint types.
+
+| Principle | Change |
+|---|---|
+| Fixed-width types | `int` → `int32_t`, `uint32_t`, `uint8_t` |
+| Boolean discipline | `NAV1_Bool` (C89-safe `int` typedef) |
+| No `continue` | 57 occurrences → `if/else if` |
+| Single declaration/line | `int a, b, c;` → split |
+| NULL checks | Added to `control.c`, `geo.c` |
+| No side-effects in expressions | `*p++`, `buf[i++]` → split |
+| Switch defaults | 3 missing `default` cases in `perf.c` |
+| Assertions | `NAV1_ASSERT()` for critical preconditions |
+
 ## Naming Conventions
 
 - **`NAV1_`** prefix on every function -- `NAV1_GEO_`, `NAV1_CONV_`, `NAV1_NAV_`, `NAV1_AERO_`, `NAV1_GPS_`, `NAV1_FLT_`, `NAV1_CTL_`, `NAV1_NMEA_`, `NAV1_RTE_`, `NAV1_XPL_`, `NAV1_A429_`, `NAV1_A424_`, `NAV1_METAR_`, `NAV1_PERF_`, `NAV1_WB_`, `NAV1_TAF_`, `NAV1_VNAV_`, `NAV1_HOLD_`
@@ -138,6 +163,8 @@ NAV1/
 |   |-- taf.h / taf.c      TAF parser (5 functions, 2 structs)
 |   |-- vnav.h / vnav.c    Vertical navigation (6 functions)
 |   |-- hold.h / hold.c    Holding pattern (4 functions, 1 struct)
+|   |-- status.h           NAV1_Status error enum (planned)
+|   |-- impl.h             stdint types + NAV1_Bool (planned)
 |-- NAV1.h                 Public API header (single include)
 |-- test_nav1.c            473-test harness
 |-- test.bat               One-command compile + run
@@ -146,4 +173,6 @@ NAV1/
 |-- NAV1.ico                Application icon
 |-- NAV1_private.rc / .res  Windows resources
 |-- nav.bat                 rundll32 launcher
+|-- plan_errorhandle.md     Error handling implementation plan
+|-- plan_misra_c99.md       MISRA-inspired C89 discipline plan
 ```
