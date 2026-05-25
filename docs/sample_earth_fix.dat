@@ -1,0 +1,5 @@
+# X-Plane fix database sample
+# ident lon lat (longitude FIRST)
+KAILA  -118.408056  33.942500
+SMO    -118.500000  34.000000
+RZS    -119.500000  33.500000
