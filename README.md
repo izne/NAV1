@@ -92,6 +92,10 @@ printf("Roll cmd: %.1f deg\n", roll.output);           /* -33.0 */
 - Exit code 0 = all pass, 1 = any failure
 - Coverage: every exported function, edge cases included
 
+API usage examples for every exported function can be found in
+[`docs/Examples.md`](docs/Examples.md) -- 117 standalone C89 snippets grouped
+by module.
+
 ## Portability
 
 `export.h` provides the `NAV1_EXPORT` macro:
